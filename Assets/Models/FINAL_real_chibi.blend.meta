@@ -7,8 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: GirlBakedText
-    second: {fileID: 2100000, guid: b61d760d3e813614292b2dc0337133c3, type: 2}
+      name: Material
+    second: {fileID: 2100000, guid: 33957ead3a6525846a78ff96e505ff65, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

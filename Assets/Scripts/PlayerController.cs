@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -30,19 +31,30 @@ public class PlayerController : MonoBehaviour
     private Vector3 _input;
     private CharacterController _characterController;
 
+    DealDamage _dealDamage;
+
+    private Animator _anim;
     private void Awake()
     {
         _playerInputActions = new InputSystem_Actions();
         _characterController = GetComponent<CharacterController>();
-        _canDash = true; 
+        _anim = GetComponent<Animator>();
+        _canDash = true;
+        
+        _dealDamage = gameObject.GetComponentInChildren<DealDamage>();
     }
     private void OnEnable()
     {
         _playerInputActions.Player.Enable();
+        _playerInputActions.Player.Hit.started += Hit;
+        _playerInputActions.Player.Shoot.started += Shoot;
     }
     private void OnDisable()
     {
         _playerInputActions.Player.Disable();
+        _playerInputActions.Player.Hit.started -= Hit;
+        _playerInputActions.Player.Shoot.started -= Shoot;
+
     }
     private void Update()
     {
@@ -120,7 +132,19 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 input = _playerInputActions.Player.Move.ReadValue<Vector2>();
         _input = new Vector3(input.x, 0, input.y);
-        _dashInput = _playerInputActions.Player.Sprint.IsPressed();
-        
+        _dashInput = _playerInputActions.Player.Dash.IsPressed();
+    }
+    private void Hit(InputAction.CallbackContext obj)
+    {
+        Debug.Log("Hit");
+
+        _anim.SetTrigger("Hit");
+    }
+    private void Shoot(InputAction.CallbackContext obj)
+    {
+        Debug.Log("Shot");
+
+        _anim.SetTrigger("Shoot");
+        _dealDamage.Shoot();
     }
 }
