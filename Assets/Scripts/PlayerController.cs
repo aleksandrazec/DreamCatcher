@@ -31,17 +31,14 @@ public class PlayerController : MonoBehaviour
     private Vector3 _input;
     private CharacterController _characterController;
 
-    DealDamage _dealDamage;
 
     private Animator _anim;
     private void Awake()
     {
         _playerInputActions = new InputSystem_Actions();
         _characterController = GetComponent<CharacterController>();
-        _anim = GetComponent<Animator>();
+        _anim = GetComponentInChildren<Animator>();
         _canDash = true;
-        
-        _dealDamage = gameObject.GetComponentInChildren<DealDamage>();
     }
     private void OnEnable()
     {
@@ -87,6 +84,7 @@ public class PlayerController : MonoBehaviour
     {
         _canDash = false;
         _isDashing = true;
+        _anim.SetTrigger("Dash");
         yield return new WaitForSeconds(dashingTime);
         _isDashing = false;
         yield return new WaitForSeconds(dashingCooldown);
@@ -104,6 +102,7 @@ public class PlayerController : MonoBehaviour
         }
 
         _currentSpeed = Mathf.Clamp(_currentSpeed, 0, maxSpeed);
+        _anim.SetFloat("_currentSpeed", _currentSpeed);
     }
 
     private void Look()
@@ -124,7 +123,8 @@ public class PlayerController : MonoBehaviour
             _characterController.Move(transform.forward * dashingSpeed * Time.deltaTime);
             return;
         }
-        Vector3 moveDirection = transform.forward * _currentSpeed * _input.magnitude * Time.deltaTime + _velocity;
+
+        Vector3 moveDirection = _currentSpeed * _input.magnitude * Time.deltaTime * transform.forward + _velocity;
         _characterController.Move(moveDirection);
     }
 
@@ -145,6 +145,5 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Shot");
 
         _anim.SetTrigger("Shoot");
-        _dealDamage.Shoot();
     }
 }
