@@ -3,41 +3,42 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float maxSpeed = 50f;
-    [SerializeField] private float rotationSpeed = 360f;
 
-    [SerializeField] private float accelarationFactor = 5f;
-    [SerializeField] private float decelarationFactor = 5f;
+    [SerializeField] private float walkingSpeed;
+    [SerializeField] private float rotationSpeed;
 
-    [SerializeField] private float gravity = -9.81f;
+    [SerializeField] private float accelarationFactor;
+    [SerializeField] private float decelarationFactor;
 
     [Header("Dash")]
-    [SerializeField] private float dashingSpeed = 7f;
-    [SerializeField] private float dashingCooldown = 1.5f;
-    [SerializeField] private float dashingTime = 0.2f;
+    [SerializeField] private float dashingCooldown;
+    [SerializeField] private float dashingTime;
+    [SerializeField] private float dashingSpeed;
 
     private bool _canDash;
     private bool _isDashing;
 
     private bool _dashInput;
 
-    private Vector3 _velocity;
     private float _currentSpeed;
+    private float maxSpeed;
 
     private InputSystem_Actions _playerInputActions;
     private Vector3 _input;
-    private CharacterController _characterController;
 
+    private Rigidbody _rigidBody;
     private Animator _anim;
+
+
     private void Awake()
     {
         _playerInputActions = new InputSystem_Actions();
-        _characterController = GetComponent<CharacterController>();
         _anim = GetComponentInChildren<Animator>();
+        _rigidBody = GetComponent<Rigidbody>();
         _canDash = true;
+        maxSpeed = walkingSpeed;
     }
     private void OnEnable()
     {
@@ -54,17 +55,6 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        bool isGrounded = _characterController.isGrounded;
-        if(isGrounded && _velocity.y <0)
-        {
-            _velocity.y = -2;
-        }
-
-        if (isGrounded)
-        {
-            _velocity.y = gravity * Time.deltaTime;
-        }
-
         GatherInput();
 
         Look();
@@ -75,16 +65,17 @@ public class PlayerController : MonoBehaviour
         
         if(_dashInput && _canDash)
         {
-            StartCoroutine(Dash());
+            StartCoroutine(DashCoroutine());
         }
     }
-
-    private IEnumerator Dash()
+    private IEnumerator DashCoroutine()
     {
         _canDash = false;
         _isDashing = true;
         _anim.SetBool("_isDashing", true);
+        maxSpeed = dashingSpeed;
         yield return new WaitForSeconds(dashingTime);
+        maxSpeed = walkingSpeed;
         _isDashing = false;
         _anim.SetBool("_isDashing", false);
         yield return new WaitForSeconds(dashingCooldown);
@@ -93,27 +84,31 @@ public class PlayerController : MonoBehaviour
 
     private void CalculateSpeed()
     {
-        if (_input == Vector3.zero && _currentSpeed > 0)
+        if (_isDashing)
         {
-            _currentSpeed -= decelarationFactor * Time.deltaTime;
-        }else if(_input != Vector3.zero && _currentSpeed< maxSpeed)
+            _currentSpeed = dashingSpeed;
+        }
+        else if(_input != Vector3.zero && _currentSpeed< maxSpeed)
         {
             _currentSpeed += accelarationFactor * Time.deltaTime;
         }
-
+        else if (_input == Vector3.zero && _currentSpeed > 0)
+        {
+            _currentSpeed -= decelarationFactor * Time.deltaTime;
+        }
         _currentSpeed = Mathf.Clamp(_currentSpeed, 0, maxSpeed);
         _anim.SetFloat("_currentSpeed", _currentSpeed);
     }
 
     private void Look()
     {
-
+        if (_isDashing)
+        {
+            return;
+        }
         if (_input == Vector3.zero) { return; }
 
-        Matrix4x4 isometricMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
-        Vector3 multipliedMatrix = isometricMatrix.MultiplyPoint3x4(_input);
-
-        Quaternion rotation = Quaternion.LookRotation(multipliedMatrix, Vector3.up);
+        Quaternion rotation = Quaternion.LookRotation(_input.ToIso(), Vector3.up);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, rotationSpeed * Time.deltaTime);
     }
 
@@ -121,7 +116,8 @@ public class PlayerController : MonoBehaviour
     {
         if (_isDashing)
         {
-            _characterController.Move(transform.forward * dashingSpeed * Time.deltaTime);
+            Vector3 dashTo = transform.position + transform.forward *_currentSpeed*Time.deltaTime;
+            _rigidBody.MovePosition(dashTo);
             return;
         }
         if (_anim.GetBool("_isHitting"))
@@ -129,8 +125,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        Vector3 moveDirection = _currentSpeed * _input.magnitude * Time.deltaTime * transform.forward + _velocity;
-        _characterController.Move(moveDirection);
+        _rigidBody.MovePosition(transform.position+_input.ToIso()*_input.normalized.magnitude*_currentSpeed*Time.deltaTime);
     }
 
     private void GatherInput()
@@ -157,4 +152,10 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Shot");
         _anim.SetBool("_isShooting", true);
     }
+  
+}
+public static class Helpers
+{
+    private static Matrix4x4 _isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
+    public static Vector3 ToIso(this Vector3 input) => _isoMatrix.MultiplyPoint3x4(input);
 }
