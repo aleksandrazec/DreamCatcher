@@ -31,7 +31,6 @@ public class PlayerController : MonoBehaviour
     private Vector3 _input;
     private CharacterController _characterController;
 
-
     private Animator _anim;
     private void Awake()
     {
@@ -84,9 +83,10 @@ public class PlayerController : MonoBehaviour
     {
         _canDash = false;
         _isDashing = true;
-        _anim.SetTrigger("Dash");
+        _anim.SetBool("_isDashing", true);
         yield return new WaitForSeconds(dashingTime);
         _isDashing = false;
+        _anim.SetBool("_isDashing", false);
         yield return new WaitForSeconds(dashingCooldown);
         _canDash = true;
     }
@@ -107,6 +107,7 @@ public class PlayerController : MonoBehaviour
 
     private void Look()
     {
+
         if (_input == Vector3.zero) { return; }
 
         Matrix4x4 isometricMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
@@ -123,6 +124,10 @@ public class PlayerController : MonoBehaviour
             _characterController.Move(transform.forward * dashingSpeed * Time.deltaTime);
             return;
         }
+        if (_anim.GetBool("_isHitting"))
+        {
+            return;
+        }
 
         Vector3 moveDirection = _currentSpeed * _input.magnitude * Time.deltaTime * transform.forward + _velocity;
         _characterController.Move(moveDirection);
@@ -136,14 +141,20 @@ public class PlayerController : MonoBehaviour
     }
     private void Hit(InputAction.CallbackContext obj)
     {
+        if (_anim.GetBool("_isHitting") || _anim.GetBool("_isShooting"))
+        {
+            return;
+        }
         Debug.Log("Hit");
-
-        _anim.SetTrigger("Hit");
+        _anim.SetBool("_isHitting", true);
     }
     private void Shoot(InputAction.CallbackContext obj)
     {
+        if (_anim.GetBool("_isHitting") || _anim.GetBool("_isShooting"))
+        {
+            return;
+        }
         Debug.Log("Shot");
-
-        _anim.SetTrigger("Shoot");
+        _anim.SetBool("_isShooting", true);
     }
 }
