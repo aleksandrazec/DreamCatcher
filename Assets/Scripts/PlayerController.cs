@@ -16,26 +16,32 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float dashingCooldown;
     [SerializeField] private float dashingSpeed;
 
+    [Header("Damage")]
+    [SerializeField] private float knockbackSpeed;
+    [SerializeField] private float damageCooldown=0f;
+
     private bool _canDash;
     private bool _isDashing;
-
     private bool _dashInput;
+
+    private bool _isDamaged;
+    private bool _canBeDamaged;
 
     private float _currentSpeed;
     private float maxSpeed;
 
     private InputSystem_Actions _playerInputActions;
     private Vector3 _input;
-
+    [Header("Components")]
     [SerializeField] private Rigidbody _rigidBody;
     [SerializeField] private Animator _anim;
-
 
     private void Awake()
     {
         _playerInputActions = new InputSystem_Actions();
         _canDash = true;
         maxSpeed = walkingSpeed;
+        _canBeDamaged = true;
     }
     private void OnEnable()
     {
@@ -60,18 +66,40 @@ public class PlayerController : MonoBehaviour
 
         Move();
         
-        if(_dashInput && _canDash && !_anim.GetBool("_isHitting") && !_anim.GetBool("_isShooting"))
+        if(_dashInput && _canDash && !_isDamaged && !_anim.GetBool("isHitting") && !_anim.GetBool("isShooting"))
         {
             StartCoroutine(DashRoutine());
         }
+    }
+    public void TakeDamage()
+    {
+        if (_canBeDamaged)
+        {
+            StartCoroutine(DamageRoutine());
+        }
+    }
+    private IEnumerator DamageRoutine()
+    {
+        _canBeDamaged = false;
+        _isDamaged = true;
+        _anim.SetBool("isDamaged", true);
+        maxSpeed = knockbackSpeed;
+        while (_anim.GetBool("isDamaged"))
+        {
+            yield return null;
+        }
+        maxSpeed = walkingSpeed;
+        _isDamaged= false;
+        yield return new WaitForSeconds(damageCooldown);
+        _canBeDamaged= true;
     }
     private IEnumerator DashRoutine()
     {
         _canDash = false;
         _isDashing = true;
-        _anim.SetBool("_isDashing", true);
+        _anim.SetBool("isDashing", true);
         maxSpeed = dashingSpeed;
-        while (_anim.GetBool("_isDashing"))
+        while (_anim.GetBool("isDashing"))
         {
             yield return null;
         }
@@ -83,11 +111,15 @@ public class PlayerController : MonoBehaviour
 
     private void CalculateSpeed()
     {
-        if (_isDashing)
+        if (_isDamaged)
+        {
+            _currentSpeed = knockbackSpeed;
+        }
+        else if (_isDashing)
         {
             _currentSpeed = dashingSpeed;
         }
-        else if(_input != Vector3.zero && _currentSpeed< maxSpeed)
+        else if (_input != Vector3.zero && _currentSpeed < maxSpeed)
         {
             _currentSpeed += accelarationFactor * Time.deltaTime;
         }
@@ -101,7 +133,7 @@ public class PlayerController : MonoBehaviour
 
     private void Look()
     {
-        if (_isDashing)
+        if (_isDashing || _isDamaged)
         {
             return;
         }
@@ -113,13 +145,19 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        if (_isDashing)
+        if (_isDamaged)
+        {
+            Vector3 knockback = transform.position - transform.forward * _currentSpeed * Time.deltaTime;
+            _rigidBody.MovePosition(knockback);
+            return;
+        }
+        else if (_isDashing)
         {
             Vector3 dashTo = transform.position + transform.forward *_currentSpeed*Time.deltaTime;
             _rigidBody.MovePosition(dashTo);
             return;
         }
-        if (_anim.GetBool("_isHitting"))
+        if (_anim.GetBool("isHitting"))
         {
             return;
         }
@@ -135,21 +173,21 @@ public class PlayerController : MonoBehaviour
     }
     private void Hit(InputAction.CallbackContext obj)
     {
-        if (_anim.GetBool("_isHitting") || _anim.GetBool("_isShooting"))
+        if (_anim.GetBool("isHitting") || _anim.GetBool("isShooting") || _isDashing || _isDamaged)
         {
             return;
         }
         Debug.Log("Hit");
-        _anim.SetBool("_isHitting", true);
+        _anim.SetBool("isHitting", true);
     }
     private void Shoot(InputAction.CallbackContext obj)
     {
-        if (_anim.GetBool("_isHitting") || _anim.GetBool("_isShooting"))
+        if (_anim.GetBool("isHitting") || _anim.GetBool("isShooting") || _isDamaged || _isDashing)
         {
             return;
         }
         Debug.Log("Shot");
-        _anim.SetBool("_isShooting", true);
+        _anim.SetBool("isShooting", true);
     }
   
 }

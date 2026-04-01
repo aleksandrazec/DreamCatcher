@@ -15,7 +15,7 @@ public class PlayerAnimationEventCaller : MonoBehaviour
     }
     public void endHit()
     {
-        _anim.SetBool("_isHitting", false);
+        _anim.SetBool("isHitting", false);
     }
     public void callShoot()
     {
@@ -23,10 +23,14 @@ public class PlayerAnimationEventCaller : MonoBehaviour
     }
     public void endShoot()
     {
-        _anim.SetBool("_isShooting", false);
+        _anim.SetBool("isShooting", false);
     }
     public void endDash()
     {
-        _anim.SetBool("_isDashing", false);
+        _anim.SetBool("isDashing", false);
+    }
+    public void endDamage()
+    {
+        _anim.SetBool("isDamaged", false);
     }
 }

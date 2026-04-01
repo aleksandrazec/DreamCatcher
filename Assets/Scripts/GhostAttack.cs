@@ -9,7 +9,7 @@ public class GhostAttack : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("Attacked");
-            HealthSystem player = other.GetComponent<HealthSystem>();
+            PlayerHealthSystem player = other.GetComponent<PlayerHealthSystem>();
             player.TakeDamage(attackDamage);
         }
         attackCollider.enabled = false;

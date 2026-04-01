@@ -11,7 +11,7 @@ public class PlayerDealDamage : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            HealthSystem enemy = other.GetComponent<HealthSystem>();
+            EnemyHealthSystem enemy = other.GetComponent<EnemyHealthSystem>();
             enemy.TakeDamage(hitDamage);
         }
         wandCollider.enabled = false;

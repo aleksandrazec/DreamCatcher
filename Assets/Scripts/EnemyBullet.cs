@@ -13,7 +13,7 @@ public class EnemyBullet : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            HealthSystem player = other.GetComponent<HealthSystem>();
+            PlayerHealthSystem player = other.GetComponent<PlayerHealthSystem>();
             player.TakeDamage(shootDamage);
         }
         Destroy(gameObject);

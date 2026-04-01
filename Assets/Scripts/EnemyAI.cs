@@ -98,6 +98,7 @@ public class EnemyAI : MonoBehaviour
         animator.SetBool("isMoving", true);
         if (playerTransform != null)
         {
+            transform.LookAt(playerTransform);
             agent.SetDestination(playerTransform.position);
         }
     }
