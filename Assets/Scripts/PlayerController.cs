@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
 
     [Header("Dash")]
     [SerializeField] private float dashingCooldown;
-    [SerializeField] private float dashingTime;
     [SerializeField] private float dashingSpeed;
 
     private bool _canDash;
@@ -28,15 +27,13 @@ public class PlayerController : MonoBehaviour
     private InputSystem_Actions _playerInputActions;
     private Vector3 _input;
 
-    private Rigidbody _rigidBody;
-    private Animator _anim;
+    [SerializeField] private Rigidbody _rigidBody;
+    [SerializeField] private Animator _anim;
 
 
     private void Awake()
     {
         _playerInputActions = new InputSystem_Actions();
-        _anim = GetComponentInChildren<Animator>();
-        _rigidBody = GetComponent<Rigidbody>();
         _canDash = true;
         maxSpeed = walkingSpeed;
     }
@@ -63,21 +60,23 @@ public class PlayerController : MonoBehaviour
 
         Move();
         
-        if(_dashInput && _canDash)
+        if(_dashInput && _canDash && !_anim.GetBool("_isHitting") && !_anim.GetBool("_isShooting"))
         {
-            StartCoroutine(DashCoroutine());
+            StartCoroutine(DashRoutine());
         }
     }
-    private IEnumerator DashCoroutine()
+    private IEnumerator DashRoutine()
     {
         _canDash = false;
         _isDashing = true;
         _anim.SetBool("_isDashing", true);
         maxSpeed = dashingSpeed;
-        yield return new WaitForSeconds(dashingTime);
+        while (_anim.GetBool("_isDashing"))
+        {
+            yield return null;
+        }
         maxSpeed = walkingSpeed;
         _isDashing = false;
-        _anim.SetBool("_isDashing", false);
         yield return new WaitForSeconds(dashingCooldown);
         _canDash = true;
     }

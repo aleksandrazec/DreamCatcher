@@ -3,9 +3,8 @@ using UnityEngine;
 public class PlayerDealDamage : MonoBehaviour
 {
     [SerializeField] private float hitDamage;
-
-    public Transform bulletSpawnPoint;
-    public GameObject bulletPrefab;
+    [SerializeField] private Transform bulletSpawnPoint;
+    [SerializeField] private GameObject bulletPrefab;
     public float bulletSpeed = 10f;
     [SerializeField] private Collider wandCollider;
     private void OnTriggerEnter(Collider other)

@@ -3,13 +3,8 @@ using UnityEngine;
 public class PlayerAnimationEventCaller : MonoBehaviour
 {
     [SerializeField] private Collider wandCollider;
-    PlayerDealDamage _dealDamage;
-    private Animator _anim;
-    private void Awake()
-    {
-        _dealDamage = gameObject.GetComponentInChildren<PlayerDealDamage>();
-        _anim = GetComponent<Animator>();
-    }
+    [SerializeField] private PlayerDealDamage _dealDamage;
+    [SerializeField] private  Animator _anim;
     public void EnableWandCollider()
     {
         wandCollider.enabled = true;
@@ -29,5 +24,9 @@ public class PlayerAnimationEventCaller : MonoBehaviour
     public void endShoot()
     {
         _anim.SetBool("_isShooting", false);
+    }
+    public void endDash()
+    {
+        _anim.SetBool("_isDashing", false);
     }
 }

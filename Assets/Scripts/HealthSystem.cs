@@ -3,9 +3,10 @@ using UnityEngine;
 public class HealthSystem : MonoBehaviour
 {
     [SerializeField] private float health;
+    [SerializeField] private string typeOfObject;
     public void TakeDamage(float damage)
     {
         health -= damage;
-        Debug.Log(health);
+        Debug.Log(typeOfObject + health);
     }
 }

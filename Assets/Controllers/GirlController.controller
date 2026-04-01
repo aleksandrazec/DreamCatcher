@@ -20,9 +20,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.12187275
+  m_TransitionDuration: 0.06267385
   m_TransitionOffset: 0
-  m_ExitTime: 0.9899819
+  m_ExitTime: 0.98998183
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -140,7 +140,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GirlAnimations
+  m_Name: GirlController
   serializedVersion: 6
   m_AnimatorParameters:
   - m_Name: _currentSpeed
@@ -368,9 +368,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.104576215
+  m_TransitionDuration: 0.047058836
   m_TransitionOffset: 0
-  m_ExitTime: 0.97459686
+  m_ExitTime: 0.9745968
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -393,9 +393,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.07816035
+  m_TransitionDuration: 0.043993074
   m_TransitionOffset: 0
-  m_ExitTime: 0.0000000010395432
+  m_ExitTime: 0.0000000014666707
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -409,7 +409,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Dash
-  m_Speed: 3.5
+  m_Speed: 8
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -8640727288907450596}
