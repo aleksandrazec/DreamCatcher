@@ -18,14 +18,16 @@ public class PlayerController : MonoBehaviour
 
     [Header("Damage")]
     [SerializeField] private float knockbackSpeed;
-    [SerializeField] private float damageCooldown=0f;
 
     private bool _canDash;
     private bool _isDashing;
     private bool _dashInput;
 
     private bool _isDamaged;
+    private Vector3 knockbackDirection;
     private bool _canBeDamaged;
+
+    private bool _isDead;
 
     private float _currentSpeed;
     private float maxSpeed;
@@ -41,6 +43,8 @@ public class PlayerController : MonoBehaviour
         _playerInputActions = new InputSystem_Actions();
         _canDash = true;
         maxSpeed = walkingSpeed;
+        knockbackDirection = Vector3.zero;
+        _isDead = false;
         _canBeDamaged = true;
     }
     private void OnEnable()
@@ -66,17 +70,42 @@ public class PlayerController : MonoBehaviour
 
         Move();
         
-        if(_dashInput && _canDash && !_isDamaged && !_anim.GetBool("isHitting") && !_anim.GetBool("isShooting"))
+        if(_dashInput && _canDash && !_isDamaged && !_isDead && !_anim.GetBool("isHitting") && !_anim.GetBool("isShooting"))
         {
             StartCoroutine(DashRoutine());
         }
     }
-    public void TakeDamage()
+    public void TakeDamage(Vector3 knockbackDirection)
     {
+        this.knockbackDirection = knockbackDirection;
         if (_canBeDamaged)
         {
             StartCoroutine(DamageRoutine());
         }
+    }
+    public void Die(Vector3 knockbackDirection)
+    {
+        this.knockbackDirection = knockbackDirection;
+        StartCoroutine(DeadRoutine());
+    }
+    public IEnumerator DeadRoutine()
+    {
+        while (!_canBeDamaged)
+        {
+            yield return null;
+        }
+        _canBeDamaged = false;
+        _isDamaged = true;
+        _anim.SetBool("isDamaged", true);
+        maxSpeed = knockbackSpeed;
+        while (_anim.GetBool("isDamaged"))
+        {
+            yield return null;
+        }
+        _isDead = true;
+        _isDamaged=false;
+        maxSpeed = 0;
+        _anim.SetBool("isDead", true);
     }
     private IEnumerator DamageRoutine()
     {
@@ -90,8 +119,7 @@ public class PlayerController : MonoBehaviour
         }
         maxSpeed = walkingSpeed;
         _isDamaged= false;
-        yield return new WaitForSeconds(damageCooldown);
-        _canBeDamaged= true;
+        _canBeDamaged=true;
     }
     private IEnumerator DashRoutine()
     {
@@ -133,7 +161,7 @@ public class PlayerController : MonoBehaviour
 
     private void Look()
     {
-        if (_isDashing || _isDamaged)
+        if (_isDashing || _isDamaged ||_isDead)
         {
             return;
         }
@@ -147,7 +175,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_isDamaged)
         {
-            Vector3 knockback = transform.position - transform.forward * _currentSpeed * Time.deltaTime;
+            Vector3 knockback = transform.position + knockbackDirection * _currentSpeed * Time.deltaTime;
             _rigidBody.MovePosition(knockback);
             return;
         }
@@ -157,7 +185,7 @@ public class PlayerController : MonoBehaviour
             _rigidBody.MovePosition(dashTo);
             return;
         }
-        if (_anim.GetBool("isHitting"))
+        if (_anim.GetBool("isHitting") || _isDead)
         {
             return;
         }
@@ -173,8 +201,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Hit(InputAction.CallbackContext obj)
     {
-        if (_anim.GetBool("isHitting") || _anim.GetBool("isShooting") || _isDashing || _isDamaged)
-        {
+        if (_anim.GetBool("isHitting") || _anim.GetBool("isShooting") || _isDashing || _isDamaged || _isDead)        {
             return;
         }
         Debug.Log("Hit");
@@ -182,7 +209,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Shoot(InputAction.CallbackContext obj)
     {
-        if (_anim.GetBool("isHitting") || _anim.GetBool("isShooting") || _isDamaged || _isDashing)
+        if (_anim.GetBool("isHitting") || _anim.GetBool("isShooting") || _isDamaged || _isDashing || _isDead)
         {
             return;
         }

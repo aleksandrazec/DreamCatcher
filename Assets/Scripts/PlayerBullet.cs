@@ -14,7 +14,7 @@ public class PlayerBullet : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             EnemyHealthSystem enemy = other.GetComponent<EnemyHealthSystem>();
-            enemy.TakeDamage(shootDamage);
+            enemy.TakeDamage(shootDamage, transform.forward);
         }
         Destroy(gameObject);
     }

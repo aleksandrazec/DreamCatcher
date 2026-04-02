@@ -426,9 +426,9 @@ GameObject:
   m_Component:
   - component: {fileID: 497571343}
   - component: {fileID: 497571344}
-  - component: {fileID: 497571348}
   - component: {fileID: 497571347}
   - component: {fileID: 497571349}
+  - component: {fileID: 497571350}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -469,9 +469,8 @@ MonoBehaviour:
   accelarationFactor: 100
   decelarationFactor: 150
   dashingCooldown: 1
-  dashingSpeed: 700
+  dashingSpeed: 500
   knockbackSpeed: 100
-  damageCooldown: 0
   _rigidBody: {fileID: 497571347}
   _anim: {fileID: 1838464938}
 --- !u!54 &497571347
@@ -501,7 +500,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!136 &497571348
+--- !u!114 &497571349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 497571339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fccaea8491301e14499713e9fa173927, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthSystem
+  health: 100
+  controller: {fileID: 497571344}
+  damageCooldown: 0
+  isDead: 0
+--- !u!136 &497571350
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -520,24 +535,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 6
-  m_Height: 20
+  m_Radius: 5
+  m_Height: 19
   m_Direction: 1
-  m_Center: {x: 0, y: 10, z: 0}
---- !u!114 &497571349
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 497571339}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fccaea8491301e14499713e9fa173927, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HealthSystem
-  health: 100
-  controller: {fileID: 497571344}
+  m_Center: {x: 0, y: 9, z: 0}
 --- !u!1 &732862844
 GameObject:
   m_ObjectHideFlags: 0
@@ -1036,6 +1037,22 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 95531326c5fa12341bdc0757e784794b, type: 2}
   m_BuildHeightMesh: 0
+--- !u!114 &1516599393 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4743930224053222010, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
+  m_PrefabInstance: {fileID: 3488321088780615956}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64f36bedf4d86e749ab49cec12ef8b0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyPathfinding
+--- !u!54 &1516599396 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 2088758696382014138, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
+  m_PrefabInstance: {fileID: 3488321088780615956}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1571270241
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1468,6 +1485,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 969874170728963874, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
+      propertyPath: m_Size.z
+      value: 4.126413
+      objectReference: {fileID: 0}
+    - target: {fileID: 969874170728963874, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
+      propertyPath: m_Center.x
+      value: 0.0000024749581
+      objectReference: {fileID: 0}
+    - target: {fileID: 969874170728963874, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
+      propertyPath: m_Center.z
+      value: -1.6204784
+      objectReference: {fileID: 0}
     - target: {fileID: 2088758696382014138, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
       propertyPath: m_IsKinematic
       value: 1
@@ -1475,6 +1504,10 @@ PrefabInstance:
     - target: {fileID: 3946115486896753339, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
       propertyPath: m_Name
       value: FINAL_ghost
+      objectReference: {fileID: 0}
+    - target: {fileID: 3970296711279729563, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
+      propertyPath: m_StoppingDistance
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4434000043746676737, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1517,9 +1550,37 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4743930224053222010, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
+      propertyPath: rigidBody
+      value: 
+      objectReference: {fileID: 1516599396}
+    - target: {fileID: 4743930224053222010, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
+      propertyPath: attackCooldown
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4743930224053222010, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
+      propertyPath: knockbackSpeed
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4743930224053222010, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
+      propertyPath: engagementRange
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4743930224053222010, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
       propertyPath: playerTransform
       value: 
       objectReference: {fileID: 497571343}
+    - target: {fileID: 4743930224053222010, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
+      propertyPath: playerHealthSystem
+      value: 
+      objectReference: {fileID: 497571349}
+    - target: {fileID: 7607869241852696492, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
+      propertyPath: health
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 7607869241852696492, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
+      propertyPath: enemyAI
+      value: 
+      objectReference: {fileID: 1516599393}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

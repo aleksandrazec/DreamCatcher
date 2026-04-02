@@ -10,6 +10,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private NavMeshAgent agent;
     public Transform playerTransform;
+    [SerializeField] private PlayerHealthSystem playerHealthSystem;
 
     [SerializeField] private float patrolRadius = 10f;
     private Vector3 currentPatrolPoint;
@@ -20,12 +21,19 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float engagementRange = 10f;
 
     private bool canAttack = true;
+    private bool canBeDamaged=true;
+    private bool isDamaged=false;
+    private bool isDead=false;
+    private Vector3 knockbackDirection=Vector3.zero;
+
+    [SerializeField] private float knockbackSpeed;
 
     [SerializeField] private Collider hitCollider;
     [SerializeField] private Animator animator;
 
     private bool playerVisible;
     private bool playerInRange;
+    private bool playerAlive;
 
     private void Update()
     {
@@ -37,7 +45,6 @@ public class EnemyAI : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, engagementRange);
 
-
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, visionRange);
     }
@@ -45,10 +52,19 @@ public class EnemyAI : MonoBehaviour
     {
         playerVisible = Physics.CheckSphere(transform.position, visionRange, playerMask);
         playerInRange = Physics.CheckSphere(transform.position, engagementRange, playerMask);
+        playerAlive = !playerHealthSystem.isDead;
     }
     private void UpdateBehaviorState()
-    {
-        if(!playerVisible && !playerInRange)
+    {   
+        if (isDead)
+        {
+            agent.SetDestination(transform.position);
+        }
+        else if (isDamaged)
+        {
+            Knockback();
+        }
+        else if((!playerVisible && !playerInRange) || !playerAlive)
         {
             PerformPatrol();
         }else if(playerVisible && !playerInRange)
@@ -58,6 +74,46 @@ public class EnemyAI : MonoBehaviour
         {
             PerformAttack();
         }
+    }
+    private void Knockback()
+    {
+        transform.LookAt(playerTransform);
+        Vector3 knockback = transform.position + knockbackDirection * knockbackSpeed * Time.deltaTime;
+        agent.SetDestination(knockback);
+    }
+    public void Die()
+    {
+        StartCoroutine(DeadRoutine());
+    }
+    private IEnumerator DeadRoutine()
+    {
+        while (!canBeDamaged)
+        {
+            yield return null;
+        }
+        canBeDamaged = false;
+        isDead = true;
+        animator.SetBool("isDead", true);
+    }
+    public void TakeDamage(Vector3 knockbackDirection)
+    {
+        this.knockbackDirection = knockbackDirection;
+        if (canBeDamaged)
+        {
+            StartCoroutine(DamageRoutine());
+        }
+    }
+    private IEnumerator DamageRoutine()
+    {
+        canBeDamaged = false;
+        isDamaged = true;
+        animator.SetBool("isDamaged", true);
+        while (animator.GetBool("isDamaged"))
+        {
+            yield return null;
+        }
+        isDamaged = false;
+        canBeDamaged = true;
     }
 
     private void PerformAttack()
@@ -80,6 +136,10 @@ public class EnemyAI : MonoBehaviour
     private void EndAttack()
     {
         animator.SetBool("isAttacking", false);
+    }
+    private void EndDamage()
+    {
+        animator.SetBool("isDamaged", false);
     }
     private IEnumerator AttackRoutine()
     {

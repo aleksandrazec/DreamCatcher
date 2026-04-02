@@ -1,4 +1,6 @@
+using System.Numerics;
 using UnityEngine;
+using Vector3 = UnityEngine.Vector3;
 
 public class GhostAttack : MonoBehaviour
 {
@@ -10,7 +12,7 @@ public class GhostAttack : MonoBehaviour
         {
             Debug.Log("Attacked");
             PlayerHealthSystem player = other.GetComponent<PlayerHealthSystem>();
-            player.TakeDamage(attackDamage);
+            player.TakeDamage(attackDamage, transform.forward);
         }
         attackCollider.enabled = false;
     }
