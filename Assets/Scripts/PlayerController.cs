@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     [Header("Dash")]
     [SerializeField] private float dashingCooldown;
     [SerializeField] private float dashingSpeed;
+    [SerializeField] private float dashingTime;
 
     [Header("Damage")]
     [SerializeField] private float knockbackSpeed;
@@ -127,10 +128,8 @@ public class PlayerController : MonoBehaviour
         _isDashing = true;
         _anim.SetBool("isDashing", true);
         maxSpeed = dashingSpeed;
-        while (_anim.GetBool("isDashing"))
-        {
-            yield return null;
-        }
+        yield return new WaitForSeconds(dashingTime);
+        _anim.SetBool("isDashing", false);
         maxSpeed = walkingSpeed;
         _isDashing = false;
         yield return new WaitForSeconds(dashingCooldown);

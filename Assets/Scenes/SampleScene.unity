@@ -469,7 +469,8 @@ MonoBehaviour:
   accelarationFactor: 100
   decelarationFactor: 150
   dashingCooldown: 1
-  dashingSpeed: 500
+  dashingSpeed: 400
+  dashingTime: 0.2
   knockbackSpeed: 100
   _rigidBody: {fileID: 497571347}
   _anim: {fileID: 1838464938}
@@ -1506,8 +1507,20 @@ PrefabInstance:
       value: FINAL_ghost
       objectReference: {fileID: 0}
     - target: {fileID: 3970296711279729563, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
+      propertyPath: m_Speed
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 3970296711279729563, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
+      propertyPath: m_Acceleration
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3970296711279729563, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
+      propertyPath: m_AngularSpeed
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 3970296711279729563, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
       propertyPath: m_StoppingDistance
-      value: 9
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4434000043746676737, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1563,7 +1576,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4743930224053222010, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
       propertyPath: engagementRange
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4743930224053222010, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
       propertyPath: playerTransform
@@ -1575,7 +1588,7 @@ PrefabInstance:
       objectReference: {fileID: 497571349}
     - target: {fileID: 7607869241852696492, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
       propertyPath: health
-      value: 40
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7607869241852696492, guid: d5c1eeda7c8a61247a621e989c6d3e55, type: 3}
       propertyPath: enemyAI

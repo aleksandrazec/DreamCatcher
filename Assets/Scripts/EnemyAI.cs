@@ -106,6 +106,7 @@ public class EnemyAI : MonoBehaviour
     private IEnumerator DamageRoutine()
     {
         canBeDamaged = false;
+        animator.SetBool("isAttacking", false);
         isDamaged = true;
         animator.SetBool("isDamaged", true);
         while (animator.GetBool("isDamaged"))
@@ -114,7 +115,7 @@ public class EnemyAI : MonoBehaviour
         }
         isDamaged = false;
         canBeDamaged = true;
-    }
+    }   
 
     private void PerformAttack()
     {
