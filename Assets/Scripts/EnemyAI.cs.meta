@@ -1,2 +1,17 @@
 fileFormatVersion: 2
 guid: 64f36bedf4d86e749ab49cec12ef8b0e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - agent: {instanceID: 0}
+  - playerTransform: {instanceID: 0}
+  - playerHealthSystem: {instanceID: 0}
+  - animator: {instanceID: 0}
+  - demonSkin: {instanceID: 0}
+  - blackSkin: {fileID: 2100000, guid: d68097d5157157c4cb34aefe33708ba2, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

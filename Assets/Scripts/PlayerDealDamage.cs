@@ -17,7 +17,6 @@ public class PlayerDealDamage : MonoBehaviour
         wandCollider.enabled = false;
 
     }
-
     public void Shoot()
     {
         var bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);   

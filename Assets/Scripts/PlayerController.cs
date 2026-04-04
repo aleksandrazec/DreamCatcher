@@ -174,12 +174,14 @@ public class PlayerController : MonoBehaviour
     {
         if (_isDamaged)
         {
-            Vector3 knockback = transform.position + knockbackDirection * _currentSpeed * Time.deltaTime;
+            Vector3 knockbackTrueDirection = new Vector3(knockbackDirection.x, 0, knockbackDirection.y);
+            Vector3 knockback = transform.position + knockbackTrueDirection * _currentSpeed * Time.deltaTime;
             _rigidBody.MovePosition(knockback);
             return;
         }
         else if (_isDashing)
         {
+            Vector3 forward = new Vector3(transform.forward.x, 0, transform.forward.z);
             Vector3 dashTo = transform.position + transform.forward *_currentSpeed*Time.deltaTime;
             _rigidBody.MovePosition(dashTo);
             return;

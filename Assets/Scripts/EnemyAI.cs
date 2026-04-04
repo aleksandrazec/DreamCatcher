@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,6 +12,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private NavMeshAgent agent;
     public Transform playerTransform;
     [SerializeField] private PlayerHealthSystem playerHealthSystem;
+
 
     [SerializeField] private float patrolRadius = 10f;
     private Vector3 currentPatrolPoint;
@@ -25,16 +27,38 @@ public class EnemyAI : MonoBehaviour
     private bool isDamaged=false;
     private bool isDead=false;
     private Vector3 knockbackDirection=Vector3.zero;
-
-    [SerializeField] private float knockbackSpeed;
-
-    [SerializeField] private Collider hitCollider;
-    [SerializeField] private Animator animator;
+    private Vector3 deadPosition=Vector3.zero;
+    private float currentAlpha=1.0f;
+    private bool setInvisible = false;
 
     private bool playerVisible;
     private bool playerInRange;
     private bool playerAlive;
 
+    [SerializeField] private float knockbackSpeed;
+    [SerializeField] private Animator animator;
+    [SerializeField] private Renderer demonSkin;
+    [SerializeField] private Material blackSkin;
+
+    [SerializeField] public EnemyType enemyType;
+
+    public enum EnemyType
+    {
+        ghost,
+        dress,
+        bat,
+        worm
+    }
+    Dictionary<EnemyType, float> DeadBaseOffset = new Dictionary<EnemyType, float>
+    {
+        {EnemyType.ghost, 3.5f },
+        {EnemyType.bat, 0.5f}
+
+    };
+    private void Awake()
+    {
+
+    }
     private void Update()
     {
         DetectPlayer();
@@ -58,7 +82,10 @@ public class EnemyAI : MonoBehaviour
     {   
         if (isDead)
         {
-            agent.SetDestination(transform.position);
+            if (setInvisible)
+            {
+                MakeTransparent();
+            }
         }
         else if (isDamaged)
         {
@@ -73,6 +100,17 @@ public class EnemyAI : MonoBehaviour
         }else if(playerVisible && playerInRange)
         {
             PerformAttack();
+        }
+    }
+    private void MakeTransparent()
+    {
+        currentAlpha = Mathf.MoveTowards(currentAlpha, 0f, Time.deltaTime*0.5f);
+        var color = demonSkin.material.color;
+        var newColor = new Color(color.r, color.g, color.b, currentAlpha);
+        demonSkin.material.color=newColor;
+        if (currentAlpha==0)
+        {
+            Destroy(gameObject);
         }
     }
     private void Knockback()
@@ -92,8 +130,16 @@ public class EnemyAI : MonoBehaviour
             yield return null;
         }
         canBeDamaged = false;
-        isDead = true;
+        agent.baseOffset = DeadBaseOffset[enemyType];
+        demonSkin.material = blackSkin;
         animator.SetBool("isDead", true);
+        isDead = true;
+        agent.enabled = false;
+        while (animator.GetBool("isDead"))
+        {
+            yield return null;
+        }
+        setInvisible = true;
     }
     public void TakeDamage(Vector3 knockbackDirection)
     {
@@ -124,23 +170,6 @@ public class EnemyAI : MonoBehaviour
             transform.LookAt(playerTransform);
             StartCoroutine(AttackRoutine());
         }
-    }
-    private void EnableCollider()
-    {
-        hitCollider.enabled = true;
-    }
-
-    private void DisableCollider()
-    {
-        hitCollider.enabled = false;
-    }
-    private void EndAttack()
-    {
-        animator.SetBool("isAttacking", false);
-    }
-    private void EndDamage()
-    {
-        animator.SetBool("isDamaged", false);
     }
     private IEnumerator AttackRoutine()
     {
