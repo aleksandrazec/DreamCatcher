@@ -9,9 +9,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float walkingSpeed;
     [SerializeField] private float rotationSpeed;
 
-    [SerializeField] private float accelarationFactor;
-    [SerializeField] private float decelarationFactor;
-
     [Header("Dash")]
     [SerializeField] private float dashingCooldown;
     [SerializeField] private float dashingSpeed;
@@ -112,6 +109,8 @@ public class PlayerController : MonoBehaviour
     {
         _canBeDamaged = false;
         _isDamaged = true;
+        _anim.SetBool("isHitting", false);
+        _anim.SetBool("isShooting", false);
         _anim.SetBool("isDamaged", true);
         maxSpeed = knockbackSpeed;
         while (_anim.GetBool("isDamaged"))
@@ -146,15 +145,14 @@ public class PlayerController : MonoBehaviour
         {
             _currentSpeed = dashingSpeed;
         }
-        else if (_input != Vector3.zero && _currentSpeed < maxSpeed)
+        else if(_input != Vector3.zero)
         {
-            _currentSpeed += accelarationFactor * Time.deltaTime;
+            _currentSpeed = maxSpeed;
         }
-        else if (_input == Vector3.zero && _currentSpeed > 0)
+        else
         {
-            _currentSpeed -= decelarationFactor * Time.deltaTime;
+            _currentSpeed = 0;
         }
-        _currentSpeed = Mathf.Clamp(_currentSpeed, 0, maxSpeed);
         _anim.SetFloat("_currentSpeed", _currentSpeed);
     }
 
@@ -205,7 +203,6 @@ public class PlayerController : MonoBehaviour
         if (_anim.GetBool("isHitting") || _anim.GetBool("isShooting") || _isDashing || _isDamaged || _isDead)        {
             return;
         }
-        Debug.Log("Hit");
         _anim.SetBool("isHitting", true);
     }
     private void Shoot(InputAction.CallbackContext obj)
@@ -214,7 +211,6 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
-        Debug.Log("Shot");
         _anim.SetBool("isShooting", true);
     }
   

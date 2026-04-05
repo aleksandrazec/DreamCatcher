@@ -2,35 +2,37 @@ using UnityEngine;
 
 public class PlayerAnimationEventCaller : MonoBehaviour
 {
-    [SerializeField] private Collider wandCollider;
-    [SerializeField] private PlayerDealDamage _dealDamage;
-    [SerializeField] private  Animator _anim;
+    [SerializeField] private Collider attackCollider;
+    [SerializeField] private PlayerShoot playerShoot;
+    [SerializeField] private Animator anim;
+    [SerializeField] private PlayerAttack playerAttack;
     public void EnableWandCollider()
     {
-        wandCollider.enabled = true;
+        attackCollider.enabled = true;
     }
     public void DisableWandCollider()
     {
-        wandCollider.enabled = false;
+        attackCollider.enabled = false;
+        playerAttack.AttackEnded();
     }
     public void endHit()
     {
-        _anim.SetBool("isHitting", false);
+        anim.SetBool("isHitting", false);
     }
     public void callShoot()
     {
-        _dealDamage.Shoot();
+        playerShoot.Shoot();
     }
     public void endShoot()
     {
-        _anim.SetBool("isShooting", false);
+        anim.SetBool("isShooting", false);
     }
     public void endDash()
     {
-        _anim.SetBool("isDashing", false);
+        anim.SetBool("isDashing", false);
     }
     public void endDamage()
     {
-        _anim.SetBool("isDamaged", false);
+        anim.SetBool("isDamaged", false);
     }
 }

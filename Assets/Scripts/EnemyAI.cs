@@ -40,7 +40,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private Renderer demonSkin;
     [SerializeField] private Material blackSkin;
-
+    [SerializeField] private Rigidbody rigidBody;
     [SerializeField] public EnemyType enemyType;
 
     public enum EnemyType
@@ -57,10 +57,6 @@ public class EnemyAI : MonoBehaviour
         {EnemyType.worm, 4f },
         {EnemyType.dress, 3f }
     };
-    private void Awake()
-    {
-
-    }
     private void Update()
     {
         DetectPlayer();
@@ -120,7 +116,7 @@ public class EnemyAI : MonoBehaviour
 
         transform.LookAt(playerTransform);
         Vector3 knockback = transform.position + knockbackDirection * knockbackSpeed * Time.deltaTime;
-        agent.SetDestination(knockback);
+        rigidBody.MovePosition(knockback);
     }
     public void Die()
     {
@@ -155,14 +151,15 @@ public class EnemyAI : MonoBehaviour
     private IEnumerator DamageRoutine()
     {
         canBeDamaged = false;
-        animator.SetBool("isAttacking", false);
-        agent.enabled = true;
         isDamaged = true;
+        agent.enabled = false;
         animator.SetBool("isDamaged", true);
         while (animator.GetBool("isDamaged"))
         {
             yield return null;
         }
+        animator.SetBool("isAttacking", false);
+        agent.enabled = true;
         isDamaged = false;
         canBeDamaged = true;
     }   
@@ -209,6 +206,7 @@ public class EnemyAI : MonoBehaviour
         if (hasPatrolPoint)
         {
             animator.SetBool("isMoving", true);
+            transform.LookAt(currentPatrolPoint);
             agent.SetDestination(currentPatrolPoint);
         }
 

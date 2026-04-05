@@ -12,10 +12,8 @@ public class EnemyBullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("collision entered");
         if (targetLayers == (targetLayers | (1 << other.gameObject.layer)))
         {
-            Debug.Log("player collision");
             PlayerHealthSystem player = other.GetComponentInParent<PlayerHealthSystem>();
             player.TakeDamage(shootDamage, transform.forward);
         }
