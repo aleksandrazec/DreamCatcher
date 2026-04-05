@@ -68,6 +68,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: star
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2db61e5cc1247e64884d08463c19e5bb, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -101,6 +105,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   life: 2
   shootDamage: 10
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!65 &5019364341588993889
 BoxCollider:
   m_ObjectHideFlags: 0

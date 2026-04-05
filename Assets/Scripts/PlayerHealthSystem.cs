@@ -20,7 +20,7 @@ public class PlayerHealthSystem : MonoBehaviour
         if (canBeDamaged)
         {
             health -= damage;
-            Debug.Log(health);
+            Debug.Log("Player health: "+health);
             if (health <= 0)
             {
                 controller.Die(knockbackDirection);

@@ -6,12 +6,14 @@ public class GhostAttack : MonoBehaviour
 {
     [SerializeField] private float attackDamage=10;
     [SerializeField] private Collider attackCollider;
+    public LayerMask targetLayers;
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (targetLayers == (targetLayers | (1 << other.gameObject.layer)))
         {
             Debug.Log("Attacked");
-            PlayerHealthSystem player = other.GetComponent<PlayerHealthSystem>();
+            PlayerHealthSystem player = other.GetComponentInParent<PlayerHealthSystem>();
             player.TakeDamage(attackDamage, transform.forward);
         }
         attackCollider.enabled = false;

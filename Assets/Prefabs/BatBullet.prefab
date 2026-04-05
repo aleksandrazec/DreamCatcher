@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8878877663862226540}
   - component: {fileID: 3296974588505306709}
   - component: {fileID: 2889303396010456542}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BatBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,6 +130,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBullet
   life: 2
   shootDamage: 10
+  parentCollider: {fileID: 0}
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!54 &2889303396010456542
 Rigidbody:
   m_ObjectHideFlags: 0

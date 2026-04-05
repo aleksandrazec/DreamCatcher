@@ -15,7 +15,7 @@ public class EnemyHealthSystem : MonoBehaviour
         if (!isDead)
         {
             health -= damage;
-            Debug.Log(health);
+            Debug.Log("Enemy health: " + health);
             if (health <= 0)
             {
                 isDead = true;

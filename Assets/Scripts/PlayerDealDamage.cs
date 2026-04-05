@@ -7,11 +7,12 @@ public class PlayerDealDamage : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     public float bulletSpeed = 10f;
     [SerializeField] private Collider wandCollider;
+    public LayerMask targetLayers;
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy"))
+        if (targetLayers == (targetLayers | (1 << other.gameObject.layer)))
         {
-            EnemyHealthSystem enemy = other.GetComponent<EnemyHealthSystem>();
+            EnemyHealthSystem enemy = other.GetComponentInParent<EnemyHealthSystem>();
             enemy.TakeDamage(hitDamage, transform.forward);
         }
         wandCollider.enabled = false;
