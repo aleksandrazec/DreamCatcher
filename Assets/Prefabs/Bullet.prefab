@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -108,7 +108,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -125,10 +125,12 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43ec4c50d58e0bc419aa402ade9db16d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
-  life: 3
-  shootDamage: 0
-  parentCollider: {fileID: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBullet
+  life: 2
+  shootDamage: 10
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!54 &5736595993582861922
 Rigidbody:
   m_ObjectHideFlags: 0

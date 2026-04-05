@@ -489,7 +489,7 @@ GameObject:
   - component: {fileID: 4314290690639393887}
   - component: {fileID: 1700640274600964900}
   m_Layer: 8
-  m_Name: FINAL_bat
+  m_Name: Bat
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -620,10 +620,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   bulletSpawnPoint: {fileID: 3923785582298527355}
-  bulletPrefab: {fileID: 2103748714325233241, guid: 76d35c4963c3ddc49a17adc153d46f6b, type: 3}
+  bulletPrefab: {fileID: 6017444772018667423, guid: b7c0a4491c31d594bbe5c2a8a008b374, type: 3}
   bulletSpeed: 60
   animator: {fileID: 1700640274600964900}
-  batCollider: {fileID: 0}
 --- !u!95 &1700640274600964900
 Animator:
   serializedVersion: 7

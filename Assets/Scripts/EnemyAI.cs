@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -52,8 +53,9 @@ public class EnemyAI : MonoBehaviour
     Dictionary<EnemyType, float> DeadBaseOffset = new Dictionary<EnemyType, float>
     {
         {EnemyType.ghost, 3.5f },
-        {EnemyType.bat, 0.5f}
-
+        {EnemyType.bat, 0.5f},
+        {EnemyType.worm, 4f },
+        {EnemyType.dress, 3f }
     };
     private void Awake()
     {
@@ -91,13 +93,13 @@ public class EnemyAI : MonoBehaviour
         {
             Knockback();
         }
-        else if((!playerVisible && !playerInRange) || !playerAlive)
+        else if(((!playerVisible && !playerInRange) || (!playerAlive))&& agent.enabled)
         {
             PerformPatrol();
-        }else if(playerVisible && !playerInRange)
+        }else if(playerVisible && !playerInRange && agent.enabled)
         {
             PerformChase();
-        }else if(playerVisible && playerInRange)
+        }else if((playerVisible && playerInRange) || !agent.enabled)
         {
             PerformAttack();
         }
@@ -115,6 +117,7 @@ public class EnemyAI : MonoBehaviour
     }
     private void Knockback()
     {
+
         transform.LookAt(playerTransform);
         Vector3 knockback = transform.position + knockbackDirection * knockbackSpeed * Time.deltaTime;
         agent.SetDestination(knockback);
@@ -153,6 +156,7 @@ public class EnemyAI : MonoBehaviour
     {
         canBeDamaged = false;
         animator.SetBool("isAttacking", false);
+        agent.enabled = true;
         isDamaged = true;
         animator.SetBool("isDamaged", true);
         while (animator.GetBool("isDamaged"))
@@ -168,17 +172,20 @@ public class EnemyAI : MonoBehaviour
         if (canAttack)
         {
             transform.LookAt(playerTransform);
+            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
             StartCoroutine(AttackRoutine());
         }
     }
     private IEnumerator AttackRoutine()
     {
         canAttack = false;
+        agent.enabled = false;
         animator.SetBool("isAttacking", true);
         while (animator.GetBool("isAttacking"))
         {
             yield return null;
         }
+        agent.enabled = true;
         yield return new WaitForSeconds(attackCooldown);
         canAttack = true;
     }

@@ -3975,8 +3975,8 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 1.5
-    functionName: EndAttack
+  - time: 0.9583333
+    functionName: StartSlide
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

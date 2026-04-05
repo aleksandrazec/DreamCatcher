@@ -6,7 +6,6 @@ public class BatAnimationEventCaller : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     public float bulletSpeed = 10f;
     [SerializeField] private Animator animator;
-    [SerializeField] private Collider batCollider;
     private void EndAttack()
     {
         animator.SetBool("isAttacking", false);
@@ -23,6 +22,5 @@ public class BatAnimationEventCaller : MonoBehaviour
     {
         var bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.Euler(0,0,90));
         bullet.GetComponent<Rigidbody>().linearVelocity = bulletSpawnPoint.forward * bulletSpeed;
-        bullet.GetComponent<EnemyBullet>().SetParentCollider(batCollider);
     }
 }

@@ -4,7 +4,6 @@ public class EnemyBullet : MonoBehaviour
 {
     public float life = 3;
     [SerializeField] private float shootDamage;
-    [SerializeField] private Collider parentCollider;
     public LayerMask targetLayers;
     private void Awake()
     {
@@ -13,18 +12,13 @@ public class EnemyBullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("collision entered");
         if (targetLayers == (targetLayers | (1 << other.gameObject.layer)))
         {
+            Debug.Log("player collision");
             PlayerHealthSystem player = other.GetComponentInParent<PlayerHealthSystem>();
             player.TakeDamage(shootDamage, transform.forward);
         }
-        if (other != parentCollider)
-        {
-            Destroy(gameObject);
-        }
-    }
-    public void SetParentCollider(Collider parent)
-    {
-        parentCollider=parent;
+        Destroy(gameObject);
     }
 }
