@@ -324,6 +324,7 @@ MonoBehaviour:
   animator: {fileID: 3008302599052222646}
   demonSkin: {fileID: 8955429088296054219}
   blackSkin: {fileID: 2100000, guid: d68097d5157157c4cb34aefe33708ba2, type: 2}
+  rigidBody: {fileID: 2088758696382014138}
   enemyType: 0
 --- !u!95 &3008302599052222646
 Animator:
