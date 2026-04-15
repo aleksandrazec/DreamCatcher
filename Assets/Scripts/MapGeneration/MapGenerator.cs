@@ -1,12 +1,14 @@
+using System;
 using System.Collections.Generic;
-using NUnit.Framework;
-using Unity.AppUI.MVVM;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Linq;
 
 public class MapGenerator : MonoBehaviour
 {
     private int[,] floorPlan;
+    private int numOfRows;
+    private int numOfColumns;
 
     private int floorPlanCount;
     private int minRooms;
@@ -18,11 +20,10 @@ public class MapGenerator : MonoBehaviour
     private (int, int) itemRoomIndex;
 
     public Cell cellPrefab;
-    private float cellSize;
-    private float cellXOffset;
-    private float cellYOffset;
+    public GameObject emptyCellPrefab;
     private Queue<(int,int)> cellQueue;
     private List<Cell> spawnedCells;
+    private List<GameObject> spawnedEmpties;
 
     [SerializeField] private Canvas canvas;
 
@@ -49,17 +50,16 @@ public class MapGenerator : MonoBehaviour
     }
     private void GenerateMap(InputAction.CallbackContext obj)
     {
-       Debug.Log("called");
        SetupDungeon();
     }
     void Start()
     {
+        numOfRows = 10;
+        numOfColumns = 10;
         minRooms = 10;
         maxRooms = 15;
-        cellSize = 15f;
-        cellXOffset = 400f;
-        cellYOffset = 0f;
         spawnedCells = new();
+        spawnedEmpties = new();
         SetupDungeon();
     }
     void SetupDungeon()
@@ -68,16 +68,21 @@ public class MapGenerator : MonoBehaviour
         {
             Destroy(spawnedCells[i].gameObject);
         }
+        for (int i = 0; i < spawnedEmpties.Count; i++)
+        {
+            Destroy(spawnedEmpties[i].gameObject);
+        }
+        spawnedEmpties.Clear();
         spawnedCells.Clear();
 
-        floorPlan = new int[10, 10];
+        floorPlan = new int[numOfRows, numOfColumns];
         floorPlanCount = 0;
         cellQueue = new Queue<(int, int)>();
         endRooms = new List<(int, int)>();
 
         VisitCell(4, 5);
         GenerateDungeon();
-    }
+    } 
     void GenerateDungeon()
     {
         while (cellQueue.Count > 0)
@@ -117,6 +122,7 @@ public class MapGenerator : MonoBehaviour
             SetupDungeon();
             return;
         }
+        SetUpVisuals();
         UpdateSpecialRoomVisuals();
 
     }
@@ -141,7 +147,7 @@ public class MapGenerator : MonoBehaviour
     (int,int) RandomEndRoom()
     {
         if(endRooms.Count == 0) return (-1,-1);
-        int randomRoom = Random.Range(0,endRooms.Count);
+        int randomRoom = UnityEngine.Random.Range(0,endRooms.Count);
         (int, int) index = endRooms[randomRoom];
         endRooms.RemoveAt(randomRoom);
         return index;
@@ -160,24 +166,54 @@ public class MapGenerator : MonoBehaviour
     }
     private bool VisitCell(int rowIndex, int columnIndex)
     {
-        if (floorPlan[rowIndex, columnIndex] != 0 || GetNeighbourCount(rowIndex, columnIndex) > 1 || floorPlanCount > maxRooms || Random.value < 0.5f)
+        if (floorPlan[rowIndex, columnIndex] != 0 || GetNeighbourCount(rowIndex, columnIndex) > 1 || floorPlanCount > maxRooms || UnityEngine.Random.value < 0.5f)
         {
             return false;
         }
         cellQueue.Enqueue((rowIndex,columnIndex));
         floorPlan[rowIndex, columnIndex] = 1;
         floorPlanCount++;
-        SpawnRoom(rowIndex, columnIndex);
         return true;
+    }
+    private void SpawnEmpty()
+    {
+        GameObject newEmpty = Instantiate(emptyCellPrefab, this.transform);
+        spawnedEmpties.Add(newEmpty);
     }
     private void SpawnRoom(int rowIndex, int columnIndex)
     {
-        Vector2 position = new Vector2(columnIndex*cellSize+cellYOffset, -rowIndex*cellSize+cellXOffset);
-        Cell newCell = Instantiate(cellPrefab, position, Quaternion.identity, canvas.transform);
+        Cell newCell = Instantiate(cellPrefab, this.transform);
         newCell.value = 1;
         newCell.rowIndex= rowIndex;
         newCell.columnIndex= columnIndex;
 
         spawnedCells.Add(newCell);
+    }
+    private void SetUpVisuals()
+    {
+        int[] emptyArray= new int[numOfRows];
+        for (int i = 0; i < floorPlan.GetLength(0); i++)
+        {
+            for (int j = 0; j < floorPlan.GetLength(1); j++)
+            {
+                emptyArray[i]|=floorPlan[i,j];
+            }
+        }
+        for (int i = 0; i < floorPlan.GetLength(0); i++)
+        {
+            if (emptyArray[i] == 0)
+            {
+                continue;
+            }
+            for (int j = 0; j < floorPlan.GetLength(1); j++)
+            {
+                if(floorPlan[i, j] != 0) {
+                    SpawnRoom(i, j);
+                }else 
+                {
+                    SpawnEmpty();
+                }
+            }
+        }
     }
 }
