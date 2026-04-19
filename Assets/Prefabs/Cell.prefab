@@ -168,3 +168,5 @@ MonoBehaviour:
   columnIndex: 0
   value: 0
   image: {fileID: 4751193492004907344}
+  typeOfCell: 0
+  rectTransform: {fileID: 4391962502219166308}
