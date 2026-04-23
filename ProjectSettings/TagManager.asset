@@ -17,10 +17,10 @@ TagManager:
   - Enemies
   - Enemy Weapons
   - Sky
-  - 
-  - 
-  - 
-  - 
+  - Environment
+  - Grass
+  - PlayerColliderForEnvironment
+  - Walls
   - 
   - 
   - 

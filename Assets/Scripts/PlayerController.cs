@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float walkingSpeed;
     [SerializeField] private float rotationSpeed;
+    [SerializeField] private float outOfBoundsSpeed;
 
     [Header("Dash")]
     [SerializeField] private float dashingCooldown;
@@ -27,6 +28,9 @@ public class PlayerController : MonoBehaviour
 
     private bool _isDead;
 
+    private bool _canBeInEnvironment;
+    private bool _isInEnvironment;
+
     private float _currentSpeed;
     private float maxSpeed;
 
@@ -35,7 +39,8 @@ public class PlayerController : MonoBehaviour
     [Header("Components")]
     [SerializeField] private Rigidbody _rigidBody;
     [SerializeField] private Animator _anim;
-
+    public LayerMask environmentLayer;
+    public LayerMask wallLayer;
     private void Awake()
     {
         _playerInputActions = new InputSystem_Actions();
@@ -44,6 +49,7 @@ public class PlayerController : MonoBehaviour
         knockbackDirection = Vector3.zero;
         _isDead = false;
         _canBeDamaged = true;
+        _canBeInEnvironment = true;
     }
     private void OnEnable()
     {
@@ -68,7 +74,7 @@ public class PlayerController : MonoBehaviour
 
         Move();
         
-        if(_dashInput && _canDash && !_isDamaged && !_isDead && !_anim.GetBool("isHitting") && !_anim.GetBool("isShooting"))
+        if(_dashInput && _canDash && !_isDamaged && !_isInEnvironment &&!_isDead && !_anim.GetBool("isHitting") && !_anim.GetBool("isShooting"))
         {
             StartCoroutine(DashRoutine());
         }
@@ -134,10 +140,25 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(dashingCooldown);
         _canDash = true;
     }
+    private IEnumerator InEnvironmentRoutine()
+    {
+        _canBeInEnvironment = false;
+        knockbackDirection = -transform.forward;
+        _isInEnvironment = true;
+        maxSpeed = outOfBoundsSpeed;
+        yield return new WaitForSeconds(dashingTime);
+        maxSpeed = walkingSpeed;
+        _isInEnvironment = false;
+        _canBeInEnvironment = true;
+    }
 
     private void CalculateSpeed()
     {
-        if (_isDamaged)
+        if (_isInEnvironment)
+        {
+            _currentSpeed = outOfBoundsSpeed;
+        } 
+        else if (_isDamaged)
         {
             _currentSpeed = knockbackSpeed;
         }
@@ -145,7 +166,7 @@ public class PlayerController : MonoBehaviour
         {
             _currentSpeed = dashingSpeed;
         }
-        else if(_input != Vector3.zero)
+        else if (_input != Vector3.zero)
         {
             _currentSpeed = maxSpeed;
         }
@@ -158,7 +179,7 @@ public class PlayerController : MonoBehaviour
 
     private void Look()
     {
-        if (_isDashing || _isDamaged ||_isDead)
+        if (_isDashing || _isDamaged ||_isDead || _isInEnvironment)
         {
             return;
         }
@@ -170,9 +191,9 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        if (_isDamaged)
+        if (_isDamaged || _isInEnvironment)
         {
-            Vector3 knockbackTrueDirection = new Vector3(knockbackDirection.x, 0, knockbackDirection.y);
+            Vector3 knockbackTrueDirection = new Vector3(knockbackDirection.x, 0, knockbackDirection.z);
             Vector3 knockback = transform.position + knockbackTrueDirection * _currentSpeed * Time.deltaTime;
             _rigidBody.MovePosition(knockback);
             return;
@@ -192,6 +213,16 @@ public class PlayerController : MonoBehaviour
         _rigidBody.MovePosition(transform.position+_input.ToIso()*_input.normalized.magnitude*_currentSpeed*Time.deltaTime);
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (wallLayer == (wallLayer | (1 << other.gameObject.layer)) || environmentLayer == (environmentLayer | (1 << other.gameObject.layer)))
+        {
+            if (_canBeInEnvironment)
+            {
+                StartCoroutine(InEnvironmentRoutine());
+            }
+        }
+    }
     private void GatherInput()
     {
         Vector2 input = _playerInputActions.Player.Move.ReadValue<Vector2>();
