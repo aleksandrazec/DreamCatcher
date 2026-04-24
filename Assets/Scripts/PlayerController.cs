@@ -219,6 +219,7 @@ public class PlayerController : MonoBehaviour
         {
             if (_canBeInEnvironment)
             {
+                Debug.Log(other.name);
                 StartCoroutine(InEnvironmentRoutine());
             }
         }

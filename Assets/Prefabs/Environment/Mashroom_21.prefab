@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6513095829676357013
+--- !u!1 &9039228521630971486
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8095009150737234034}
-  - component: {fileID: 3480031448050992872}
-  - component: {fileID: 3829606425877457215}
-  - component: {fileID: 9163795751586233700}
-  - component: {fileID: 2330085313883267682}
+  - component: {fileID: 4720864969872937529}
+  - component: {fileID: 8830990602363303011}
+  - component: {fileID: 5980062129705549806}
+  - component: {fileID: 3034466912151400664}
+  - component: {fileID: 8369781878983578403}
   m_Layer: 11
-  m_Name: Log_02
+  m_Name: Mashroom_21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8095009150737234034
+--- !u!4 &4720864969872937529
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6513095829676357013}
+  m_GameObject: {fileID: 9039228521630971486}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.45357114, z: -0, w: 0.89122015}
-  m_LocalPosition: {x: 3.7504754, y: 0, z: 3.1725032}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
-  m_ConstrainProportionsScale: 1
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.27, y: 0, z: 3.35}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -53.946, z: 0}
---- !u!33 &3480031448050992872
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &8830990602363303011
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6513095829676357013}
-  m_Mesh: {fileID: 5624461610123939759, guid: 346bbb8c854c8a840b0be8b71b95370e, type: 3}
---- !u!23 &3829606425877457215
+  m_GameObject: {fileID: 9039228521630971486}
+  m_Mesh: {fileID: 2157366018516795349, guid: 155b2092185c9f044b644a760d5330ba, type: 3}
+--- !u!23 &5980062129705549806
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6513095829676357013}
+  m_GameObject: {fileID: 9039228521630971486}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -68,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5ec79d33c25e7304aa4e8cc98bcefa36, type: 2}
+  - {fileID: 2100000, guid: 772d9d9117eab56479d2738f542c054c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -92,13 +92,13 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &9163795751586233700
+--- !u!64 &3034466912151400664
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6513095829676357013}
+  m_GameObject: {fileID: 9039228521630971486}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -113,14 +113,14 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 5624461610123939759, guid: 346bbb8c854c8a840b0be8b71b95370e, type: 3}
---- !u!114 &2330085313883267682
+  m_Mesh: {fileID: 2157366018516795349, guid: 155b2092185c9f044b644a760d5330ba, type: 3}
+--- !u!114 &8369781878983578403
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6513095829676357013}
+  m_GameObject: {fileID: 9039228521630971486}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 35e95dc5ff2b64380880dd7ac5922847, type: 3}
