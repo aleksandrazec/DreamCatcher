@@ -39,16 +39,24 @@ public class PlayerController : MonoBehaviour
     [Header("Components")]
     [SerializeField] private Rigidbody _rigidBody;
     [SerializeField] private Animator _anim;
+    [SerializeField] private bool inDreamWorld;
     public LayerMask environmentLayer;
     public LayerMask wallLayer;
     private void Awake()
     {
         _playerInputActions = new InputSystem_Actions();
-        _canDash = true;
+        _canBeDamaged = true;
+        if (inDreamWorld)
+        {
+            _canDash = true;
+        }
+        else
+        {
+            _canDash = false;
+        }
         maxSpeed = walkingSpeed;
         knockbackDirection = Vector3.zero;
         _isDead = false;
-        _canBeDamaged = true;
         _canBeInEnvironment = true;
     }
     private void OnEnable()

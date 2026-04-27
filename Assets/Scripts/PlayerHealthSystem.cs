@@ -3,15 +3,18 @@ using UnityEngine;
 
 public class PlayerHealthSystem : MonoBehaviour
 {
-    [SerializeField] private float health;
+    [SerializeField] private float maxHealth;
     [SerializeField] private PlayerController controller;
     [SerializeField] private float damageCooldown=0f;
-    
-    
+    [SerializeField] private HealthBar healthBar;
+
+    private float health;
     private bool canBeDamaged;
     public bool isDead;
     private void Awake()
     {
+        health = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
         canBeDamaged = true;
         isDead = false;
     }
@@ -20,6 +23,7 @@ public class PlayerHealthSystem : MonoBehaviour
         if (canBeDamaged)
         {
             health -= damage;
+            healthBar.SetHealth(health);
             Debug.Log("Player health: "+health);
             if (health <= 0)
             {
