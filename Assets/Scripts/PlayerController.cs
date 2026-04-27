@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool inDreamWorld;
     public LayerMask environmentLayer;
     public LayerMask wallLayer;
+
     private void Awake()
     {
         _playerInputActions = new InputSystem_Actions();
@@ -227,9 +228,9 @@ public class PlayerController : MonoBehaviour
         {
             if (_canBeInEnvironment)
             {
-                Debug.Log(other.name);
                 StartCoroutine(InEnvironmentRoutine());
             }
+            return;
         }
     }
     private void GatherInput()
