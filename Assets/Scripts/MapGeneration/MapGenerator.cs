@@ -9,6 +9,9 @@ using Random = UnityEngine.Random;
 public class MapGenerator : MonoBehaviour
 {
     private int[,] floorPlan;
+    
+    public int[,] getFloorPlan => floorPlan;
+
     private int numOfRows;
     private int numOfColumns;
 
@@ -26,6 +29,8 @@ public class MapGenerator : MonoBehaviour
     private Queue<(int, int)> cellQueue;
     private List<Cell> spawnedCells;
     private List<GameObject> spawnedEmpties;
+
+    public List<Cell> getSpawnedCells => spawnedCells;
 
     [SerializeField] private Canvas canvas;
 
@@ -49,6 +54,8 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private Sprite lShape0;
     [SerializeField] private Sprite lShape1;
     [SerializeField] private Sprite lShape2;
+
+    public static MapGenerator instance;
 
     private InputSystem_Actions _inputActions;
 
@@ -102,6 +109,8 @@ public class MapGenerator : MonoBehaviour
     }
     void Start()
     {
+        instance = this;
+
         numOfRows = 10;
         numOfColumns = 10;
         minRooms = 10;
@@ -175,7 +184,7 @@ public class MapGenerator : MonoBehaviour
             return;
         }
         UpdateSpecialRoomVisuals();
-
+        RoomManager.instance.SetupRooms(spawnedCells);
     }
     void CleanEndRoomsList()
     {
@@ -189,14 +198,17 @@ public class MapGenerator : MonoBehaviour
             if ((cell.rowIndex, cell.columnIndex) == itemRoomIndex)
             {
                 cell.SetRoomSprite(item);
+                cell.roomType = RoomType.Item;
             }
             if ((cell.rowIndex, cell.columnIndex) == shopRoomIndex)
             {
                 cell.SetRoomSprite(shop);
+                cell.roomType = RoomType.Shop;
             }
             if ((cell.rowIndex, cell.columnIndex) == bossRoomIndex)
             {
                 cell.SetRoomSprite(boss);
+                cell.roomType = RoomType.Boss;
             }
         }
     }
@@ -313,9 +325,11 @@ public class MapGenerator : MonoBehaviour
                     break;
                 }
             }
+            newCell.cellList= temp;
             switch (temp.Count)
             {
                 case 4:
+                    newCell.roomShape = RoomShape.TwoByTwo;
                     switch (temp.IndexOf((rowIndex, columnIndex)))
                     {
                         case 0:
@@ -335,12 +349,10 @@ public class MapGenerator : MonoBehaviour
                     }
                     break;
                 case 3:
-                    Debug.Log(temp[0]);
-                    Debug.Log(temp[1]);
-                    Debug.Log(temp[2]);
+                    newCell.roomShape = RoomShape.LShape;
                     if (temp[1] == (temp[0].Item1 + 1, temp[0].Item2) && temp[2] == (temp[0].Item1 + 1, temp[0].Item2 + 1))
                     {
-                        Debug.Log("case "+0);
+                        newCell.lShapeType = Cell.LShapeType.case0;
                         switch (temp.IndexOf((rowIndex, columnIndex)))
                         {
                             case 0:
@@ -357,7 +369,7 @@ public class MapGenerator : MonoBehaviour
                         }
                     }else if (temp[1] == (temp[0].Item1, temp[0].Item2+1) && temp[2] == (temp[0].Item1 + 1, temp[0].Item2))
                     {
-                        Debug.Log("case " + 1);
+                        newCell.lShapeType = Cell.LShapeType.case1;
                         switch (temp.IndexOf((rowIndex, columnIndex)))
                         {
                             case 0:
@@ -375,7 +387,7 @@ public class MapGenerator : MonoBehaviour
                         newCell.RotateSprite(-90);
                     }else if (temp[1] == (temp[0].Item1, temp[0].Item2 + 1) && temp[2] == (temp[0].Item1 + 1, temp[0].Item2+1))
                     {
-                        Debug.Log("case " + 2);
+                        newCell.lShapeType = Cell.LShapeType.case2;
                         switch (temp.IndexOf((rowIndex, columnIndex)))
                         {
                             case 0:
@@ -393,7 +405,7 @@ public class MapGenerator : MonoBehaviour
                         newCell.RotateSprite(-180);
                     }else
                     {
-                        Debug.Log("case " + 3);
+                        newCell.lShapeType = Cell.LShapeType.case3;
                         switch (temp.IndexOf((rowIndex, columnIndex)))
                         {
                             case 0:
@@ -415,6 +427,7 @@ public class MapGenerator : MonoBehaviour
                 case 2:
                     if (temp[0].Item1 + 1 == temp[1].Item1 || temp[0].Item1 - 1 == temp[1].Item1)
                     {
+                        newCell.roomShape = RoomShape.TwoByOne;
                         switch (temp.IndexOf((rowIndex, columnIndex)))
                         {
                             case 0:
@@ -429,6 +442,7 @@ public class MapGenerator : MonoBehaviour
                     }
                     else
                     {
+                        newCell.roomShape = RoomShape.OneByTwo;
                         switch (temp.IndexOf((rowIndex, columnIndex)))
                         {
                             case 0:

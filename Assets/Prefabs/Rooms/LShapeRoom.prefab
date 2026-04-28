@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 8990537749190250766}
   - component: {fileID: 4782758262125837451}
   m_Layer: 14
-  m_Name: DoorDR
+  m_Name: DoorR2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -805,7 +805,7 @@ GameObject:
   - component: {fileID: 4479087174474811558}
   - component: {fileID: 2589535989173778271}
   m_Layer: 14
-  m_Name: DoorUR
+  m_Name: DoorU2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -919,7 +919,7 @@ GameObject:
   - component: {fileID: 3735858290297020402}
   - component: {fileID: 5256328607051032087}
   m_Layer: 14
-  m_Name: DoorDL
+  m_Name: DoorD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1146,7 +1146,7 @@ GameObject:
   - component: {fileID: 3979008992439309821}
   - component: {fileID: 3240115125808227018}
   m_Layer: 14
-  m_Name: DoorUR
+  m_Name: DoorU0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1724,7 +1724,7 @@ Transform:
   m_GameObject: {fileID: 4992452049706037246}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 22.46858, y: 0.00002, z: -85.90344}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1759,7 +1759,7 @@ Transform:
   m_GameObject: {fileID: 5022480669230005181}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 46.201477, y: -0.00002, z: 63.976463}
+  m_LocalPosition: {x: 68, y: 0, z: -21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2135,7 +2135,7 @@ Transform:
   m_GameObject: {fileID: 6062746337385513919}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 246.53142, y: -0.00002, z: 63.976463}
+  m_LocalPosition: {x: 268, y: 0, z: -21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2389,7 +2389,7 @@ GameObject:
   - component: {fileID: 4123184700329160178}
   - component: {fileID: 7333982609013848041}
   m_Layer: 14
-  m_Name: DoorDL
+  m_Name: DoorD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2628,7 +2628,7 @@ Transform:
   m_GameObject: {fileID: 6832172539234540225}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 46.201477, y: -0.00002, z: -136.09656}
+  m_LocalPosition: {x: 68, y: 0, z: -222}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2769,7 +2769,7 @@ GameObject:
   - component: {fileID: 4045030941725913255}
   - component: {fileID: 5055439610425703579}
   m_Layer: 14
-  m_Name: DoorDR
+  m_Name: DoorR0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3335,7 +3335,7 @@ GameObject:
   - component: {fileID: 5537171979459575718}
   - component: {fileID: 6732292718899979676}
   m_Layer: 14
-  m_Name: DoorUL
+  m_Name: DoorL1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3675,7 +3675,7 @@ GameObject:
   - component: {fileID: 2593725847508243272}
   - component: {fileID: 5006802587292039296}
   m_Layer: 14
-  m_Name: DoorUL
+  m_Name: DoorL0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5885,15 +5885,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8770541010853949265, guid: 4dfd36612b1c14c4ea5d79fe8e21e7ce, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -22.46858
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8770541010853949265, guid: 4dfd36612b1c14c4ea5d79fe8e21e7ce, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.00002
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8770541010853949265, guid: 4dfd36612b1c14c4ea5d79fe8e21e7ce, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 85.90344
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8770541010853949265, guid: 4dfd36612b1c14c4ea5d79fe8e21e7ce, type: 3}
       propertyPath: m_LocalRotation.w

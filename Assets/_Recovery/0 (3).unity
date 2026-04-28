@@ -585,7 +585,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoomManager
   offsetX: 200
   offsetZ: 200
-  roomPrefab: {fileID: 7695429006750813529, guid: 6bb984ca69857534b97426f3c7af4771, type: 3}
+  roomPrefab: {fileID: 0}
   doorPrefab: {fileID: 0}
   rooms:
   - {fileID: 11400000, guid: 00f3f4f7f1a0b51439da955e97454162, type: 2}

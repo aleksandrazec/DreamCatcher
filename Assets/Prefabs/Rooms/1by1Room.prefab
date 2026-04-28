@@ -138,7 +138,7 @@ Transform:
   m_GameObject: {fileID: 884934757874341660}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.60929, y: -0.00002, z: 79.02824}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -272,7 +272,7 @@ GameObject:
   - component: {fileID: 2409980603312275572}
   - component: {fileID: 9001180270883148311}
   m_Layer: 14
-  m_Name: DoorUL
+  m_Name: DoorU
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -499,7 +499,7 @@ GameObject:
   - component: {fileID: 5327719704401625986}
   - component: {fileID: 1929605705445513664}
   m_Layer: 14
-  m_Name: DoorUR
+  m_Name: DoorR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -726,7 +726,7 @@ GameObject:
   - component: {fileID: 3316453186642662540}
   - component: {fileID: 3223256953632839692}
   m_Layer: 14
-  m_Name: DoorDL
+  m_Name: DoorL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1066,7 +1066,7 @@ GameObject:
   - component: {fileID: 2631276286752150403}
   - component: {fileID: 1199346016686689496}
   m_Layer: 14
-  m_Name: DoorDR
+  m_Name: DoorD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1644,7 +1644,7 @@ Transform:
   m_GameObject: {fileID: 6343816012789637157}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 75.27935, y: 0.00002, z: -100.955215}
+  m_LocalPosition: {x: 68, y: 0, z: -21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2670,15 +2670,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8770541010853949265, guid: 4dfd36612b1c14c4ea5d79fe8e21e7ce, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.60929
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8770541010853949265, guid: 4dfd36612b1c14c4ea5d79fe8e21e7ce, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00002
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8770541010853949265, guid: 4dfd36612b1c14c4ea5d79fe8e21e7ce, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -79.02824
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8770541010853949265, guid: 4dfd36612b1c14c4ea5d79fe8e21e7ce, type: 3}
       propertyPath: m_LocalRotation.w
