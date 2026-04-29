@@ -16,6 +16,7 @@ public class Room : MonoBehaviour
     public RoomType roomType;
     public RoomShape roomShape;
     public Door[] doors;
+    public List<Door> activeDoors;
     public void SetRoom(GameObject room, List<(int,int)> indexes,RoomType roomType, RoomShape roomShape)
     {
         this.room = room;
@@ -24,82 +25,12 @@ public class Room : MonoBehaviour
         this.roomType= roomType;
         this.roomShape = roomShape;
         doors=GetComponentsInChildren<Door>();
+        activeDoors=new List<Door> ();
         SetUpDoors();
     }
     public void SetUpDoors()
     {
         var floorPlan = MapGenerator.instance.getFloorPlan;
-        switch (roomShape)
-        {
-            case RoomShape.OneByOne:
-                SetUpOneByOne(floorPlan);
-                break;
-            case RoomShape.TwoByOne:
-                SetUpTwoByOne(floorPlan);
-                break;
-            case RoomShape.OneByTwo:
-                SetUpOneByTwo(floorPlan);
-                break;
-            case RoomShape.TwoByTwo:
-                SetUpTwoByTwo(floorPlan);
-                break;
-            case RoomShape.LShape:
-                SetUpLShape(floorPlan);
-                break;
-            default:
-                break;
-        }
-    }
-    public void SetUpOneByOne(int[,] floorPlan)
-    {
-        foreach (EdgeDirection d in Enum.GetValues(typeof(EdgeDirection)))
-        {
-            (int, int) neighborIndex = (indexes[0].Item1 + GetOffset(d).Item1, indexes[0].Item2 + GetOffset(d).Item2);
-            if (neighborIndex.Item1 < 0 || neighborIndex.Item2 < 0 || neighborIndex.Item1 >= floorPlan.GetLength(0) || neighborIndex.Item2 >= floorPlan.GetLength(1))
-            {
-                continue;
-            }
-            if (floorPlan[neighborIndex.Item1, neighborIndex.Item2] != 1)
-            {
-                continue;
-            } 
-            foreach(Door door in doors)
-            {
-                if (door.direction == d)
-                {
-                    door.MakeDoorActive();
-                    break;
-                }
-            }
-        }
-    }
-    private void SetUpTwoByOne(int[,] floorPlan)
-    {
-        for (int i = 0; i < indexes.Count; i++) {
-            foreach (EdgeDirection d in Enum.GetValues(typeof(EdgeDirection)))
-            {
-                (int, int) neighborIndex = (indexes[i].Item1 + GetOffset(d).Item1, indexes[i].Item2 + GetOffset(d).Item2);
-                if (neighborIndex.Item1 < 0 || neighborIndex.Item2 < 0 || neighborIndex.Item1 >= floorPlan.GetLength(0) || neighborIndex.Item2 >= floorPlan.GetLength(1))
-                {
-                    continue;
-                }
-                if (floorPlan[neighborIndex.Item1, neighborIndex.Item2] != 1 || indexes.Contains(neighborIndex))
-                {
-                    continue;
-                }
-                foreach (Door door in doors)
-                {
-                    if (door.direction == d && door.subRoomIndex==i)
-                    {
-                        door.MakeDoorActive();
-                        break;
-                    }
-                }
-            }
-        }
-    }
-    private void SetUpOneByTwo(int[,] floorPlan)
-    {
         for (int i = 0; i < indexes.Count; i++)
         {
             foreach (EdgeDirection d in Enum.GetValues(typeof(EdgeDirection)))
@@ -118,64 +49,14 @@ public class Room : MonoBehaviour
                     if (door.direction == d && door.subRoomIndex == i)
                     {
                         door.MakeDoorActive();
+                        activeDoors.Add(door);
                         break;
                     }
                 }
             }
         }
     }
-    private void SetUpTwoByTwo(int[,] floorPlan)
-    {
-        for (int i = 0; i < indexes.Count; i++)
-        {
-            foreach (EdgeDirection d in Enum.GetValues(typeof(EdgeDirection)))
-            {
-                (int, int) neighborIndex = (indexes[i].Item1 + GetOffset(d).Item1, indexes[i].Item2 + GetOffset(d).Item2);
-                if (neighborIndex.Item1 < 0 || neighborIndex.Item2 < 0 || neighborIndex.Item1 >= floorPlan.GetLength(0) || neighborIndex.Item2 >= floorPlan.GetLength(1))
-                {
-                    continue;
-                }
-                if (floorPlan[neighborIndex.Item1, neighborIndex.Item2] != 1 || indexes.Contains(neighborIndex))
-                {
-                    continue;
-                }
-                foreach (Door door in doors)
-                {
-                    if (door.direction == d && door.subRoomIndex == i)
-                    {
-                        door.MakeDoorActive();
-                        break;
-                    }
-                }
-            }
-        }
-    }
-    private void SetUpLShape(int[,] floorPlan)
-    {
-        for (int i = 0; i < indexes.Count; i++)
-        {
-            foreach (EdgeDirection d in Enum.GetValues(typeof(EdgeDirection)))
-            {
-                (int, int) neighborIndex = (indexes[i].Item1 + GetOffset(d).Item1, indexes[i].Item2 + GetOffset(d).Item2);
-                if (neighborIndex.Item1 < 0 || neighborIndex.Item2 < 0 || neighborIndex.Item1 >= floorPlan.GetLength(0) || neighborIndex.Item2 >= floorPlan.GetLength(1))
-                {
-                    continue;
-                }
-                if (floorPlan[neighborIndex.Item1, neighborIndex.Item2] != 1 || indexes.Contains(neighborIndex))
-                {
-                    continue;
-                }
-                foreach (Door door in doors)
-                {
-                    if (door.direction == d && door.subRoomIndex == i)
-                    {
-                        door.MakeDoorActive();
-                        break;
-                    }
-                }
-            }
-        }
-    }
+  
 
 
 

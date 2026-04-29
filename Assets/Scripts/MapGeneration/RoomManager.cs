@@ -6,15 +6,17 @@ using UnityEngine;
 public class RoomManager : MonoBehaviour
 {
     private List<Room> createdRooms;
+    public List<Room> getCreatedRooms => createdRooms;
     //private List<GameObject> createdRooms;
     [Header("Offset Variables")]
     public float offsetX;
     public float offsetZ;
     [Header("Prefab References")]
     public Room roomPrefab;
-    public Door doorPrefab;
+    //public Door doorPrefab;
     [Header("Scriptable Object References")]
     public RoomScriptable[] rooms;
+
 
     public static RoomManager instance;
     private List<(int,int)> bigRoomCells=new List<(int,int)> ();

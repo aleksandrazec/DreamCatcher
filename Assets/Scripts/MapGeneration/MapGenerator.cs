@@ -57,7 +57,7 @@ public class MapGenerator : MonoBehaviour
 
     public static MapGenerator instance;
 
-    private InputSystem_Actions _inputActions;
+    //private InputSystem_Actions _inputActions;
 
     private static readonly List<(int, int)[]> roomShapes = new() {
         new (int, int)[] { (0,-1) },
@@ -90,20 +90,20 @@ public class MapGenerator : MonoBehaviour
 
     private void Awake()
     {
-        _inputActions = new InputSystem_Actions();
+        //GenerateMap();
     }
-    private void OnEnable()
-    {
-        _inputActions.UI.Enable();
-        _inputActions.UI.GenerateMap.started += GenerateMap;
-    }
-    private void OnDisable()
-    {
-        _inputActions.UI.Disable();
-        _inputActions.UI.GenerateMap.started -= GenerateMap;
+    //private void OnEnable()
+    //{
+    //    _inputActions.UI.Enable();
+    //    _inputActions.UI.GenerateMap.started += GenerateMap;
+    //}
+    //private void OnDisable()
+    //{
+    //    _inputActions.UI.Disable();
+    //    _inputActions.UI.GenerateMap.started -= GenerateMap;
 
-    }
-    private void GenerateMap(InputAction.CallbackContext obj)
+    //}
+    public void GenerateMap()
     {
         SetupDungeon();
     }

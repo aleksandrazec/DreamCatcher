@@ -6,6 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 90f0a139fe0ac0e4c90cf44161ff275c
+  - enabled: 1
+    path: Assets/Scenes/MapGeneration.unity
+    guid: af239a7099a9f1b4ab726345cf9a6f1e
+  - enabled: 1
+    path: Assets/Scenes/IRLRoom.unity
+    guid: b7c109b16641e1349bc871eb2ca9c679
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
