@@ -40,7 +40,16 @@ public class RoomManager : MonoBehaviour
             {
                 continue;
             }
-            var foundRoom = rooms.FirstOrDefault(x => x.roomShape == currentCell.roomShape);
+            RoomScriptable foundRoom;
+            if (currentCell.lShapeType == Cell.LShapeType.notLShape)
+            {
+                foundRoom = rooms.FirstOrDefault(x => x.roomShape == currentCell.roomShape);
+            }
+            else
+            {
+                foundRoom = rooms.FirstOrDefault(x => x.roomShape == currentCell.roomShape && x.lShapeType==currentCell.lShapeType);
+            }
+
             //var currentPosition = currentCell.transform.position;
             if (currentCell.roomShape != RoomShape.OneByOne)
             {
@@ -92,9 +101,13 @@ public class RoomManager : MonoBehaviour
     }
     private Vector3 CalculateRotation(Cell currentCell)
     {
-        if (currentCell.roomShape == RoomShape.OneByTwo)
+        if (currentCell.roomShape == RoomShape.OneByTwo || currentCell.roomShape == RoomShape.TwoByTwo)
         {
             return new Vector3(0, 90, 0);
+        }
+        if (currentCell.roomShape == RoomShape.TwoByOne)
+        {
+            return new Vector3(0, 180, 0);
         }
         if (currentCell.roomShape == RoomShape.LShape)
         {

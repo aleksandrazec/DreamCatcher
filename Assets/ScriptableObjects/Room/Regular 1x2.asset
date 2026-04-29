@@ -16,4 +16,4 @@ MonoBehaviour:
   roomShape: 1
   occupiedTilesRow: 0000000000000000
   occupiedTilesColumn: 0000000001000000
-  room: {fileID: 1968128383722261304, guid: c1b9c2f042ea3ac4fbfdbd844b55ae19, type: 3}
+  room: {fileID: 1968128383722261304, guid: fe20566f19952ab4d967f8b82c056481, type: 3}
