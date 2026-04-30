@@ -13,7 +13,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private NavMeshAgent agent;
     public Transform playerTransform;
     [SerializeField] public PlayerHealthSystem playerHealthSystem;
-
+    [SerializeField] public PlayerMoneySystem playerMoneySystem;
 
     [SerializeField] private float patrolRadius = 10f;
     private Vector3 currentPatrolPoint;
@@ -42,7 +42,10 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private Material blackSkin;
     [SerializeField] private Rigidbody rigidBody;
     [SerializeField] public EnemyType enemyType;
+    [SerializeField] public Enemy enemy;
+    [SerializeField] public Coin coinPrefab;
 
+    public Room room;
     public enum EnemyType
     {
         ghost,
@@ -56,6 +59,13 @@ public class EnemyAI : MonoBehaviour
         {EnemyType.bat, 0.5f},
         {EnemyType.worm, 4f },
         {EnemyType.dress, 3f }
+    };
+    Dictionary<EnemyType, int> Money = new Dictionary<EnemyType, int>
+    {
+        {EnemyType.ghost, 10 },
+        {EnemyType.bat, 5},
+        {EnemyType.worm, 20 },
+        {EnemyType.dress, 15 }
     };
     private void Update()
     {
@@ -111,7 +121,10 @@ public class EnemyAI : MonoBehaviour
         demonSkin.material.color=newColor;
         if (currentAlpha==0)
         {
-            Destroy(gameObject);
+            Coin coin = Instantiate(coinPrefab, this.transform.position, Quaternion.identity);
+            coin.SetAmount(Money[enemyType],playerMoneySystem);
+            room.spawnedEnemies.Remove(enemy);
+            Destroy(enemy.gameObject);
         }
     }
     private void Knockback()

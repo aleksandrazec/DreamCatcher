@@ -60,6 +60,10 @@ public class Cell : MonoBehaviour
     {
         image.sprite = icon;
     }
+    public void SetSpriteRotation(float angle)
+    {
+        image.transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
     public void RotateSprite(float angle)
     {
         rectTransform.Rotate(new Vector3(0, 0, angle));

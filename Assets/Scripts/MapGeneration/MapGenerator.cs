@@ -198,16 +198,19 @@ public class MapGenerator : MonoBehaviour
             if ((cell.rowIndex, cell.columnIndex) == itemRoomIndex)
             {
                 cell.SetRoomSprite(item);
+                cell.RotateSprite(180);
                 cell.roomType = RoomType.Item;
             }
             if ((cell.rowIndex, cell.columnIndex) == shopRoomIndex)
             {
                 cell.SetRoomSprite(shop);
+                cell.RotateSprite(180);
                 cell.roomType = RoomType.Shop;
             }
             if ((cell.rowIndex, cell.columnIndex) == bossRoomIndex)
             {
                 cell.SetRoomSprite(boss);
+                cell.RotateSprite(180);
                 cell.roomType = RoomType.Boss;
             }
         }

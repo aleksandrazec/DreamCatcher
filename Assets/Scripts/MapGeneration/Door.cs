@@ -9,10 +9,16 @@ public class Door : MonoBehaviour
     public EdgeDirection direction;
     public bool active = false;
     public bool open = false;
+    public Room room;
+    public GameObject path;
     public void MakeDoorActive()
     {
         meshRenderer.enabled = true;
         active = true;
+        if (path != null)
+        {
+            path.SetActive(true);
+        }
     }
     public void OpenDoor()
     {

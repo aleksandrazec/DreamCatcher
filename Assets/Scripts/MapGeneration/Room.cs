@@ -4,6 +4,7 @@ using System.Linq;
 using NUnit.Framework;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using static EnemyAI;
 
@@ -28,26 +29,35 @@ public class Room : MonoBehaviour
     System.Random random = new System.Random();
     [SerializeField] private LayerMask groundMask;
     public List<Enemy> spawnedEnemies;
+    public GameController gameController;
     Dictionary<RoomShape, int> roomEnemyRatio = new Dictionary<RoomShape, int>
     {
-        {RoomShape.OneByOne, 6},
-        {RoomShape.OneByTwo, 12 },
-        {RoomShape.TwoByOne, 12 },
-        {RoomShape.LShape, 18},
-        {RoomShape.TwoByTwo, 24}
+        {RoomShape.OneByOne, 1},
+        {RoomShape.OneByTwo, 6 },
+        {RoomShape.TwoByOne, 6 },
+        {RoomShape.LShape, 8},
+        {RoomShape.TwoByTwo, 12}
     };
-    
-    public void SetRoom(GameObject room, List<(int,int)> indexes,RoomType roomType, RoomShape roomShape)
+    Dictionary<RoomShape, int> walkRadius = new Dictionary<RoomShape, int>
+    {
+        {RoomShape.OneByOne, 50},
+        {RoomShape.OneByTwo, 100 },
+        {RoomShape.TwoByOne, 100 },
+        {RoomShape.LShape, 100},
+        {RoomShape.TwoByTwo, 100}
+    };
+
+    public void SetRoom(GameObject room, List<(int,int)> indexes,RoomType roomType, RoomShape roomShape, GameController gameController)
     {
         this.room = room;
         Instantiate(room, this.transform);
         this.indexes = indexes;
         this.roomType= roomType;
         this.roomShape = roomShape;
-        Debug.Log(roomShape);
         doors=GetComponentsInChildren<Door>();
         activeDoors=new List<Door> ();
         enemyTypesArray = Enum.GetValues(typeof(EnemyType));
+        this.gameController = gameController;
         SetUpDoors();
         SetUpEnemies();
     }
@@ -71,6 +81,7 @@ public class Room : MonoBehaviour
                 {
                     if (door.direction == d && door.subRoomIndex == i)
                     {
+                        door.room = this;
                         door.MakeDoorActive();
                         activeDoors.Add(door);
                         break;
@@ -93,7 +104,8 @@ public class Room : MonoBehaviour
                         enemy = Instantiate(ghostPrefab, this.transform);
                         break;
                     case EnemyType.worm:
-                        enemy = Instantiate(wormPrefab, this.transform);
+                        //worm breaks the thing for some reason
+                        enemy = Instantiate(ghostPrefab, this.transform);
                         break;
                     case EnemyType.dress:
                         enemy = Instantiate(dressPrefab, this.transform);
@@ -105,31 +117,48 @@ public class Room : MonoBehaviour
                         enemy = Instantiate(ghostPrefab, this.transform);
                         break;
                 }
-                enemy.enemyAI.transform.position = FindSpawnPoint();                
+                enemy.transform.position = FindSpawnPoint();
+                enemy.enemyAI.room = this;
                 spawnedEnemies.Add(enemy);
             }
         }
     }
-    public void SetUpParamsForEnemies(Camera cam, GameObject playerObj, PlayerHealthSystem playerHealthSystem)
+    public void SetUpParamsForEnemies(Camera cam, GameObject playerObj, PlayerHealthSystem playerHealthSystem, PlayerMoneySystem playerMoneySystem)
     {
         foreach(Enemy enemy in spawnedEnemies)
         {
             enemy.enemyAI.playerTransform=playerObj.transform;
             enemy.enemyAI.playerHealthSystem = playerHealthSystem;
+            enemy.enemyAI.playerMoneySystem = playerMoneySystem;
             enemy.enemyUI.cam = cam.transform;
         }
     }
-  
+    public void OpenDoors()
+    {
+        foreach(Door door in activeDoors)
+        {
+            door.OpenDoor();
+        }
+    }
     public Vector3 FindSpawnPoint()
     {
-        float randomX = UnityEngine.Random.Range(-20, 20);
-        float randomZ = UnityEngine.Random.Range(-20, 20);
-        return new Vector3(transform.position.x+ randomX, transform.position.y, transform.position.z+randomZ); 
+        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * walkRadius[roomShape];
+        randomDirection = new Vector3(transform.position.x+randomDirection.x,transform.position.y, transform.position.z+randomDirection.z);
+        NavMeshHit hit;
+        NavMesh.SamplePosition(randomDirection, out hit, walkRadius[roomShape], 1);
+        return new Vector3(hit.position.x, 0, hit.position.z);
     }
 
+    public void RemoveAllEnemies()
+    {
+        for(int i = 0; i < spawnedEnemies.Count; i++)
+        {
+            Destroy(spawnedEnemies[i].gameObject);
+        }
+        spawnedEnemies.Clear();
+    }
 
-
-    private (int, int) GetOffset(EdgeDirection direction)
+    public (int, int) GetOffset(EdgeDirection direction)
     {
         switch (direction)
         {

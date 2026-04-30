@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool inDreamWorld;
     public LayerMask environmentLayer;
     public LayerMask wallLayer;
+    public LayerMask changingRoomLayer;
 
     private void Awake()
     {
@@ -221,7 +222,6 @@ public class PlayerController : MonoBehaviour
 
         _rigidBody.MovePosition(transform.position+_input.ToIso()*_input.normalized.magnitude*_currentSpeed*Time.deltaTime);
     }
-
     private void OnTriggerStay(Collider other)
     {
         if (wallLayer == (wallLayer | (1 << other.gameObject.layer)) || environmentLayer == (environmentLayer | (1 << other.gameObject.layer)))

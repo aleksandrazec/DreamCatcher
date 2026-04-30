@@ -65,6 +65,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4871806196501319412, guid: 6e45265e9c46eaf44b973e5a74540573, type: 3}
+      propertyPath: maxHealth
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 7188741294783706139, guid: 6e45265e9c46eaf44b973e5a74540573, type: 3}
       propertyPath: m_Name
       value: Bat
@@ -109,6 +113,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7814387519841803992, guid: 6e45265e9c46eaf44b973e5a74540573, type: 3}
+      propertyPath: enemy
+      value: 
+      objectReference: {fileID: 6127834006066357109}
+    - target: {fileID: 7814387519841803992, guid: 6e45265e9c46eaf44b973e5a74540573, type: 3}
+      propertyPath: coinPrefab
+      value: 
+      objectReference: {fileID: 2447147067985895349, guid: 6421f41dd88c71542a0eaa7677e9f59e, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

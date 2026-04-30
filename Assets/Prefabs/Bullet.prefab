@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBullet
   life: 2
-  shootDamage: 10
+  shootDamage: 5
   targetLayers:
     serializedVersion: 2
     m_Bits: 64

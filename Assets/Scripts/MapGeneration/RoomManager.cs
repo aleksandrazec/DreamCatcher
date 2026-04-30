@@ -17,14 +17,15 @@ public class RoomManager : MonoBehaviour
     [Header("Scriptable Object References")]
     public RoomScriptable[] rooms;
 
-
     public static RoomManager instance;
     private List<(int,int)> bigRoomCells=new List<(int,int)> ();
-
+    private GameController gameController;
     private void Awake()
     {
         instance = this;
         createdRooms = new List<Room>();
+        GameObject[] gameControllerObject= GameObject.FindGameObjectsWithTag("GameController");
+        gameController = gameControllerObject[0].GetComponent<GameController>();
         //createdRooms = new List<GameObject>();
     }
 
@@ -66,7 +67,7 @@ public class RoomManager : MonoBehaviour
             {
                 indexes.Add((currentCell.rowIndex, currentCell.columnIndex));
             }
-            spawnedRoom.SetRoom(foundRoom.room,indexes, currentCell.roomType, currentCell.roomShape);
+            spawnedRoom.SetRoom(foundRoom.room,indexes, currentCell.roomType, currentCell.roomShape, gameController);
             //var spawnedRoom = Instantiate(foundRoom.room, convertedPosition, rotation);
             //var spawnedRoom = Instantiate(roomPrefab, convertedPosition, Quaternion.identity);
             //spawnedRoom.SetupRoom(currentCell, foundRoom);

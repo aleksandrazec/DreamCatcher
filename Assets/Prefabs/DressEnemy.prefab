@@ -996,7 +996,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3173f1eabc80c434b9f698a72e75ac59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthSystem
-  maxHealth: 100
+  maxHealth: 60
   enemyAI: {fileID: 6031976958321796910}
   healthBar: {fileID: 8457384866126818938}
   isDead: 0
@@ -1043,6 +1043,7 @@ MonoBehaviour:
   agent: {fileID: 7732355462628168482}
   playerTransform: {fileID: 0}
   playerHealthSystem: {fileID: 0}
+  playerMoneySystem: {fileID: 0}
   patrolRadius: 100
   attackCooldown: 3
   visionRange: 60
@@ -1053,6 +1054,9 @@ MonoBehaviour:
   blackSkin: {fileID: 2100000, guid: d68097d5157157c4cb34aefe33708ba2, type: 2}
   rigidBody: {fileID: 36037301436863574}
   enemyType: 1
+  enemy: {fileID: 7052503593968020820}
+  coinPrefab: {fileID: 2447147067985895349, guid: 6421f41dd88c71542a0eaa7677e9f59e, type: 3}
+  room: {fileID: 0}
 --- !u!95 &8169379243375013315
 Animator:
   serializedVersion: 7
@@ -1091,7 +1095,7 @@ MonoBehaviour:
   rigidBody: {fileID: 36037301436863574}
   hitCollider: {fileID: 1822263339000812601}
   laser: {fileID: 4247948097294818969}
-  rotationTime: 0.8
+  rotationTime: 0.5
 --- !u!1 &8749269708072166095
 GameObject:
   m_ObjectHideFlags: 0

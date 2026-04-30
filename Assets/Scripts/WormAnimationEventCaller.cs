@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class WormAnimationEventCaller : MonoBehaviour
 {
@@ -16,8 +17,11 @@ public class WormAnimationEventCaller : MonoBehaviour
         if (isSliding)
         {
             Vector3 forward = new Vector3(transform.forward.x, 0, transform.forward.z);
-            Vector3 dashTo = transform.position + transform.forward * slideSpeed * Time.deltaTime;
-            rigidBody.MovePosition(dashTo);
+            Vector3 dashTo = transform.position + transform.forward;
+            NavMeshHit hit;
+            NavMesh.SamplePosition(dashTo, out hit, 20f, 1);
+            Vector3 trueDashTo=hit.position* slideSpeed * Time.deltaTime;
+            rigidBody.MovePosition(trueDashTo);
         }
     }
     private void StartSlide()

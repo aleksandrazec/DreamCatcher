@@ -109,6 +109,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4743930224053222010, guid: 0946dcb13e9d8f7449d7119990e7d1e0, type: 3}
+      propertyPath: enemy
+      value: 
+      objectReference: {fileID: 4242708299949195305}
+    - target: {fileID: 4743930224053222010, guid: 0946dcb13e9d8f7449d7119990e7d1e0, type: 3}
+      propertyPath: coinPrefab
+      value: 
+      objectReference: {fileID: 2447147067985895349, guid: 6421f41dd88c71542a0eaa7677e9f59e, type: 3}
+    - target: {fileID: 7607869241852696492, guid: 0946dcb13e9d8f7449d7119990e7d1e0, type: 3}
+      propertyPath: maxHealth
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 7821188033567361739, guid: 0946dcb13e9d8f7449d7119990e7d1e0, type: 3}
+      propertyPath: attackDamage
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
