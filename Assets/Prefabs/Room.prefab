@@ -45,3 +45,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Room
   room: {fileID: 0}
+  roomType: 0
+  roomShape: 0
+  doors: []
+  activeDoors: []
+  ghostPrefab: {fileID: 4242708299949195305, guid: c2053fd6410c01c46a0853b6a95087df, type: 3}
+  dressPrefab: {fileID: 7052503593968020820, guid: 0ef39320722bdfd44b16475aa7417afd, type: 3}
+  batPrefab: {fileID: 6127834006066357109, guid: d8d143c4901d309429d57bd4d633b8ac, type: 3}
+  wormPrefab: {fileID: 7676697326768958224, guid: 8e579e0ded63ece4c9cdfd6747a03425, type: 3}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 8
+  spawnedEnemies: []

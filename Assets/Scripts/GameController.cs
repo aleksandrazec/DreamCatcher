@@ -5,9 +5,12 @@ using UnityEngine.SceneManagement;
 public class GameController: MonoBehaviour
 {
     [SerializeField] private GameObject playerObj;
+    [SerializeField] private PlayerHealthSystem playerHealthSystem;
     [SerializeField] private Canvas mainMenu;
+    [SerializeField] private Camera cam;
+    
     public void StartNewGame()
-    {
+    {  
         StartCoroutine(LoadScene());
         StartCoroutine(WaitForRooms());
     }
@@ -26,6 +29,7 @@ public class GameController: MonoBehaviour
         var rooms = RoomManager.instance.getCreatedRooms;
         foreach (var room in rooms)
         {
+            room.SetUpParamsForEnemies(cam, playerObj, playerHealthSystem);
             if (room.indexes.Contains((4, 5)))
             {
                 playerObj.transform.position = room.transform.position;

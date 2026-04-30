@@ -12,7 +12,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private NavMeshAgent agent;
     public Transform playerTransform;
-    [SerializeField] private PlayerHealthSystem playerHealthSystem;
+    [SerializeField] public PlayerHealthSystem playerHealthSystem;
 
 
     [SerializeField] private float patrolRadius = 10f;
@@ -32,9 +32,9 @@ public class EnemyAI : MonoBehaviour
     private float currentAlpha=1.0f;
     private bool setInvisible = false;
 
-    private bool playerVisible;
-    private bool playerInRange;
-    private bool playerAlive;
+    private bool playerVisible=false;
+    private bool playerInRange=false;
+    private bool playerAlive=false;
 
     [SerializeField] private float knockbackSpeed;
     [SerializeField] private Animator animator;
@@ -74,7 +74,10 @@ public class EnemyAI : MonoBehaviour
     {
         playerVisible = Physics.CheckSphere(transform.position, visionRange, playerMask);
         playerInRange = Physics.CheckSphere(transform.position, engagementRange, playerMask);
-        playerAlive = !playerHealthSystem.isDead;
+        if (playerHealthSystem != null)
+        {
+            playerAlive = !playerHealthSystem.isDead;
+        }
     }
     private void UpdateBehaviorState()
     {   

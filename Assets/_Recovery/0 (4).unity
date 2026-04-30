@@ -825,9 +825,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameController
   playerObj: {fileID: 1403829930}
-  playerHealthSystem: {fileID: 1403829933}
   mainMenu: {fileID: 1955827730}
-  cam: {fileID: 1092440478}
+  cam: {fileID: 0}
 --- !u!1 &604658825
 GameObject:
   m_ObjectHideFlags: 0
@@ -1903,28 +1902,12 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 8304514360941025418, guid: 3b5d6e9a82c11ed45919fb7fa0616229, type: 3}
-      propertyPath: dashingTime
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8304514360941025418, guid: 3b5d6e9a82c11ed45919fb7fa0616229, type: 3}
-      propertyPath: dashingSpeed
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 8304514360941025418, guid: 3b5d6e9a82c11ed45919fb7fa0616229, type: 3}
       propertyPath: inDreamWorld
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8304514360941025418, guid: 3b5d6e9a82c11ed45919fb7fa0616229, type: 3}
-      propertyPath: walkingSpeed
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 8304514360941025418, guid: 3b5d6e9a82c11ed45919fb7fa0616229, type: 3}
-      propertyPath: knockbackSpeed
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 8304514360941025418, guid: 3b5d6e9a82c11ed45919fb7fa0616229, type: 3}
       propertyPath: outOfBoundsSpeed
-      value: 70
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 8304514360941025418, guid: 3b5d6e9a82c11ed45919fb7fa0616229, type: 3}
       propertyPath: wallLayer.m_Bits
@@ -1960,17 +1943,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2556273843148385026, guid: 3b5d6e9a82c11ed45919fb7fa0616229, type: 3}
   m_PrefabInstance: {fileID: 1403829929}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1403829933 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2254536557505819430, guid: 3b5d6e9a82c11ed45919fb7fa0616229, type: 3}
-  m_PrefabInstance: {fileID: 1403829929}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1403829930}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fccaea8491301e14499713e9fa173927, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HealthSystem
 --- !u!1 &1507723657
 GameObject:
   m_ObjectHideFlags: 0

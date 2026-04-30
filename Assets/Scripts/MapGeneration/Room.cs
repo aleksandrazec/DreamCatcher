@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static EnemyAI;
 
 public enum EdgeDirection
 {
@@ -17,6 +19,24 @@ public class Room : MonoBehaviour
     public RoomShape roomShape;
     public Door[] doors;
     public List<Door> activeDoors;
+    [Header("Enemy Prefabs")]
+    [SerializeField] private Enemy ghostPrefab;
+    [SerializeField] private Enemy dressPrefab;
+    [SerializeField] private Enemy batPrefab;
+    [SerializeField] private Enemy wormPrefab;
+    private Array enemyTypesArray;
+    System.Random random = new System.Random();
+    [SerializeField] private LayerMask groundMask;
+    public List<Enemy> spawnedEnemies;
+    Dictionary<RoomShape, int> roomEnemyRatio = new Dictionary<RoomShape, int>
+    {
+        {RoomShape.OneByOne, 6},
+        {RoomShape.OneByTwo, 12 },
+        {RoomShape.TwoByOne, 12 },
+        {RoomShape.LShape, 18},
+        {RoomShape.TwoByTwo, 24}
+    };
+    
     public void SetRoom(GameObject room, List<(int,int)> indexes,RoomType roomType, RoomShape roomShape)
     {
         this.room = room;
@@ -24,9 +44,12 @@ public class Room : MonoBehaviour
         this.indexes = indexes;
         this.roomType= roomType;
         this.roomShape = roomShape;
+        Debug.Log(roomShape);
         doors=GetComponentsInChildren<Door>();
         activeDoors=new List<Door> ();
+        enemyTypesArray = Enum.GetValues(typeof(EnemyType));
         SetUpDoors();
+        SetUpEnemies();
     }
     public void SetUpDoors()
     {
@@ -56,165 +79,56 @@ public class Room : MonoBehaviour
             }
         }
     }
-  
-
-
-
-
-
-
-
-
-    
-    //public void SetupRoom(Cell currentCell, RoomScriptable room)
-    //{
-    //    var floorplan = MapGenerator.instance.getFloorPlan;
-    //    var cellList = MapGenerator.instance.getSpawnedCells;
-
-    //    switch (currentCell.roomShape)
-    //    {
-    //        case RoomShape.OneByOne:
-    //            SetupOneByOne(currentCell, floorplan, cellList); 
-    //            break;
-    //        case RoomShape.TwoByOne:
-    //            SetupTwoByOne(currentCell, floorplan, cellList);
-    //            break;
-    //        case RoomShape.OneByTwo:
-    //            SetupOneByTwo(currentCell, floorplan, cellList); 
-    //            break;
-    //        case RoomShape.TwoByTwo:
-    //            SetupTwoByTwo(currentCell, floorplan, cellList);
-    //            break;
-    //        case RoomShape.LShape:
-    //            SetupLShape(currentCell, floorplan, cellList);
-    //            break;
-    //        default:
-    //            break;
-    //    }
-    //}
-    ////for each of these call each possible door to check if it should be active
-    //public void SetupOneByOne(Cell cell, int[,] floorPlan, List<Cell> cellList)
-    //{
-    //    var currentCell=cell.cellList[0];
-    //    TryActivateDoor(currentCell, EdgeDirection.Up, floorPlan, cellList, cell);
-    //    TryActivateDoor(currentCell, EdgeDirection.Down, floorPlan, cellList, cell);
-    //    TryActivateDoor(currentCell, EdgeDirection.Left, floorPlan, cellList, cell);
-    //    TryActivateDoor(currentCell, EdgeDirection.Right, floorPlan, cellList, cell);
-    //}
-    //public void SetupTwoByOne(Cell cell, int[,] floorPlan, List<Cell> cellList)
-    //{
-    //    var cell0 = cell.cellList[0];
-    //    var cell1 = cell.cellList[1];
-    //    TryActivateDoor(cell0, EdgeDirection.Up, floorPlan, cellList, cell);
-    //    TryActivateDoor(cell0, EdgeDirection.Left, floorPlan, cellList, cell);
-    //    TryActivateDoor(cell0, EdgeDirection.Down, floorPlan, cellList, cell);
-
-    //    TryActivateDoor(cell1, EdgeDirection.Up, floorPlan, cellList, cell);
-    //    TryActivateDoor(cell1, EdgeDirection.Down, floorPlan, cellList, cell);
-    //    TryActivateDoor(cell1, EdgeDirection.Right, floorPlan, cellList, cell);
-    //}
-    //public void SetupOneByTwo(Cell cell, int[,] floorPlan, List<Cell> cellList)
-    //{
-    //    var cell0 = cell.cellList[0];
-    //    var cell1 = cell.cellList[1];
-    //    TryActivateDoor(cell0, EdgeDirection.Up, floorPlan, cellList, cell);
-    //    TryActivateDoor(cell0, EdgeDirection.Left, floorPlan, cellList, cell);
-    //    TryActivateDoor(cell0, EdgeDirection.Right, floorPlan, cellList, cell);
-
-    //    TryActivateDoor(cell1, EdgeDirection.Down, floorPlan, cellList, cell);
-    //    TryActivateDoor(cell1, EdgeDirection.Left, floorPlan, cellList, cell);
-    //    TryActivateDoor(cell1, EdgeDirection.Right, floorPlan, cellList, cell);
-    //}
-    //public void SetupTwoByTwo(Cell cell, int[,] floorPlan, List<Cell> cellList)
-    //{
-    //    var cell0 = cell.cellList[0];
-    //    var cell1 = cell.cellList[1];
-    //    var cell2 = cell.cellList[2];
-    //    var cell3 = cell.cellList[3];
-
-    //    TryActivateDoor(cell0, EdgeDirection.Up, floorPlan, cellList, cell);
-    //    TryActivateDoor(cell1, EdgeDirection.Up, floorPlan, cellList, cell);
-
-    //    TryActivateDoor(cell0, EdgeDirection.Left, floorPlan, cellList, cell);
-    //    TryActivateDoor(cell2, EdgeDirection.Left, floorPlan, cellList, cell);
-
-    //    TryActivateDoor(cell1, EdgeDirection.Right, floorPlan, cellList, cell);
-    //    TryActivateDoor(cell3, EdgeDirection.Right, floorPlan, cellList, cell);
-
-    //    TryActivateDoor(cell2, EdgeDirection.Down, floorPlan, cellList, cell);
-    //    TryActivateDoor(cell3, EdgeDirection.Down, floorPlan, cellList, cell);
-    //}
-    //public void SetupLShape(Cell cell, int[,] floorplan, List<Cell> cellList)
-    //{
-
-    //    var cell0 = cell.cellList[0];
-    //    var cell1 = cell.cellList[1];
-    //    var cell2 = cell.cellList[2];
-
-    //    if ((cell0.Item1, cell0.Item2+1) == cell1 && (cell0.Item1 + 1,cell0.Item2) == cell2)
-    //    {
-    //        TryActivateDoor(cell0, EdgeDirection.Up, floorplan, cellList, cell);
-    //        TryActivateDoor(cell0, EdgeDirection.Left, floorplan, cellList, cell);
-
-    //        TryActivateDoor(cell1, EdgeDirection.Up, floorplan, cellList, cell);
-    //        TryActivateDoor(cell1, EdgeDirection.Right, floorplan, cellList, cell);
-    //        TryActivateDoor(cell1, EdgeDirection.Down, floorplan, cellList, cell);
-
-    //        TryActivateDoor(cell2, EdgeDirection.Down, floorplan, cellList, cell);
-    //        TryActivateDoor(cell2, EdgeDirection.Right, floorplan, cellList, cell);
-    //        TryActivateDoor(cell2, EdgeDirection.Left, floorplan, cellList, cell);
-    //    }
-    //    else if((cell0.Item1, cell0.Item2 + 1) == cell1 && (cell1.Item1 + 1, cell1.Item2) == cell2)
-    //    {
-    //        TryActivateDoor(cell0, EdgeDirection.Up, floorplan, cellList, cell);
-    //        TryActivateDoor(cell0, EdgeDirection.Left, floorplan, cellList, cell);
-    //        TryActivateDoor(cell0, EdgeDirection.Down, floorplan, cellList, cell);
-
-    //        TryActivateDoor(cell1, EdgeDirection.Up, floorplan, cellList, cell);
-    //        TryActivateDoor(cell1, EdgeDirection.Right, floorplan, cellList, cell);
-
-    //        TryActivateDoor(cell2, EdgeDirection.Down, floorplan, cellList, cell);
-    //        TryActivateDoor(cell2, EdgeDirection.Right, floorplan, cellList, cell);
-    //        TryActivateDoor(cell2, EdgeDirection.Left, floorplan, cellList, cell);
-    //    }
-    //    else if ((cell0.Item1 + 1, cell0.Item2) == cell1)
-    //    {
-    //        TryActivateDoor(cell0, EdgeDirection.Up, floorplan, cellList, cell);
-    //        TryActivateDoor(cell0, EdgeDirection.Left, floorplan, cellList, cell);
-    //        TryActivateDoor(cell0, EdgeDirection.Right, floorplan, cellList, cell);
-
-    //        TryActivateDoor(cell1, EdgeDirection.Down, floorplan, cellList, cell);
-    //        TryActivateDoor(cell1, EdgeDirection.Left, floorplan, cellList, cell);
-
-    //        TryActivateDoor(cell2, EdgeDirection.Up, floorplan, cellList, cell);
-    //        TryActivateDoor(cell2, EdgeDirection.Down, floorplan, cellList, cell);
-    //        TryActivateDoor(cell2, EdgeDirection.Right, floorplan, cellList, cell);
-    //    }
-    //    else if ((cell0.Item1 + 1,cell0.Item2) == cell2)
-    //    {
-    //        TryActivateDoor(cell0, EdgeDirection.Up, floorplan, cellList, cell);
-    //        TryActivateDoor(cell0, EdgeDirection.Left, floorplan, cellList, cell);
-    //        TryActivateDoor(cell0, EdgeDirection.Right, floorplan, cellList, cell);
-
-    //        TryActivateDoor(cell1, EdgeDirection.Up, floorplan, cellList, cell);
-    //        TryActivateDoor(cell1, EdgeDirection.Down, floorplan, cellList, cell);
-    //        TryActivateDoor(cell1, EdgeDirection.Left, floorplan, cellList, cell);
-
-    //        TryActivateDoor(cell2, EdgeDirection.Down, floorplan, cellList, cell);
-    //        TryActivateDoor(cell2, EdgeDirection.Right, floorplan, cellList, cell);
-    //    }
-    //}
-    private void TryActivateDoor((int, int) fromIndex, EdgeDirection direction, int[,] floorplan, List<Cell> cellList, Cell currentCell)
+    public void SetUpEnemies()
     {
-        (int, int) neighborIndex = (fromIndex.Item1 + GetOffset(direction).Item1, fromIndex.Item2 + GetOffset(direction).Item2);
-        if (neighborIndex.Item1 < 0 || neighborIndex.Item2 < 0 || neighborIndex.Item1 > floorplan.GetLength(0) || neighborIndex.Item2 > floorplan.GetLength(1))
+        if (roomType==RoomType.Regular)
         {
-            return;
+            for(int i = 0; i < roomEnemyRatio[roomShape]; i++)
+            {
+                EnemyType randomEnemy = (EnemyType) enemyTypesArray.GetValue(random.Next(enemyTypesArray.Length));
+                Enemy enemy;
+                switch (randomEnemy)
+                {
+                    case EnemyType.ghost:
+                        enemy = Instantiate(ghostPrefab, this.transform);
+                        break;
+                    case EnemyType.worm:
+                        enemy = Instantiate(wormPrefab, this.transform);
+                        break;
+                    case EnemyType.dress:
+                        enemy = Instantiate(dressPrefab, this.transform);
+                        break;
+                    case EnemyType.bat:
+                        enemy = Instantiate(batPrefab, this.transform);
+                        break;
+                    default:
+                        enemy = Instantiate(ghostPrefab, this.transform);
+                        break;
+                }
+                enemy.enemyAI.transform.position = FindSpawnPoint();                
+                spawnedEnemies.Add(enemy);
+            }
         }
-        if (floorplan[neighborIndex.Item1, neighborIndex.Item2] != 1) return;
-        var foundCell = cellList.FirstOrDefault(x => x.cellList.Contains(neighborIndex));
-        //somehow find the door and set it active
     }
+    public void SetUpParamsForEnemies(Camera cam, GameObject playerObj, PlayerHealthSystem playerHealthSystem)
+    {
+        foreach(Enemy enemy in spawnedEnemies)
+        {
+            enemy.enemyAI.playerTransform=playerObj.transform;
+            enemy.enemyAI.playerHealthSystem = playerHealthSystem;
+            enemy.enemyUI.cam = cam.transform;
+        }
+    }
+  
+    public Vector3 FindSpawnPoint()
+    {
+        float randomX = UnityEngine.Random.Range(-20, 20);
+        float randomZ = UnityEngine.Random.Range(-20, 20);
+        return new Vector3(transform.position.x+ randomX, transform.position.y, transform.position.z+randomZ); 
+    }
+
+
+
     private (int, int) GetOffset(EdgeDirection direction)
     {
         switch (direction)
