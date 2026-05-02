@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     private bool _canDash;
     private bool _isDashing;
     private bool _dashInput;
+    private bool _invincibleDash;
 
     private bool _isDamaged;
     private Vector3 knockbackDirection;
@@ -60,6 +61,7 @@ public class PlayerController : MonoBehaviour
         knockbackDirection = Vector3.zero;
         _isDead = false;
         _canBeInEnvironment = true;
+        _invincibleDash = false;
     }
     private void OnEnable()
     {
@@ -86,7 +88,14 @@ public class PlayerController : MonoBehaviour
         
         if(_dashInput && _canDash && !_isDamaged && !_isInEnvironment &&!_isDead && !_anim.GetBool("isHitting") && !_anim.GetBool("isShooting"))
         {
-            StartCoroutine(DashRoutine());
+            if (_invincibleDash)
+            {
+                StartCoroutine(InvincibleDashRoutine());
+            }
+            else
+            {
+                StartCoroutine(DashRoutine());
+            }
         }
     }
     public void TakeDamage(Vector3 knockbackDirection)
@@ -149,6 +158,21 @@ public class PlayerController : MonoBehaviour
         _isDashing = false;
         yield return new WaitForSeconds(dashingCooldown);
         _canDash = true;
+    }
+    private IEnumerator InvincibleDashRoutine()
+    {
+        _canBeDamaged = false;
+        _canDash = false;
+        _isDashing = true;
+        _anim.SetBool("isDashing", true);
+        maxSpeed = dashingSpeed;
+        yield return new WaitForSeconds(dashingTime);
+        _anim.SetBool("isDashing", false);
+        maxSpeed = walkingSpeed;
+        _isDashing = false;
+        yield return new WaitForSeconds(dashingCooldown);
+        _canDash = true;
+        _canBeDamaged = true;
     }
     private IEnumerator InEnvironmentRoutine()
     {
@@ -254,7 +278,14 @@ public class PlayerController : MonoBehaviour
         }
         _anim.SetBool("isShooting", true);
     }
-  
+    public void SetDashCooldown(float amount)
+    {
+        dashingCooldown = amount;
+    }
+    public void InvincibleDash()
+    {
+        _invincibleDash = true;
+    }
 }
 public static class Helpers
 {

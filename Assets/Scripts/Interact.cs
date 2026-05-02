@@ -1,5 +1,7 @@
+using Unity.AppUI.MVVM;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Interact : MonoBehaviour
 {
@@ -8,6 +10,31 @@ public class Interact : MonoBehaviour
     public float distance = 15f;
     public InteractableObject currentObject;
     public InteractableObject previousObject;
+
+    private InputSystem_Actions _playerInputActions;
+    private Vector3 _input;
+    private void Awake()
+    {
+        _playerInputActions = new InputSystem_Actions();
+    }
+    private void OnEnable()
+    {
+        _playerInputActions.Player.Enable();
+        _playerInputActions.Player.Interact.started += InteractAction;
+    }
+    private void OnDisable()
+    {
+        _playerInputActions.Player.Disable();
+        _playerInputActions.Player.Interact.started -= InteractAction;
+
+    }
+    private void InteractAction(InputAction.CallbackContext obj)
+    {
+        if (lookingAt != null)
+        {
+            currentObject.Interact();
+        }
+    }
     private void Update()
     {
         if (Physics.Raycast(transform.position, transform.forward, out var hit, distance, mask))
@@ -18,9 +45,12 @@ public class Interact : MonoBehaviour
             {
                 previousObject.SetTextInvisible();
             }
-            if (!currentObject.text.activeInHierarchy)
+            if (currentObject.text != null)
             {
-                currentObject.SetTextVisible();
+                if (!currentObject.text.activeInHierarchy)
+                {
+                    currentObject.SetTextVisible();
+                }
             }
         }
         else

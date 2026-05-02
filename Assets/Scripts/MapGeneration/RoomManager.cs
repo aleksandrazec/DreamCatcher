@@ -46,13 +46,12 @@ public class RoomManager : MonoBehaviour
             RoomScriptable foundRoom;
             if (currentCell.lShapeType == Cell.LShapeType.notLShape)
             {
-                foundRoom = rooms.FirstOrDefault(x => x.roomShape == currentCell.roomShape);
+                foundRoom = rooms.FirstOrDefault(x => x.roomShape == currentCell.roomShape && x.roomType==currentCell.roomType);
             }
             else
             {
                 foundRoom = rooms.FirstOrDefault(x => x.roomShape == currentCell.roomShape && x.lShapeType==currentCell.lShapeType);
             }
-
             //var currentPosition = currentCell.transform.position;
             if (currentCell.roomShape != RoomShape.OneByOne)
             {
@@ -135,54 +134,5 @@ public class RoomManager : MonoBehaviour
         {
             bigRoomCells.Add(adjacentCell);
         }
-    }
-    private bool DoesTileMatchCell(int[] occupiedTilesRow, int[] occupiedTilesColumn, Cell cell)
-    {
-        Debug.Log("Cell list length" + cell.cellList.Count);
-        Debug.Log("Occupied Tiles Length" + occupiedTilesColumn.Length);
-        if (occupiedTilesColumn.Length != cell.cellList.Count)
-        {
-            return false;
-        }
-        if (cell.cellList.Count == 0)
-        {
-            cell.cellList.Add((cell.rowIndex, cell.columnIndex));
-        }
-
-        cell.cellList.Sort((x, y) =>
-        {
-            int result = x.Item1.CompareTo(y.Item1);
-            return result == 0 ? x.Item2.CompareTo(y.Item2) : result;
-        });
-        int minIndexRow = cell.cellList[0].Item1;
-        int minIndexCol = cell.cellList[0].Item2;
-
-
-        Debug.Log(minIndexRow);
-
-        List<(int, int)> normalizedCell = new List<(int, int)>();
-        foreach ((int, int) index in cell.cellList)
-        {
-            int row = index.Item1 - minIndexRow;
-            int col = index.Item2 - minIndexCol;
-            normalizedCell.Add((row, col));
-        }
-        normalizedCell.Sort((x, y) =>
-        {
-            int result = x.Item1.CompareTo(y.Item1);
-            return result == 0 ? x.Item2.CompareTo(y.Item2) : result;
-        });
-        List<(int, int)> occupiedTiles = new List<(int, int)>();
-        for (int i = 0; i < occupiedTilesRow.Length; i++)
-        {
-            occupiedTiles[i] = (occupiedTilesRow[i], occupiedTilesColumn[i]);
-        }
-        occupiedTiles.Sort((x, y) =>
-        {
-            int result = x.Item1.CompareTo(y.Item1);
-            return result == 0 ? x.Item2.CompareTo(y.Item2) : result;
-        });
-
-        return normalizedCell.SequenceEqual(occupiedTiles);
     }
 }

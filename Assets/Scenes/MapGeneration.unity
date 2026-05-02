@@ -414,6 +414,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e16ed43415444634a8b93fbc50ac9854, type: 2}
   - {fileID: 11400000, guid: 69c3ce94685cb744db1e6b9593dba568, type: 2}
   - {fileID: 11400000, guid: 78bd25cb4ea443e41afb8816ad811e8e, type: 2}
+  - {fileID: 11400000, guid: 8ad8f0934297bd14f8616338b28e891c, type: 2}
+  - {fileID: 11400000, guid: 298b7f9d66ba10a459df87ade2cdbdbf, type: 2}
+  - {fileID: 11400000, guid: fa9ed4c2867432744bd3ad0c44b9b325, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

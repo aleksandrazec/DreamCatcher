@@ -24,6 +24,10 @@ public class Door : MonoBehaviour
     {
         meshRenderer.enabled = false;
         meshCollider.enabled = false;
+        if (path != null)
+        {
+            path.SetActive(true);
+        }
         open = true;
     }
     public void CloseDoor()

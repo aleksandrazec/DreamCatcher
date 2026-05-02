@@ -53,7 +53,15 @@ MonoBehaviour:
   dressPrefab: {fileID: 7052503593968020820, guid: 0ef39320722bdfd44b16475aa7417afd, type: 3}
   batPrefab: {fileID: 6127834006066357109, guid: d8d143c4901d309429d57bd4d633b8ac, type: 3}
   wormPrefab: {fileID: 7676697326768958224, guid: 8e579e0ded63ece4c9cdfd6747a03425, type: 3}
+  chestPrefab: {fileID: 2586638894564855526, guid: 38fab65387aca7047804c82ce452ca20, type: 3}
+  healPrefab: {fileID: 8304824905421831295, guid: 2aa7f6f1818583642bdfd9369a2d8ffc, type: 3}
+  maxHealthPrefab: {fileID: 6688879228489568310, guid: f32ce16ec2f67b34a88c0ea42b81a674, type: 3}
+  noDashCooldownPrefab: {fileID: 6227142926094224747, guid: 3d611908915baca4daf397928d6a4bd6, type: 3}
+  invincibleDashPrefab: {fileID: 4653302762597684877, guid: 0b87d212fbd177546b3bdc4bf0488a2c, type: 3}
+  damageCooldownPrefab: {fileID: 4031073870930091092, guid: 0c2408ea301d1c8418556c641c1866b0, type: 3}
+  randomItemIndexes: 
   groundMask:
     serializedVersion: 2
     m_Bits: 8
   spawnedEnemies: []
+  gameController: {fileID: 0}

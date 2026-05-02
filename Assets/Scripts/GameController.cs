@@ -10,7 +10,7 @@ public class GameController: MonoBehaviour
     [SerializeField] private PlayerHealthSystem playerHealthSystem;
     [SerializeField] private PlayerMoneySystem playerMoneySystem;
     [SerializeField] private Canvas mainMenu;
-    [SerializeField] private Camera cam;
+    [SerializeField] public Camera cam;
     private List<Room> rooms = new List<Room>();
     private int[,] floorPlan;
     private (int, int) playerPosition;

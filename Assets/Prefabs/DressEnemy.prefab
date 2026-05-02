@@ -1056,6 +1056,7 @@ MonoBehaviour:
   enemyType: 1
   enemy: {fileID: 7052503593968020820}
   coinPrefab: {fileID: 2447147067985895349, guid: 6421f41dd88c71542a0eaa7677e9f59e, type: 3}
+  healPrefab: {fileID: 8304824905421831295, guid: 2aa7f6f1818583642bdfd9369a2d8ffc, type: 3}
   room: {fileID: 0}
 --- !u!95 &8169379243375013315
 Animator:

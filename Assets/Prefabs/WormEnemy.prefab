@@ -73,6 +73,10 @@ PrefabInstance:
       propertyPath: coinPrefab
       value: 
       objectReference: {fileID: 2447147067985895349, guid: 6421f41dd88c71542a0eaa7677e9f59e, type: 3}
+    - target: {fileID: 1322546951508127049, guid: 4bace86aefaddaf44a7e1166e0f308f7, type: 3}
+      propertyPath: healPrefab
+      value: 
+      objectReference: {fileID: 8304824905421831295, guid: 2aa7f6f1818583642bdfd9369a2d8ffc, type: 3}
     - target: {fileID: 1521301268463726572, guid: 4bace86aefaddaf44a7e1166e0f308f7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

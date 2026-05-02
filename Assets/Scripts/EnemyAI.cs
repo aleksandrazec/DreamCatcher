@@ -44,7 +44,10 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] public EnemyType enemyType;
     [SerializeField] public Enemy enemy;
     [SerializeField] public Coin coinPrefab;
+    [SerializeField] public Item healPrefab;
 
+    System.Random random = new System.Random();
+    
     public Room room;
     public enum EnemyType
     {
@@ -119,10 +122,18 @@ public class EnemyAI : MonoBehaviour
         var color = demonSkin.material.color;
         var newColor = new Color(color.r, color.g, color.b, currentAlpha);
         demonSkin.material.color=newColor;
-        if (currentAlpha==0)
+        if (currentAlpha == 0)
         {
-            Coin coin = Instantiate(coinPrefab, this.transform.position, Quaternion.identity);
-            coin.SetAmount(Money[enemyType],playerMoneySystem);
+            if (random.Next(0, 100) <= 5)
+            {
+                Item heal = Instantiate(healPrefab, this.transform.position, Quaternion.identity);
+                heal.playerHealthSystem = playerHealthSystem;
+            }
+            else
+            {
+                Coin coin = Instantiate(coinPrefab, this.transform.position, Quaternion.identity);
+                coin.SetAmount(Money[enemyType], playerMoneySystem);
+            }
             room.spawnedEnemies.Remove(enemy);
             Destroy(enemy.gameObject);
         }

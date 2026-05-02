@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using NUnit.Framework;
 using Unity.Mathematics;
 using UnityEngine;
@@ -25,7 +26,24 @@ public class Room : MonoBehaviour
     [SerializeField] private Enemy dressPrefab;
     [SerializeField] private Enemy batPrefab;
     [SerializeField] private Enemy wormPrefab;
+    [Header("Chest Prefabs")]
+    [SerializeField] private Chest chestPrefab;
+    [Header("Item Prefabs")]
+    [SerializeField] private Item healPrefab;
+    [SerializeField] private Item maxHealthPrefab;
+    [SerializeField] private Item noDashCooldownPrefab;
+    [SerializeField] private Item invincibleDashPrefab;
+    [SerializeField] private Item damageCooldownPrefab;
+
+    public List<int> randomItemIndexes = new List<int>();
     private Array enemyTypesArray;
+    private Array itemTypesArray;
+    private Vector3[] shopPositions =
+    {
+        new Vector3(0,10,0),
+        new Vector3(12,10,-12),
+        new Vector3(-12,10,12),
+    };
     System.Random random = new System.Random();
     [SerializeField] private LayerMask groundMask;
     public List<Enemy> spawnedEnemies;
@@ -57,9 +75,10 @@ public class Room : MonoBehaviour
         doors=GetComponentsInChildren<Door>();
         activeDoors=new List<Door> ();
         enemyTypesArray = Enum.GetValues(typeof(EnemyType));
+        itemTypesArray = Enum.GetValues(typeof(Item.Type));
         this.gameController = gameController;
         SetUpDoors();
-        SetUpEnemies();
+        SetUpBasedOnRoomType();
     }
     public void SetUpDoors()
     {
@@ -90,37 +109,109 @@ public class Room : MonoBehaviour
             }
         }
     }
-    public void SetUpEnemies()
+    public void SetUpBasedOnRoomType()
     {
-        if (roomType==RoomType.Regular)
+        switch (roomType)
         {
-            for(int i = 0; i < roomEnemyRatio[roomShape]; i++)
-            {
-                EnemyType randomEnemy = (EnemyType) enemyTypesArray.GetValue(random.Next(enemyTypesArray.Length));
-                Enemy enemy;
-                switch (randomEnemy)
+            case RoomType.Regular:
+                SetUpEnemies();
+                break;
+            case RoomType.Item:
+                SetUpItemRoom();
+                break;
+            case RoomType.Shop:
+                for(int i = 0; i < 3; i++)
                 {
-                    case EnemyType.ghost:
-                        enemy = Instantiate(ghostPrefab, this.transform);
-                        break;
-                    case EnemyType.worm:
-                        //worm breaks the thing for some reason
-                        enemy = Instantiate(ghostPrefab, this.transform);
-                        break;
-                    case EnemyType.dress:
-                        enemy = Instantiate(dressPrefab, this.transform);
-                        break;
-                    case EnemyType.bat:
-                        enemy = Instantiate(batPrefab, this.transform);
-                        break;
-                    default:
-                        enemy = Instantiate(ghostPrefab, this.transform);
-                        break;
+                    NewNumber();
                 }
-                enemy.transform.position = FindSpawnPoint();
-                enemy.enemyAI.room = this;
-                spawnedEnemies.Add(enemy);
+                SetUpShopRoom();
+                break;
+            case RoomType.Boss:
+                SetUpBoss();
+                break;
+            default:
+                break;
+        }
+    }
+    private void SetUpItemRoom()
+    {
+        var chest = Instantiate(chestPrefab, this.transform);
+        var itemType = (Item.Type)itemTypesArray.GetValue(random.Next(itemTypesArray.Length));
+        Item item=GetItemPrefab(itemType);
+        chest.SetChest(item, gameController.cam);
+    }
+    private Item GetItemPrefab(Item.Type itemType)
+    {
+        switch (itemType)
+        {
+            case Item.Type.Heal:
+                return healPrefab;
+            case Item.Type.InvincibleDash:
+                return invincibleDashPrefab;
+            case Item.Type.DamageCooldown:
+                return damageCooldownPrefab;
+            case Item.Type.NoDashCooldown:
+                return noDashCooldownPrefab;
+            case Item.Type.MaxHealth:
+                return maxHealthPrefab;
+            default:
+                return invincibleDashPrefab;
+        }
+    }
+    private void SetUpShopRoom()
+    {
+        for(int i=0;i< randomItemIndexes.Count; i++)
+        {
+            var itemType = (Item.Type)itemTypesArray.GetValue(randomItemIndexes[i]);
+            var item = GetItemPrefab(itemType);
+            var itemObj = Instantiate(item, this.transform);
+            itemObj.transform.position += shopPositions[i];
+            itemObj.SetCost(100);
+            itemObj.SetBillboardCamera(gameController.cam.gameObject);
+        }
+    }
+    private void NewNumber()
+    {
+        var count = randomItemIndexes.Count;
+        while(count== randomItemIndexes.Count)
+        {
+            var MyNumber = random.Next(0, itemTypesArray.Length - 1);
+            if (!randomItemIndexes.Contains(MyNumber))
+                randomItemIndexes.Add(MyNumber);
+        }
+    }
+    private void SetUpBoss()
+    {
+
+    }
+    private void SetUpEnemies()
+    {
+        for (int i = 0; i < roomEnemyRatio[roomShape]; i++)
+        {
+            EnemyType randomEnemy = (EnemyType)enemyTypesArray.GetValue(random.Next(enemyTypesArray.Length));
+            Enemy enemy;
+            switch (randomEnemy)
+            {
+                case EnemyType.ghost:
+                    enemy = Instantiate(ghostPrefab, this.transform);
+                    break;
+                case EnemyType.worm:
+                    //worm breaks the thing for some reason
+                    enemy = Instantiate(ghostPrefab, this.transform);
+                    break;
+                case EnemyType.dress:
+                    enemy = Instantiate(dressPrefab, this.transform);
+                    break;
+                case EnemyType.bat:
+                    enemy = Instantiate(batPrefab, this.transform);
+                    break;
+                default:
+                    enemy = Instantiate(ghostPrefab, this.transform);
+                    break;
             }
+            enemy.transform.position = FindSpawnPoint();
+            enemy.enemyAI.room = this;
+            spawnedEnemies.Add(enemy);
         }
     }
     public void SetUpParamsForEnemies(Camera cam, GameObject playerObj, PlayerHealthSystem playerHealthSystem, PlayerMoneySystem playerMoneySystem)

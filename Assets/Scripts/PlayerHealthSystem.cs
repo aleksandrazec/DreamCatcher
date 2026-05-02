@@ -10,7 +10,7 @@ public class PlayerHealthSystem : MonoBehaviour
     [SerializeField] private HealthBar healthBar;
     public TMP_Text text;
 
-    private float health;
+    public float health;
     private bool canBeDamaged;
     public bool isDead;
     private void Awake()
@@ -21,6 +21,31 @@ public class PlayerHealthSystem : MonoBehaviour
         isDead = false;
         text.text = health + "/" + maxHealth;
     }
+    public void AddDamageCooldown(float amount)
+    {
+        damageCooldown+= amount;
+    }
+    public void MoreMaxHealth(float amount)
+    {
+        maxHealth += amount;
+        health += amount;
+        text.text = health + "/" + maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
+        healthBar.SetHealth(health);
+    }
+    public void Heal(float amount)
+    {
+        if (health + amount > maxHealth)
+        {
+            health = maxHealth;
+        }
+        else
+        {
+            health += amount;
+        }
+        text.text = health + "/" + maxHealth;
+        healthBar.SetHealth(health);
+    }
     public void TakeDamage(float damage, Vector3 knockbackDirection)
     {
         if (canBeDamaged)
@@ -28,7 +53,6 @@ public class PlayerHealthSystem : MonoBehaviour
             health -= damage;
             text.text = health + "/" + maxHealth;
             healthBar.SetHealth(health);
-            Debug.Log("Player health: "+health);
             if (health <= 0)
             {
                 text.text = 0 + "/" + maxHealth;
