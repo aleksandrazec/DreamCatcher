@@ -981,7 +981,6 @@ MonoBehaviour:
   mainMenu: {fileID: 1955827730}
   eyes: {fileID: 789248400}
   cam: {fileID: 1092440478}
-  directionalLight: {fileID: 298910154}
   mapGeneratorScene: 1
   irlRoomScene: 2
 --- !u!1 &604658825

@@ -45,7 +45,7 @@ public class Interact : MonoBehaviour
             {
                 previousObject.SetTextInvisible();
             }
-            if (currentObject.text != null)
+            if (currentObject != null && currentObject.text != null) 
             {
                 if (!currentObject.text.activeInHierarchy)
                 {

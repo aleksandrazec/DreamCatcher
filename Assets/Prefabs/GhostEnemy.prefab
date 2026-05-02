@@ -49,6 +49,8 @@ MonoBehaviour:
   enemyType: 0
   healthSystem: {fileID: 323040352756203267}
   enemyUI: {fileID: 5099372643180090795}
+  enemyAttack: {fileID: 100573062331097700}
+  batAttack: {fileID: 0}
 --- !u!1001 &7921620334047291567
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -134,6 +136,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0946dcb13e9d8f7449d7119990e7d1e0, type: 3}
+--- !u!114 &100573062331097700 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7821188033567361739, guid: 0946dcb13e9d8f7449d7119990e7d1e0, type: 3}
+  m_PrefabInstance: {fileID: 7921620334047291567}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11dcba6d08c782e40afc6d3364f04b60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!114 &323040352756203267 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7607869241852696492, guid: 0946dcb13e9d8f7449d7119990e7d1e0, type: 3}

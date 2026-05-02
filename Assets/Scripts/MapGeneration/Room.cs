@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using static EnemyAI;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public enum EdgeDirection
 {
@@ -34,23 +35,22 @@ public class Room : MonoBehaviour
     [SerializeField] private Item noDashCooldownPrefab;
     [SerializeField] private Item invincibleDashPrefab;
     [SerializeField] private Item damageCooldownPrefab;
-
-    public List<int> randomItemIndexes = new List<int>();
+    
+    private List<Item.Type> types;
     private Array enemyTypesArray;
-    private Array itemTypesArray;
     private Vector3[] shopPositions =
     {
         new Vector3(0,10,0),
         new Vector3(12,10,-12),
         new Vector3(-12,10,12),
     };
-    System.Random random = new System.Random();
     [SerializeField] private LayerMask groundMask;
     public List<Enemy> spawnedEnemies;
     public GameController gameController;
+    System.Random random = new System.Random();
     Dictionary<RoomShape, int> roomEnemyRatio = new Dictionary<RoomShape, int>
     {
-        {RoomShape.OneByOne, 1},
+        {RoomShape.OneByOne, 4},
         {RoomShape.OneByTwo, 6 },
         {RoomShape.TwoByOne, 6 },
         {RoomShape.LShape, 8},
@@ -65,7 +65,7 @@ public class Room : MonoBehaviour
         {RoomShape.TwoByTwo, 100}
     };
 
-    public void SetRoom(GameObject room, List<(int,int)> indexes,RoomType roomType, RoomShape roomShape, GameController gameController)
+    public void SetRoom(GameObject room, List<(int,int)> indexes,RoomType roomType, RoomShape roomShape, GameController gameController, List<Item.Type> types)
     {
         this.room = room;
         Instantiate(room, this.transform);
@@ -75,8 +75,8 @@ public class Room : MonoBehaviour
         doors=GetComponentsInChildren<Door>();
         activeDoors=new List<Door> ();
         enemyTypesArray = Enum.GetValues(typeof(EnemyType));
-        itemTypesArray = Enum.GetValues(typeof(Item.Type));
         this.gameController = gameController;
+        this.types = types;
         SetUpDoors();
         SetUpBasedOnRoomType();
     }
@@ -120,10 +120,6 @@ public class Room : MonoBehaviour
                 SetUpItemRoom();
                 break;
             case RoomType.Shop:
-                for(int i = 0; i < 3; i++)
-                {
-                    NewNumber();
-                }
                 SetUpShopRoom();
                 break;
             case RoomType.Boss:
@@ -136,7 +132,7 @@ public class Room : MonoBehaviour
     private void SetUpItemRoom()
     {
         var chest = Instantiate(chestPrefab, this.transform);
-        var itemType = (Item.Type)itemTypesArray.GetValue(random.Next(itemTypesArray.Length));
+        var itemType = types[0];
         Item item=GetItemPrefab(itemType);
         chest.SetChest(item, gameController.cam);
     }
@@ -160,9 +156,9 @@ public class Room : MonoBehaviour
     }
     private void SetUpShopRoom()
     {
-        for(int i=0;i< randomItemIndexes.Count; i++)
+        for(int i=0;i< types.Count; i++)
         {
-            var itemType = (Item.Type)itemTypesArray.GetValue(randomItemIndexes[i]);
+            var itemType = types[i];
             var item = GetItemPrefab(itemType);
             var itemObj = Instantiate(item, this.transform);
             itemObj.transform.position += shopPositions[i];
@@ -170,48 +166,41 @@ public class Room : MonoBehaviour
             itemObj.SetBillboardCamera(gameController.cam.gameObject);
         }
     }
-    private void NewNumber()
-    {
-        var count = randomItemIndexes.Count;
-        while(count== randomItemIndexes.Count)
-        {
-            var MyNumber = random.Next(0, itemTypesArray.Length - 1);
-            if (!randomItemIndexes.Contains(MyNumber))
-                randomItemIndexes.Add(MyNumber);
-        }
-    }
+
     private void SetUpBoss()
     {
-
+        EnemyType randomEnemy = (EnemyType)enemyTypesArray.GetValue(random.Next(enemyTypesArray.Length));
+        var enemy = Instantiate(GetEnemyPrefab(randomEnemy), this.transform);;
+        enemy.enemyAI.room = this;
+        enemy.MakeBoss(30, 300, new Vector3(2.5f,2.5f,2.5f), 2);
+        spawnedEnemies.Add(enemy);
     }
     private void SetUpEnemies()
     {
         for (int i = 0; i < roomEnemyRatio[roomShape]; i++)
         {
             EnemyType randomEnemy = (EnemyType)enemyTypesArray.GetValue(random.Next(enemyTypesArray.Length));
-            Enemy enemy;
-            switch (randomEnemy)
-            {
-                case EnemyType.ghost:
-                    enemy = Instantiate(ghostPrefab, this.transform);
-                    break;
-                case EnemyType.worm:
-                    //worm breaks the thing for some reason
-                    enemy = Instantiate(ghostPrefab, this.transform);
-                    break;
-                case EnemyType.dress:
-                    enemy = Instantiate(dressPrefab, this.transform);
-                    break;
-                case EnemyType.bat:
-                    enemy = Instantiate(batPrefab, this.transform);
-                    break;
-                default:
-                    enemy = Instantiate(ghostPrefab, this.transform);
-                    break;
-            }
+            var enemy=Instantiate(GetEnemyPrefab(randomEnemy), this.transform);
             enemy.transform.position = FindSpawnPoint();
             enemy.enemyAI.room = this;
             spawnedEnemies.Add(enemy);
+        }
+    }
+    private Enemy GetEnemyPrefab(EnemyType type)
+    {
+        switch (type)
+        {
+            case EnemyType.ghost:
+                return ghostPrefab;
+            case EnemyType.worm:
+                //worm breaks the thing for some reason
+                return wormPrefab;
+            case EnemyType.dress:
+                return dressPrefab;
+            case EnemyType.bat:
+                return batPrefab;
+            default:
+                return ghostPrefab;
         }
     }
     public void SetUpParamsForEnemies(Camera cam, GameObject playerObj, PlayerHealthSystem playerHealthSystem, PlayerMoneySystem playerMoneySystem)

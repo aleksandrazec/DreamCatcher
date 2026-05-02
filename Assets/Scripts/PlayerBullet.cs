@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerBullet : MonoBehaviour
 {
     public float life = 3;
-    [SerializeField] private float shootDamage;
+    [SerializeField] public float shootDamage;
     public LayerMask targetLayers;
     private void Awake()
     {

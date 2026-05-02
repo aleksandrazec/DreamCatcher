@@ -10,18 +10,25 @@ public class WormAnimationEventCaller : MonoBehaviour
     [SerializeField] private float slideSpeed=60;
     [SerializeField] private float slideTime = 2;
     private bool isSliding=false;
-
+    public LayerMask wallLayer;
     
-    private void Update()
+    private void FixedUpdate()
     {
         if (isSliding)
         {
             Vector3 forward = new Vector3(transform.forward.x, 0, transform.forward.z);
-            Vector3 dashTo = transform.position + transform.forward;
-            NavMeshHit hit;
-            NavMesh.SamplePosition(dashTo, out hit, 20f, 1);
-            Vector3 trueDashTo=hit.position* slideSpeed * Time.deltaTime;
-            rigidBody.MovePosition(trueDashTo);
+            Vector3 dashTo = transform.position + transform.forward * slideSpeed * Time.deltaTime;
+            rigidBody.MovePosition(dashTo);
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (isSliding)
+        {
+            if (wallLayer == (wallLayer | (1 << other.gameObject.layer)))
+            {
+                endSlide();
+            }
         }
     }
     private void StartSlide()
@@ -33,8 +40,12 @@ public class WormAnimationEventCaller : MonoBehaviour
     private IEnumerator SlideTimer()
     {
         yield return new WaitForSeconds(slideTime);
+        endSlide();
+    }
+    private void endSlide()
+    {
         isSliding = false;
-        hitCollider.enabled=false;
+        hitCollider.enabled = false;
         animator.SetBool("isAttacking", false);
     }
     private void EndDamage()

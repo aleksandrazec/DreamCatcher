@@ -9,6 +9,10 @@ public class EnemyBullet : MonoBehaviour
     {
         Destroy(gameObject, life);
     }
+    public void SetShootDamage(float shootDamage)
+    {
+        this.shootDamage = shootDamage;
+    }
 
     private void OnTriggerEnter(Collider other)
     {

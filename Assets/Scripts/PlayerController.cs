@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
 
-    [SerializeField] private float walkingSpeed;
+    [SerializeField] public float walkingSpeed;
     [SerializeField] private float rotationSpeed;
     [SerializeField] private float outOfBoundsSpeed;
 
@@ -43,8 +43,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool inDreamWorld;
     public LayerMask environmentLayer;
     public LayerMask wallLayer;
-    public LayerMask changingRoomLayer;
-
+    public void AwakePlayer(float walkingSpeed)
+    {
+        inDreamWorld = true;
+        this.walkingSpeed = walkingSpeed;
+        maxSpeed = walkingSpeed;
+        _canDash = true;
+        _invincibleDash = false;
+        _canBeDamaged = true;
+        knockbackDirection = Vector3.zero;
+        _isDead = false;
+        _canBeInEnvironment = true;
+    }
     private void Awake()
     {
         _playerInputActions = new InputSystem_Actions();
@@ -76,7 +86,7 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.Player.Shoot.started -= Shoot;
 
     }
-    private void Update()
+    private void FixedUpdate()
     {
         GatherInput();
 

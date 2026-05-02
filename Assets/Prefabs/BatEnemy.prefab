@@ -49,6 +49,8 @@ MonoBehaviour:
   enemyType: 2
   healthSystem: {fileID: 4393221980449388165}
   enemyUI: {fileID: 7107104624892747794}
+  enemyAttack: {fileID: 0}
+  batAttack: {fileID: 4950737434645646382}
 --- !u!1001 &9181711477140994161
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -65,6 +67,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4314290690639393887, guid: 6e45265e9c46eaf44b973e5a74540573, type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 922146004293676543, guid: b7c0a4491c31d594bbe5c2a8a008b374, type: 3}
     - target: {fileID: 4871806196501319412, guid: 6e45265e9c46eaf44b973e5a74540573, type: 3}
       propertyPath: maxHealth
       value: 50
@@ -125,6 +131,14 @@ PrefabInstance:
       propertyPath: healPrefab
       value: 
       objectReference: {fileID: 8304824905421831295, guid: 2aa7f6f1818583642bdfd9369a2d8ffc, type: 3}
+    - target: {fileID: 7814387519841803992, guid: 6e45265e9c46eaf44b973e5a74540573, type: 3}
+      propertyPath: visionRange
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814387519841803992, guid: 6e45265e9c46eaf44b973e5a74540573, type: 3}
+      propertyPath: engagementRange
+      value: 60
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -157,6 +171,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3173f1eabc80c434b9f698a72e75ac59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthSystem
+--- !u!114 &4950737434645646382 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4314290690639393887, guid: 6e45265e9c46eaf44b973e5a74540573, type: 3}
+  m_PrefabInstance: {fileID: 9181711477140994161}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14e9cc23752c5624e8591c43ad602be2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!114 &7107104624892747794 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2146668846622775395, guid: 6e45265e9c46eaf44b973e5a74540573, type: 3}

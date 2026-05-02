@@ -10,6 +10,7 @@ public class InteractableObject : MonoBehaviour
     [SerializeField] public GameObject text;
     [SerializeField] public Item item;
     [SerializeField] public Chest chest;
+    public GameController gameController;
     public enum InteractableObjectType
     {
         door,
@@ -37,7 +38,8 @@ public class InteractableObject : MonoBehaviour
                 break;
             case InteractableObjectType.window: 
                 break;
-            case InteractableObjectType.bed: 
+            case InteractableObjectType.bed:
+                GoToDreamWorld();
                 break;
             case InteractableObjectType.desk: 
                 break;
@@ -50,5 +52,20 @@ public class InteractableObject : MonoBehaviour
             default:
                 break;
         }
+    }
+    private void GoToDreamWorld()
+    {
+        if (gameController == null)
+        {
+            GameObject[] gameControllerObj = GameObject.FindGameObjectsWithTag("GameController");
+            gameController = gameControllerObj[0].GetComponent<GameController>();
+        }
+        StartCoroutine(DreamWorldRoutine());    
+    }
+    private IEnumerator DreamWorldRoutine()
+    {
+        gameController.PrepareToGoToDreamWorld();
+        yield return new WaitForSeconds(3);
+        gameController.GoToDreamWorld();
     }
 }

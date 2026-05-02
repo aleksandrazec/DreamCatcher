@@ -360,6 +360,8 @@ MonoBehaviour:
   enemyType: 1
   healthSystem: {fileID: 6021653031540592353}
   enemyUI: {fileID: 4955445122963806090}
+  enemyAttack: {fileID: 6611592206233922067}
+  batAttack: {fileID: 0}
 --- !u!1 &4247948097294818969
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,8 +373,8 @@ GameObject:
   - component: {fileID: 2082336719965503116}
   - component: {fileID: 3260423504597167589}
   - component: {fileID: 4705158074929537798}
-  - component: {fileID: 1822263339000812601}
   - component: {fileID: 6611592206233922067}
+  - component: {fileID: 6207150035828870106}
   m_Layer: 9
   m_Name: Laser
   m_TagString: Untagged
@@ -452,8 +454,25 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &1822263339000812601
-CapsuleCollider:
+--- !u!114 &6611592206233922067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4247948097294818969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11dcba6d08c782e40afc6d3364f04b60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttack
+  attackDamage: 10
+  attackCollider: {fileID: 6207150035828870106}
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!65 &6207150035828870106
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -470,28 +489,9 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &6611592206233922067
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4247948097294818969}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11dcba6d08c782e40afc6d3364f04b60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttack
-  attackDamage: 10
-  attackCollider: {fileID: 1822263339000812601}
-  targetLayers:
-    serializedVersion: 2
-    m_Bits: 64
+  serializedVersion: 3
+  m_Size: {x: 1, y: 2.0000005, z: 60.999992}
+  m_Center: {x: 0.00000035762815, y: 0.00000011126195, z: 29.999996}
 --- !u!1 &5601862288445446466
 GameObject:
   m_ObjectHideFlags: 0
@@ -1094,7 +1094,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   animator: {fileID: 8169379243375013315}
   rigidBody: {fileID: 36037301436863574}
-  hitCollider: {fileID: 1822263339000812601}
+  hitCollider: {fileID: 6207150035828870106}
   laser: {fileID: 4247948097294818969}
   rotationTime: 0.5
 --- !u!1 &8749269708072166095

@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
     public LayerMask targetLayers;
-    [SerializeField] private float hitDamage;
+    [SerializeField] public float hitDamage;
     [SerializeField] private Collider attackCollider;
     private List<int> objectsCollided = new List<int>();
 
@@ -20,6 +20,11 @@ public class PlayerAttack : MonoBehaviour
     }
     public void AttackEnded()
     {
+        objectsCollided.Clear();
+    }
+    public void SetUpAttack(float hitDamage)
+    {
+        this.hitDamage = hitDamage;
         objectsCollided.Clear();
     }
 }

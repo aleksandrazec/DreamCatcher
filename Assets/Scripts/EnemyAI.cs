@@ -10,7 +10,7 @@ public class EnemyAI : MonoBehaviour
 {
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private LayerMask playerMask;
-    [SerializeField] private NavMeshAgent agent;
+    [SerializeField] public NavMeshAgent agent;
     public Transform playerTransform;
     [SerializeField] public PlayerHealthSystem playerHealthSystem;
     [SerializeField] public PlayerMoneySystem playerMoneySystem;
@@ -20,8 +20,8 @@ public class EnemyAI : MonoBehaviour
     private bool hasPatrolPoint;
 
     [SerializeField] private float attackCooldown = 2f;
-    [SerializeField] private float visionRange = 20f;
-    [SerializeField] private float engagementRange = 10f;
+    [SerializeField] public float visionRange = 20f;
+    [SerializeField] public float engagementRange = 10f;
 
     private bool canAttack = true;
     private bool canBeDamaged=true;
@@ -128,11 +128,13 @@ public class EnemyAI : MonoBehaviour
             {
                 Item heal = Instantiate(healPrefab, this.transform.position, Quaternion.identity);
                 heal.playerHealthSystem = playerHealthSystem;
+                heal.transform.position = new Vector3(heal.transform.position.x, 5, heal.transform.position.z);
             }
             else
             {
                 Coin coin = Instantiate(coinPrefab, this.transform.position, Quaternion.identity);
                 coin.SetAmount(Money[enemyType], playerMoneySystem);
+                coin.transform.position = new Vector3(coin.transform.position.x, 5, coin.transform.position.z);
             }
             room.spawnedEnemies.Remove(enemy);
             Destroy(enemy.gameObject);

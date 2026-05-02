@@ -14,6 +14,13 @@ public class EnemyHealthSystem : MonoBehaviour
         healthBar.SetMaxHealth(maxHealth);
         isDead = false;
     }
+    public void SetMaxHealth(float maxHealth)
+    {
+        this.maxHealth = maxHealth;
+        health = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
+        healthBar.SetHealth(health);
+    }
     public void TakeDamage(float damage, Vector3 knockbackDirection)
     {
         if (!isDead)

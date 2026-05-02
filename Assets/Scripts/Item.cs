@@ -104,7 +104,7 @@ public class Item : MonoBehaviour
     }
     private void DamageCooldown()
     {
-        playerHealthSystem.AddDamageCooldown(1f);
+        playerHealthSystem.AddDamageCooldown(0.5f);
     }
 
     private void NoDashCooldown()
