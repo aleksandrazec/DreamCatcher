@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class RoomManager : MonoBehaviour
@@ -21,14 +20,12 @@ public class RoomManager : MonoBehaviour
     private Array itemTypesArray;
     private List<int> randomItemIndexes = new List<int>();
 
-    public static RoomManager instance;
     private List<(int,int)> bigRoomCells=new List<(int,int)> ();
     private GameController gameController;
     System.Random random = new System.Random();
 
     private void Awake()
     {
-        instance = this;
         createdRooms = new List<Room>();
         GameObject[] gameControllerObject= GameObject.FindGameObjectsWithTag("GameController");
         gameController = gameControllerObject[0].GetComponent<GameController>();
@@ -98,7 +95,7 @@ public class RoomManager : MonoBehaviour
                     types.Add((Item.Type)itemTypesArray.GetValue(randomItemIndexes[i]));
                 }
             }
-            spawnedRoom.SetRoom(foundRoom.room,indexes, currentCell.roomType, currentCell.roomShape, gameController, types);
+            spawnedRoom.SetRoom(foundRoom.room,indexes, currentCell.roomType, currentCell.roomShape, gameController, types, foundRoom.roomInformation, currentCell.lShapeType); 
             //var spawnedRoom = Instantiate(foundRoom.room, convertedPosition, rotation);
             //var spawnedRoom = Instantiate(roomPrefab, convertedPosition, Quaternion.identity);
             //spawnedRoom.SetupRoom(currentCell, foundRoom);
@@ -166,5 +163,9 @@ public class RoomManager : MonoBehaviour
         {
             bigRoomCells.Add(adjacentCell);
         }
+    }
+    public void ResetCreatedRooms()
+    {
+        createdRooms = null;
     }
 }

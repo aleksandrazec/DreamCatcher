@@ -76,6 +76,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1699912755368064759}
+  - component: {fileID: 2230605199828542699}
   m_Layer: 0
   m_Name: ShopRoom
   m_TagString: Untagged
@@ -100,6 +101,24 @@ Transform:
   - {fileID: 2422288521981879403}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2230605199828542699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884934757874341660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e87d20e354d5d254a817be9629b5d1e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoomInformation
+  doors:
+  - {fileID: 5130281908904559420}
+  - {fileID: 749115662741831512}
+  - {fileID: 1310968600059739179}
+  - {fileID: 6946242300862371809}
+  spawnPoints: []
 --- !u!1 &1735304972771113116
 GameObject:
   m_ObjectHideFlags: 0
@@ -412,7 +431,7 @@ MonoBehaviour:
   subRoomIndex: 0
   subRoomCount: 1
   direction: 3
-  active: 0
+  active: 1
   open: 0
   room: {fileID: 0}
   path: {fileID: 5590466372892512316}
@@ -661,7 +680,7 @@ MonoBehaviour:
   subRoomIndex: 0
   subRoomCount: 1
   direction: 1
-  active: 0
+  active: 1
   open: 0
   room: {fileID: 0}
   path: {fileID: 3870218953460637809}
@@ -1024,7 +1043,7 @@ MonoBehaviour:
   subRoomIndex: 0
   subRoomCount: 1
   direction: 0
-  active: 0
+  active: 1
   open: 0
   room: {fileID: 0}
   path: {fileID: 3191751880935882624}
@@ -1274,7 +1293,7 @@ MonoBehaviour:
   subRoomIndex: 0
   subRoomCount: 1
   direction: 2
-  active: 0
+  active: 1
   open: 0
   room: {fileID: 0}
   path: {fileID: 5603999411755167600}

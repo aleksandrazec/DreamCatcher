@@ -229,7 +229,7 @@ public class PlayerController : MonoBehaviour
         }
         if (_input == Vector3.zero) { return; }
 
-        Quaternion rotation = Quaternion.LookRotation(_input.ToIso(), Vector3.up);
+        Quaternion rotation = Quaternion.LookRotation(_isoMatrix.MultiplyPoint3x4(_input), Vector3.up);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, rotationSpeed * Time.deltaTime);
     }
 
@@ -254,7 +254,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        _rigidBody.MovePosition(transform.position+_input.ToIso()*_input.normalized.magnitude*_currentSpeed*Time.deltaTime);
+        _rigidBody.MovePosition(transform.position+ _isoMatrix.MultiplyPoint3x4(_input)*_input.normalized.magnitude*_currentSpeed*Time.deltaTime);
     }
     private void OnTriggerStay(Collider other)
     {
@@ -296,9 +296,6 @@ public class PlayerController : MonoBehaviour
     {
         _invincibleDash = true;
     }
-}
-public static class Helpers
-{
-    private static Matrix4x4 _isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
-    public static Vector3 ToIso(this Vector3 input) => _isoMatrix.MultiplyPoint3x4(input);
+
+    private Matrix4x4 _isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
 }

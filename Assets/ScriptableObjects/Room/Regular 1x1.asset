@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoomScriptable
   roomType: 0
   roomShape: 0
+  lShapeType: 0
   occupiedTilesRow: 
   occupiedTilesColumn: 
   room: {fileID: 884934757874341660, guid: 56e121c6702a52341ae4d6d40450e539, type: 3}
+  roomInformation: {fileID: 8174549989142132153, guid: 56e121c6702a52341ae4d6d40450e539, type: 3}

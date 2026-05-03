@@ -71,6 +71,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ghost
       objectReference: {fileID: 0}
+    - target: {fileID: 3970296711279729563, guid: 0946dcb13e9d8f7449d7119990e7d1e0, type: 3}
+      propertyPath: m_Speed
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 3970296711279729563, guid: 0946dcb13e9d8f7449d7119990e7d1e0, type: 3}
+      propertyPath: m_BaseOffset
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3970296711279729563, guid: 0946dcb13e9d8f7449d7119990e7d1e0, type: 3}
+      propertyPath: m_AngularSpeed
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 4434000043746676737, guid: 0946dcb13e9d8f7449d7119990e7d1e0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

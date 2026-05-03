@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -129,12 +128,14 @@ public class EnemyAI : MonoBehaviour
                 Item heal = Instantiate(healPrefab, this.transform.position, Quaternion.identity);
                 heal.playerHealthSystem = playerHealthSystem;
                 heal.transform.position = new Vector3(heal.transform.position.x, 5, heal.transform.position.z);
+                heal.transform.parent = room.transform;
             }
             else
             {
                 Coin coin = Instantiate(coinPrefab, this.transform.position, Quaternion.identity);
                 coin.SetAmount(Money[enemyType], playerMoneySystem);
                 coin.transform.position = new Vector3(coin.transform.position.x, 5, coin.transform.position.z);
+                coin.transform.parent = room.transform;
             }
             room.spawnedEnemies.Remove(enemy);
             Destroy(enemy.gameObject);

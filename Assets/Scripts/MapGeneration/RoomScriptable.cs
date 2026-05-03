@@ -10,5 +10,5 @@ public class RoomScriptable : ScriptableObject
     public int[] occupiedTilesRow;
     public int[] occupiedTilesColumn;
     public GameObject room;
-
+    public RoomInformation roomInformation;
 }

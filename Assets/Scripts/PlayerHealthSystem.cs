@@ -87,8 +87,8 @@ public class PlayerHealthSystem : MonoBehaviour
     }
     private IEnumerator DeadRoutine()
     {
-        gameController.PrepareToGoToRealWorld();
         yield return new WaitForSeconds(3);
+        gameController.PrepareToGoToRealWorld();   
         gameController.GoToRealWorld();
     }
     private IEnumerator DamageCooldown()

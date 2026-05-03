@@ -18,3 +18,4 @@ MonoBehaviour:
   occupiedTilesRow: 000000000000000001000000
   occupiedTilesColumn: 000000000100000001000000
   room: {fileID: 4992452049706037246, guid: a970c2d16ae2458419cb003c644beb10, type: 3}
+  roomInformation: {fileID: 9215028916221865113, guid: a970c2d16ae2458419cb003c644beb10, type: 3}

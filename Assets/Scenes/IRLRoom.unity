@@ -1833,6 +1833,7 @@ MonoBehaviour:
   text: {fileID: 1686277503}
   item: {fileID: 0}
   chest: {fileID: 0}
+  gameController: {fileID: 0}
 --- !u!1001 &252597194
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2227,7 +2228,6 @@ GameObject:
   m_Component:
   - component: {fileID: 299799073}
   - component: {fileID: 299799072}
-  - component: {fileID: 299799071}
   - component: {fileID: 299799070}
   - component: {fileID: 299799069}
   m_Layer: 0
@@ -2313,14 +2313,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!81 &299799071
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 299799068}
-  m_Enabled: 1
 --- !u!20 &299799072
 Camera:
   m_ObjectHideFlags: 0
@@ -2381,7 +2373,7 @@ Transform:
   m_GameObject: {fileID: 299799068}
   serializedVersion: 2
   m_LocalRotation: {x: 0.23911765, y: 0.3696438, z: -0.09904577, w: 0.89239913}
-  m_LocalPosition: {x: -60.070084, y: 58.000004, z: -46.065945}
+  m_LocalPosition: {x: -60.07009, y: 58.000004, z: -46.065937}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -4300,6 +4292,7 @@ MonoBehaviour:
   text: {fileID: 284541100}
   item: {fileID: 0}
   chest: {fileID: 0}
+  gameController: {fileID: 0}
 --- !u!1 &642653580
 GameObject:
   m_ObjectHideFlags: 0
@@ -4877,10 +4870,10 @@ MonoBehaviour:
   CameraDistance: 100
   DeadZoneDepth: 0
   Composition:
-    ScreenPosition: {x: 0.000000029802322, y: -0.00000010430813}
+    ScreenPosition: {x: 0.00000008940697, y: -0.00000023841858}
     DeadZone:
       Enabled: 1
-      Size: {x: 0.38546586, y: 0.60455793}
+      Size: {x: 0.38059688, y: 0.2672605}
     HardLimits:
       Enabled: 0
       Size: {x: 1.09, y: 0.8}
@@ -4945,7 +4938,7 @@ Transform:
   m_GameObject: {fileID: 728676853}
   serializedVersion: 2
   m_LocalRotation: {x: 0.23911765, y: 0.3696438, z: -0.09904577, w: 0.89239913}
-  m_LocalPosition: {x: -60.070084, y: 58.000004, z: -46.065945}
+  m_LocalPosition: {x: -60.07009, y: 58.000004, z: -46.065937}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8060,6 +8053,7 @@ MonoBehaviour:
   text: {fileID: 532860921}
   item: {fileID: 0}
   chest: {fileID: 0}
+  gameController: {fileID: 0}
 --- !u!1 &1228469336
 GameObject:
   m_ObjectHideFlags: 0
@@ -11981,6 +11975,7 @@ MonoBehaviour:
   text: {fileID: 1950672094}
   item: {fileID: 0}
   chest: {fileID: 0}
+  gameController: {fileID: 0}
 --- !u!1001 &1842281751
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14124,7 +14119,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8932500403886827059, guid: 17ba5f2175661194a92fced1475b8881, type: 3}
       propertyPath: walkingSpeed
-      value: 40
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 8932500403886827059, guid: 17ba5f2175661194a92fced1475b8881, type: 3}
       propertyPath: knockbackSpeed

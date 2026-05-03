@@ -76,6 +76,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1699912755368064759}
+  - component: {fileID: 8174549989142132153}
   m_Layer: 0
   m_Name: 1by1Room
   m_TagString: Untagged
@@ -98,8 +99,34 @@ Transform:
   m_Children:
   - {fileID: 6498318448703660609}
   - {fileID: 2422288521981879403}
+  - {fileID: 5792518457782941641}
+  - {fileID: 5724584701494369321}
+  - {fileID: 1693294463319179055}
+  - {fileID: 674558316762750988}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8174549989142132153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884934757874341660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e87d20e354d5d254a817be9629b5d1e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoomInformation
+  doors:
+  - {fileID: 5130281908904559420}
+  - {fileID: 749115662741831512}
+  - {fileID: 1310968600059739179}
+  - {fileID: 6946242300862371809}
+  spawnPoints:
+  - {fileID: 8928160953128028158}
+  - {fileID: 2923684637665181815}
+  - {fileID: 6489523487216883073}
+  - {fileID: 9133927999188071380}
 --- !u!1 &1735304972771113116
 GameObject:
   m_ObjectHideFlags: 0
@@ -412,8 +439,8 @@ MonoBehaviour:
   subRoomIndex: 0
   subRoomCount: 1
   direction: 3
-  active: 0
-  open: 0
+  active: 1
+  open: 1
   room: {fileID: 0}
   path: {fileID: 5590466372892512316}
 --- !u!1 &2561150363391836495
@@ -661,10 +688,41 @@ MonoBehaviour:
   subRoomIndex: 0
   subRoomCount: 1
   direction: 1
-  active: 0
-  open: 0
+  active: 1
+  open: 1
   room: {fileID: 0}
   path: {fileID: 3870218953460637809}
+--- !u!1 &2923684637665181815
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5724584701494369321}
+  m_Layer: 0
+  m_Name: EnemySpawnPoint (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5724584701494369321
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2923684637665181815}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -29.5, y: 0, z: 6.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1699912755368064759}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3191751880935882624
 GameObject:
   m_ObjectHideFlags: 0
@@ -1024,8 +1082,8 @@ MonoBehaviour:
   subRoomIndex: 0
   subRoomCount: 1
   direction: 0
-  active: 0
-  open: 0
+  active: 1
+  open: 1
   room: {fileID: 0}
   path: {fileID: 3191751880935882624}
 --- !u!1 &3870218953460637809
@@ -1274,8 +1332,8 @@ MonoBehaviour:
   subRoomIndex: 0
   subRoomCount: 1
   direction: 2
-  active: 0
-  open: 0
+  active: 1
+  open: 1
   room: {fileID: 0}
   path: {fileID: 5603999411755167600}
 --- !u!1 &5150524126589423870
@@ -1888,6 +1946,37 @@ Transform:
   - {fileID: 3404190091690012759}
   m_Father: {fileID: 1699912755368064759}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6489523487216883073
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1693294463319179055}
+  m_Layer: 0
+  m_Name: EnemySpawnPoint (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1693294463319179055
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6489523487216883073}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.25, y: 0, z: -56.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1699912755368064759}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6929707223347837237
 GameObject:
   m_ObjectHideFlags: 0
@@ -2181,6 +2270,37 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &8928160953128028158
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5792518457782941641}
+  m_Layer: 0
+  m_Name: EnemySpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5792518457782941641
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8928160953128028158}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 27.25, y: 0, z: 46.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1699912755368064759}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9050895860441582262
 GameObject:
   m_ObjectHideFlags: 0
@@ -2248,6 +2368,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChangingRoom
   door: {fileID: 1310968600059739179}
+--- !u!1 &9133927999188071380
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 674558316762750988}
+  m_Layer: 0
+  m_Name: EnemySpawnPoint (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &674558316762750988
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9133927999188071380}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -48.5, y: 0, z: -61}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1699912755368064759}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &624650855047511733
 PrefabInstance:
   m_ObjectHideFlags: 0

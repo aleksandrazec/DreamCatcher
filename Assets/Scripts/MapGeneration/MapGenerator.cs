@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
 public class MapGenerator : MonoBehaviour
@@ -55,11 +52,10 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private Sprite lShape1;
     [SerializeField] private Sprite lShape2;
 
-    public static MapGenerator instance;
 
     //private InputSystem_Actions _inputActions;
 
-    private static readonly List<(int, int)[]> roomShapes = new() {
+    private readonly List<(int, int)[]> roomShapes = new() {
         new (int, int)[] { (0,-1) },
         new (int, int)[] { (0,1) },
 
@@ -109,15 +105,13 @@ public class MapGenerator : MonoBehaviour
     }
     void Start()
     {
-        instance = this;
-
         numOfRows = 10;
         numOfColumns = 10;
         minRooms = 10;
         maxRooms = 15;
         spawnedCells = new();
         spawnedEmpties = new();
-        SetupDungeon();
+        //SetupDungeon();
     }
     void SetupDungeon()
     {
@@ -184,7 +178,8 @@ public class MapGenerator : MonoBehaviour
             return;
         }
         UpdateSpecialRoomVisuals();
-        RoomManager.instance.SetupRooms(spawnedCells);
+        var roomManager = this.gameObject.GetComponent<RoomManager>();
+        roomManager.SetupRooms(spawnedCells);
     }
     void CleanEndRoomsList()
     {

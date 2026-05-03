@@ -1,14 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using NUnit.Framework;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem;
-using static EnemyAI;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public enum EdgeDirection
 {
@@ -20,6 +13,7 @@ public class Room : MonoBehaviour
     public List<(int,int)> indexes;
     public RoomType roomType;
     public RoomShape roomShape;
+    public Cell.LShapeType lShapeType;
     public Door[] doors;
     public List<Door> activeDoors;
     [Header("Enemy Prefabs")]
@@ -45,8 +39,11 @@ public class Room : MonoBehaviour
         new Vector3(-12,10,12),
     };
     [SerializeField] private LayerMask groundMask;
+    private List<GameObject> spawnPoints;
     public List<Enemy> spawnedEnemies;
     public GameController gameController;
+    private RoomInformation roomInformation;
+    private MapGenerator mapGenerator;
     System.Random random = new System.Random();
     Dictionary<RoomShape, int> roomEnemyRatio = new Dictionary<RoomShape, int>
     {
@@ -59,30 +56,35 @@ public class Room : MonoBehaviour
     Dictionary<RoomShape, int> walkRadius = new Dictionary<RoomShape, int>
     {
         {RoomShape.OneByOne, 50},
-        {RoomShape.OneByTwo, 100 },
-        {RoomShape.TwoByOne, 100 },
-        {RoomShape.LShape, 100},
-        {RoomShape.TwoByTwo, 100}
+        {RoomShape.OneByTwo, 50 },
+        {RoomShape.TwoByOne, 50 },
+        {RoomShape.LShape, 50},
+        {RoomShape.TwoByTwo, 50}
     };
 
-    public void SetRoom(GameObject room, List<(int,int)> indexes,RoomType roomType, RoomShape roomShape, GameController gameController, List<Item.Type> types)
+    public void SetRoom(GameObject room, List<(int,int)> indexes,RoomType roomType, RoomShape roomShape, GameController gameController, List<Item.Type> types, RoomInformation roomInformation, Cell.LShapeType lShapeType)
     {
         this.room = room;
         Instantiate(room, this.transform);
         this.indexes = indexes;
         this.roomType= roomType;
         this.roomShape = roomShape;
-        doors=GetComponentsInChildren<Door>();
+        this.roomInformation=roomInformation;
+        this.lShapeType=lShapeType;
+        doors = GetComponentsInChildren<Door>();
+        this.spawnPoints = roomInformation.spawnPoints;
         activeDoors=new List<Door> ();
-        enemyTypesArray = Enum.GetValues(typeof(EnemyType));
+        enemyTypesArray = Enum.GetValues(typeof(EnemyAI.EnemyType));
         this.gameController = gameController;
         this.types = types;
+        GameObject[] mapGeneratorObject = GameObject.FindGameObjectsWithTag("MapGenerator");
+        mapGenerator = mapGeneratorObject[0].GetComponent<MapGenerator>();
         SetUpDoors();
         SetUpBasedOnRoomType();
     }
     public void SetUpDoors()
     {
-        var floorPlan = MapGenerator.instance.getFloorPlan;
+        var floorPlan = mapGenerator.getFloorPlan;
         for (int i = 0; i < indexes.Count; i++)
         {
             foreach (EdgeDirection d in Enum.GetValues(typeof(EdgeDirection)))
@@ -169,35 +171,65 @@ public class Room : MonoBehaviour
 
     private void SetUpBoss()
     {
-        EnemyType randomEnemy = (EnemyType)enemyTypesArray.GetValue(random.Next(enemyTypesArray.Length));
+        EnemyAI.EnemyType randomEnemy = (EnemyAI.EnemyType)enemyTypesArray.GetValue(random.Next(enemyTypesArray.Length));
         var enemy = Instantiate(GetEnemyPrefab(randomEnemy), this.transform);;
         enemy.enemyAI.room = this;
-        enemy.MakeBoss(30, 300, new Vector3(2.5f,2.5f,2.5f), 2);
+        enemy.MakeBoss(30, 300, new Vector3(2f,2f,2f), 2);
         spawnedEnemies.Add(enemy);
+    }
+    private bool ReturnNavMeshHit(Vector3 sourcePosition)
+    {
+        NavMeshHit closestHit;
+        if (NavMesh.SamplePosition(sourcePosition, out closestHit, 500, 1))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     private void SetUpEnemies()
     {
-        for (int i = 0; i < roomEnemyRatio[roomShape]; i++)
+        for (int i = 0; i < spawnPoints.Count; i++)
         {
-            EnemyType randomEnemy = (EnemyType)enemyTypesArray.GetValue(random.Next(enemyTypesArray.Length));
-            var enemy=Instantiate(GetEnemyPrefab(randomEnemy), this.transform);
-            enemy.transform.position = FindSpawnPoint();
+            EnemyAI.EnemyType randomEnemy = (EnemyAI.EnemyType)enemyTypesArray.GetValue(random.Next(enemyTypesArray.Length));
+            if (lShapeType == Cell.LShapeType.case0)
+            {
+                while (randomEnemy == EnemyAI.EnemyType.ghost)
+                {
+                    randomEnemy = (EnemyAI.EnemyType)enemyTypesArray.GetValue(random.Next(enemyTypesArray.Length));
+                }
+            }
+            var spawnPosition = new Vector3(spawnPoints[i].gameObject.transform.position.x + this.transform.position.x, this.transform.position.y, spawnPoints[i].gameObject.transform.position.z + this.transform.position.z);
+            Vector3 position;
+            if (ReturnNavMeshHit(spawnPosition)){
+                NavMeshHit closestHit;
+                NavMesh.SamplePosition(spawnPosition, out closestHit, 500, 1);
+                position = closestHit.position;
+            }
+            else
+            {
+                position=this.transform.position;
+            }
+            var enemy = Instantiate(GetEnemyPrefab(randomEnemy), position, Quaternion.identity);
+            enemy.transform.parent= this.transform;
             enemy.enemyAI.room = this;
             spawnedEnemies.Add(enemy);
         }
     }
-    private Enemy GetEnemyPrefab(EnemyType type)
+    private Enemy GetEnemyPrefab(EnemyAI.EnemyType type)
     {
         switch (type)
         {
-            case EnemyType.ghost:
+            case EnemyAI.EnemyType.ghost:
                 return ghostPrefab;
-            case EnemyType.worm:
+            case EnemyAI.EnemyType.worm:
                 //worm breaks the thing for some reason
                 return wormPrefab;
-            case EnemyType.dress:
+            case EnemyAI.EnemyType.dress:
                 return dressPrefab;
-            case EnemyType.bat:
+            case EnemyAI.EnemyType.bat:
                 return batPrefab;
             default:
                 return ghostPrefab;

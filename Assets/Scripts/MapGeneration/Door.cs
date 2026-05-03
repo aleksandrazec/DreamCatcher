@@ -14,6 +14,7 @@ public class Door : MonoBehaviour
     public void MakeDoorActive()
     {
         meshRenderer.enabled = true;
+        meshCollider.enabled = true;
         active = true;
         if (path != null)
         {

@@ -18,3 +18,4 @@ MonoBehaviour:
   occupiedTilesRow: 
   occupiedTilesColumn: 
   room: {fileID: 884934757874341660, guid: 5dbdeb2bf95f47a4a9f001f391cbfe9a, type: 3}
+  roomInformation: {fileID: 5341874804980408967, guid: 5dbdeb2bf95f47a4a9f001f391cbfe9a, type: 3}

@@ -1,10 +1,9 @@
 using UnityEngine;
-using static EnemyAI;
 
 public class Enemy : MonoBehaviour
 {
     public EnemyAI enemyAI;
-    public EnemyType enemyType;
+    public EnemyAI.EnemyType enemyType;
     public EnemyHealthSystem healthSystem;
     public Billboard enemyUI;
     public EnemyAttack enemyAttack;
@@ -12,7 +11,7 @@ public class Enemy : MonoBehaviour
 
     public void MakeBoss(float damage, float health, Vector3 scale, float speedBoost)
     {
-        if (enemyType == EnemyType.bat)
+        if (enemyType == EnemyAI.EnemyType.bat)
         {
             batAttack.bulletDamage= damage;
             transform.position += new Vector3(0, -30, 0);
