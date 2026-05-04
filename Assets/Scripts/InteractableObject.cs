@@ -39,7 +39,8 @@ public class InteractableObject : MonoBehaviour
             case InteractableObjectType.bed:
                 GoToDreamWorld();
                 break;
-            case InteractableObjectType.desk: 
+            case InteractableObjectType.desk:
+                OpenDiary();
                 break;
             case InteractableObjectType.item:
                 item.UseItem();
@@ -50,6 +51,15 @@ public class InteractableObject : MonoBehaviour
             default:
                 break;
         }
+    }
+    private void OpenDiary()
+    {
+        if (gameController == null)
+        {
+            GameObject[] gameControllerObj = GameObject.FindGameObjectsWithTag("GameController");
+            gameController = gameControllerObj[0].GetComponent<GameController>();
+        }
+        gameController.OpenDiary();
     }
     private void GoToDreamWorld()
     {

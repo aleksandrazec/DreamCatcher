@@ -15,8 +15,8 @@ public class PlayerShoot : MonoBehaviour
         }
         bullet.GetComponent<Rigidbody>().linearVelocity = bulletSpawnPoint.forward * bulletSpeed;
     }
-    public void SetUpShoot(float bulletDamage)
+    public void SetUpShoot(float bulletDamage,int attackUpgrades)
     {
-        this.bulletDamage = bulletDamage;
+        this.bulletDamage = bulletDamage*(1+0.1f*attackUpgrades);
     }
 }

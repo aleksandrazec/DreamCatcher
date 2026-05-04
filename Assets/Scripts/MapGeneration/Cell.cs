@@ -29,6 +29,7 @@ public class Cell : MonoBehaviour
     [SerializeField] public RectTransform rectTransform;
     public List<(int,int)> cellList=new List<(int, int)> ();
     public LShapeType lShapeType = LShapeType.notLShape;
+    public Material currentRoomMaterial;
     public enum LShapeType
     {
         notLShape,
@@ -51,7 +52,14 @@ public class Cell : MonoBehaviour
         lshape1,
         lshape2
     }
-
+    public void SetCurrentRoom()
+    {
+        image.material = currentRoomMaterial;
+    }
+    public void SetNotCurrentRoom()
+    {
+        image.material = null;
+    }
     
     public void SetRoomSprite(Sprite icon)
     {

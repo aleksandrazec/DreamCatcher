@@ -23,17 +23,17 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] public float engagementRange = 10f;
 
     private bool canAttack = true;
-    private bool canBeDamaged=true;
-    private bool isDamaged=false;
-    private bool isDead=false;
-    private Vector3 knockbackDirection=Vector3.zero;
-    private Vector3 deadPosition=Vector3.zero;
-    private float currentAlpha=1.0f;
+    private bool canBeDamaged = true;
+    private bool isDamaged = false;
+    private bool isDead = false;
+    private Vector3 knockbackDirection = Vector3.zero;
+    private Vector3 deadPosition = Vector3.zero;
+    private float currentAlpha = 1.0f;
     private bool setInvisible = false;
 
-    private bool playerVisible=false;
-    private bool playerInRange=false;
-    private bool playerAlive=false;
+    private bool playerVisible = false;
+    private bool playerInRange = false;
+    private bool playerAlive = false;
 
     [SerializeField] private float knockbackSpeed;
     [SerializeField] private Animator animator;
@@ -46,8 +46,9 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] public Item healPrefab;
 
     System.Random random = new System.Random();
-    
+
     public Room room;
+    public bool boss = false;
     public enum EnemyType
     {
         ghost,
@@ -92,7 +93,7 @@ public class EnemyAI : MonoBehaviour
         }
     }
     private void UpdateBehaviorState()
-    {   
+    {
         if (isDead)
         {
             if (setInvisible)
@@ -100,27 +101,29 @@ public class EnemyAI : MonoBehaviour
                 MakeTransparent();
             }
         }
-        else if (isDamaged)
+        else if (isDamaged && !boss)
         {
             Knockback();
         }
-        else if(((!playerVisible && !playerInRange) || (!playerAlive))&& agent.enabled)
+        else if (((!playerVisible && !playerInRange) || (!playerAlive)) && agent.enabled)
         {
             PerformPatrol();
-        }else if(playerVisible && !playerInRange && agent.enabled)
+        }
+        else if (playerVisible && !playerInRange && agent.enabled)
         {
             PerformChase();
-        }else if((playerVisible && playerInRange) || !agent.enabled)
+        }
+        else if ((playerVisible && playerInRange) || !agent.enabled)
         {
             PerformAttack();
         }
     }
     private void MakeTransparent()
     {
-        currentAlpha = Mathf.MoveTowards(currentAlpha, 0f, Time.deltaTime*0.5f);
+        currentAlpha = Mathf.MoveTowards(currentAlpha, 0f, Time.deltaTime * 0.5f);
         var color = demonSkin.material.color;
         var newColor = new Color(color.r, color.g, color.b, currentAlpha);
-        demonSkin.material.color=newColor;
+        demonSkin.material.color = newColor;
         if (currentAlpha == 0)
         {
             if (random.Next(0, 100) <= 5)
@@ -173,7 +176,7 @@ public class EnemyAI : MonoBehaviour
     public void TakeDamage(Vector3 knockbackDirection)
     {
         this.knockbackDirection = knockbackDirection;
-        if (canBeDamaged)
+        if (canBeDamaged & !boss)
         {
             StartCoroutine(DamageRoutine());
         }
@@ -192,7 +195,7 @@ public class EnemyAI : MonoBehaviour
         agent.enabled = true;
         isDamaged = false;
         canBeDamaged = true;
-    }   
+    }
 
     private void PerformAttack()
     {

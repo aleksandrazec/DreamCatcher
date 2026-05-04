@@ -8,7 +8,7 @@ public class PlayerHealthSystem : MonoBehaviour
     [SerializeField] private PlayerController controller;
     [SerializeField] private float damageCooldown=0f;
     [SerializeField] private HealthBar healthBar;
-    
+
     public TMP_Text text;
 
     public GameController gameController;
@@ -39,10 +39,10 @@ public class PlayerHealthSystem : MonoBehaviour
         healthBar.SetHealth(health);
         runMaxHealth += amount;
     }
-    public void AwakeHealth(float maxHealth)
+    public void AwakeHealth(float maxHealth, int healthUpgrades)
     {
         runMaxHealth = 0;
-        this.maxHealth = maxHealth;
+        this.maxHealth = maxHealth*(1+0.1f*healthUpgrades);
         health = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
         healthBar.SetHealth(health);
@@ -89,7 +89,7 @@ public class PlayerHealthSystem : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
         gameController.PrepareToGoToRealWorld();   
-        gameController.GoToRealWorld();
+        gameController.GoToRealWorld(false);
     }
     private IEnumerator DamageCooldown()
     {

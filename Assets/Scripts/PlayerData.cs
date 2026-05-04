@@ -25,14 +25,14 @@ public class PlayerData
     }
     public void SetUpPlayer(Player player)
     {
-        player.controller.AwakePlayer(walkingSpeed);
+        player.controller.AwakePlayer(walkingSpeed,speedUpgrades);
         player.level = level;
         player.speedUpgrades = speedUpgrades;
         player.attackUpgrades = attackUpgrades;
         player.healthUpgrades = healthUpgrades;
-        player.attackSystem.SetUpAttack(hitDamage);
-        player.healthSystem.AwakeHealth(maxHealth);
-        player.shootSystem.SetUpShoot(shootDamage);
+        player.attackSystem.SetUpAttack(hitDamage, attackUpgrades);
+        player.healthSystem.AwakeHealth(maxHealth,healthUpgrades);
+        player.shootSystem.SetUpShoot(shootDamage, attackUpgrades);
         player.moneySystem.ResetMoney();
         player.playerObj.SetActive(true);
     }

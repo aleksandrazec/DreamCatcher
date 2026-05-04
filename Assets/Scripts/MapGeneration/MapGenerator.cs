@@ -28,6 +28,7 @@ public class MapGenerator : MonoBehaviour
     private List<GameObject> spawnedEmpties;
 
     public List<Cell> getSpawnedCells => spawnedCells;
+    public (int, int) getBossRoomIndex => bossRoomIndex;
 
     [SerializeField] private Canvas canvas;
 
@@ -544,6 +545,20 @@ public class MapGenerator : MonoBehaviour
                     break;
                 default:
                     break;
+            }
+        }
+    }
+    public void MarkCurrentRoom(List<(int,int)> indexes)
+    {
+        foreach(var cell in spawnedCells)
+        {
+            if (indexes.Contains((cell.rowIndex, cell.columnIndex)))
+            {
+                cell.SetCurrentRoom();
+            }
+            else
+            {
+                cell.SetNotCurrentRoom();
             }
         }
     }

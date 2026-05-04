@@ -43,10 +43,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool inDreamWorld;
     public LayerMask environmentLayer;
     public LayerMask wallLayer;
-    public void AwakePlayer(float walkingSpeed)
+    public void AwakePlayer(float walkingSpeed, int speedUpgrades)
     {
         inDreamWorld = true;
-        this.walkingSpeed = walkingSpeed;
+        this.walkingSpeed = walkingSpeed*(1+0.1f*speedUpgrades);
         maxSpeed = walkingSpeed;
         _canDash = true;
         _invincibleDash = false;
@@ -54,6 +54,7 @@ public class PlayerController : MonoBehaviour
         knockbackDirection = Vector3.zero;
         _isDead = false;
         _canBeInEnvironment = true;
+        dashingCooldown = 1f;
     }
     private void Awake()
     {
@@ -66,6 +67,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             _canDash = false;
+
         }
         maxSpeed = walkingSpeed;
         knockbackDirection = Vector3.zero;
@@ -275,6 +277,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Hit(InputAction.CallbackContext obj)
     {
+        if (!inDreamWorld) { return; }
         if (_anim.GetBool("isHitting") || _anim.GetBool("isShooting") || _isDashing || _isDamaged || _isDead)        {
             return;
         }
@@ -282,6 +285,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Shoot(InputAction.CallbackContext obj)
     {
+        if (!inDreamWorld) { return; }
         if (_anim.GetBool("isHitting") || _anim.GetBool("isShooting") || _isDamaged || _isDashing || _isDead)
         {
             return;

@@ -11,6 +11,8 @@ public class Door : MonoBehaviour
     public bool open = false;
     public Room room;
     public GameObject path;
+    public bool bossDoor = false;
+
     public void MakeDoorActive()
     {
         meshRenderer.enabled = true;
@@ -22,6 +24,17 @@ public class Door : MonoBehaviour
         }
     }
     public void OpenDoor()
+    {
+        if (bossDoor) { return; }
+        meshRenderer.enabled = false;
+        meshCollider.enabled = false;
+        if (path != null)
+        {
+            path.SetActive(true);
+        }
+        open = true;
+    }
+    public void OpenBossAndNormalDoor()
     {
         meshRenderer.enabled = false;
         meshCollider.enabled = false;

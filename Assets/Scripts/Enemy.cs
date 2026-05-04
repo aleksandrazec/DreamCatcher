@@ -26,5 +26,6 @@ public class Enemy : MonoBehaviour
         enemyAI.agent.angularSpeed*= speedBoost;
         enemyAI.visionRange*= 5;
         enemyAI.engagementRange *= 2;
+        enemyAI.boss = true;
     }
 }

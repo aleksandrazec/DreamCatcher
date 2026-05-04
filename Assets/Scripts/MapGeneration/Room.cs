@@ -103,6 +103,10 @@ public class Room : MonoBehaviour
                     if (door.direction == d && door.subRoomIndex == i)
                     {
                         door.room = this;
+                        if (mapGenerator.getBossRoomIndex == (door.room.indexes[door.subRoomIndex].Item1 + door.room.GetOffset(door.direction).Item1, door.room.indexes[door.subRoomIndex].Item2 + door.room.GetOffset(door.direction).Item2))
+                        {
+                            door.bossDoor = true;
+                        }
                         door.MakeDoorActive();
                         activeDoors.Add(door);
                         break;
@@ -225,7 +229,6 @@ public class Room : MonoBehaviour
             case EnemyAI.EnemyType.ghost:
                 return ghostPrefab;
             case EnemyAI.EnemyType.worm:
-                //worm breaks the thing for some reason
                 return wormPrefab;
             case EnemyAI.EnemyType.dress:
                 return dressPrefab;
@@ -250,6 +253,13 @@ public class Room : MonoBehaviour
         foreach(Door door in activeDoors)
         {
             door.OpenDoor();
+        }
+    }
+    public void OpenBossAndNormalDoors()
+    {
+        foreach (Door door in activeDoors)
+        {
+            door.OpenBossAndNormalDoor();
         }
     }
     public Vector3 FindSpawnPoint()

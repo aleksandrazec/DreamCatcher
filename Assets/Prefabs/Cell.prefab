@@ -169,4 +169,8 @@ MonoBehaviour:
   value: 0
   image: {fileID: 4751193492004907344}
   typeOfCell: 0
+  roomType: 0
+  roomShape: 0
   rectTransform: {fileID: 4391962502219166308}
+  lShapeType: 0
+  currentRoomMaterial: {fileID: 2100000, guid: 5b7d20ee76109884291ea2415037d0e2, type: 2}

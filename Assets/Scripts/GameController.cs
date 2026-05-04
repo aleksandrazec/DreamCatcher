@@ -1,47 +1,182 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class GameController: MonoBehaviour
 {
     [SerializeField] private Player player;
     [SerializeField] private GameObject playerObj;
     [SerializeField] private PlayerHealthSystem playerHealthSystem;
     [SerializeField] private PlayerMoneySystem playerMoneySystem;
-    [SerializeField] private Canvas mainMenu;
+    [SerializeField] private UnityEngine.Canvas mainMenu;
+    [SerializeField] private UnityEngine.Canvas pausedMenu;
+    [SerializeField] private UnityEngine.Canvas diaryMenu;
     [SerializeField] private Blink eyes;
     [SerializeField] public Camera cam;
     [SerializeField] public GameObject directionalLight;
+    [SerializeField] public GameObject newGameButton;
+    [SerializeField] public GameObject helpButton;
+    [SerializeField] public GameObject speedUpgradeButton;
+    [SerializeField] public GameObject healthUpgradeButton;
+    [SerializeField] public GameObject attackUpgradeButton;
+    [SerializeField] public GameObject backUpgradeButton;
+    [SerializeField] public GameObject backButton;
+    [SerializeField] public EventSystem eventSystem;
     private List<Room> rooms = new List<Room>();
     private int[,] floorPlan;
     private (int, int) playerPosition;
     private Room currentRoom=null;
+    private bool readyForBoss = false;
+    private bool bossBeaten=false;
+    private bool inDreamWorld = true;
+
     private MapGenerator mapGenerator;
     private RoomManager roomManager;
 
     public int mapGeneratorScene=1;
     public int irlRoomScene=2;
+    public int currentScene = -1;
+
+    private InputSystem_Actions _uiInputActions;
+
     private void Awake()
     {
         playerHealthSystem = player.healthSystem;
         playerMoneySystem=player.moneySystem;
         playerObj= player.gameObject;
+        Cursor.lockState=CursorLockMode.Locked;
+        Cursor.visible = false;
+        _uiInputActions = new InputSystem_Actions();
     }
+    private void OnEnable()
+    {
+        _uiInputActions.UI.Enable();
+        _uiInputActions.UI.Cancel.started += Cancel;
+    }
+    private void OnDisable()
+    {
+        _uiInputActions.UI.Disable();
+        _uiInputActions.UI.Cancel.started -= Cancel;
+    }
+    private void Cancel(InputAction.CallbackContext obj)
+    {
+        if (mainMenu.enabled) { return; }
+        if (pausedMenu.enabled) {
+            pausedMenu.enabled = false;
+            Time.timeScale = 1;
+        }
+        else
+        {
+            Time.timeScale = 0;
+            pausedMenu.enabled = true;
+            if (helpButton.gameObject.activeInHierarchy)
+            {
+                eventSystem.SetSelectedGameObject(helpButton, new BaseEventData(eventSystem));
+            }
+            else
+            {
+                eventSystem.SetSelectedGameObject(backButton, new BaseEventData(eventSystem));
+            }
+
+        }
+    }
+    public void SetBackButton()
+    {
+        eventSystem.SetSelectedGameObject(backButton, new BaseEventData(eventSystem));
+    }
+    public void SetPausedButton()
+    {
+        eventSystem.SetSelectedGameObject(helpButton, new BaseEventData(eventSystem));
+    }
+    public void OpenDiary()
+    {
+        if (mainMenu.enabled) { return; }
+        if (pausedMenu.enabled) { return; }
+        diaryMenu.enabled = true;
+        eventSystem.SetSelectedGameObject(backUpgradeButton, new BaseEventData(eventSystem));
+    }
+    public void SpeedUpgrade() {
+        var button = speedUpgradeButton.GetComponent<Button>();
+        button.interactable = false;
+        player.speedUpgrades++;
+        SaveSystem.SavePlayer(player);
+        eventSystem.SetSelectedGameObject(backUpgradeButton, new BaseEventData(eventSystem));
+    }
+    public void AttackUpgrade()
+    {
+        var button = attackUpgradeButton.GetComponent<Button>();
+        button.interactable = false;
+        player.attackUpgrades++;
+        SaveSystem.SavePlayer(player);
+        eventSystem.SetSelectedGameObject(backUpgradeButton, new BaseEventData(eventSystem));
+    }
+    public void HealthUpgrade()
+    {
+        var button = healthUpgradeButton.GetComponent<Button>();
+        button.interactable = false;
+        player.healthUpgrades++;
+        SaveSystem.SavePlayer(player);
+        eventSystem.SetSelectedGameObject(backUpgradeButton, new BaseEventData(eventSystem));
+    }
+
     private void Update()
     {
-        if (currentRoom != null)
+        if (bossBeaten) {
+            bossBeaten = false;
+            StartCoroutine(WinRoutine()); 
+        }
+        if (inDreamWorld)
         {
-            if (currentRoom.spawnedEnemies.Count == 0)
+            if (currentRoom != null)
             {
-                currentRoom.OpenDoors();
+                if (currentRoom.spawnedEnemies.Count == 0)
+                {
+                    if (readyForBoss)
+                    {
+                        currentRoom.OpenBossAndNormalDoors();
+                        CheckIfAllRoomsAreDone();
+                    }
+                    else
+                    {
+                        currentRoom.OpenDoors();
+                        CheckIfAllRoomsAreDone();
+                    }
+                }
             }
         }
     }
+    
+    public void CheckIfAllRoomsAreDone()
+    {
+        var numOfRooms = rooms.Count;
+        foreach (var room in rooms)
+        {
+            if (room.spawnedEnemies.Count == 0)
+            {
+                numOfRooms--;
+            }
+        }
+        if (numOfRooms == 1)
+        {
+            readyForBoss = true;
+        }else if (numOfRooms == 0)
+        {
+            bossBeaten = true;
+        }
+    }
+
     public void StartNewGame()
     {
+        inDreamWorld = true;
+        var button = newGameButton.GetComponent<Button>();
+        button.interactable = false;
         Time.timeScale = 0;
         StartCoroutine(LoadScene(mapGeneratorScene));
         StartCoroutine(WaitForRooms());
+        button.interactable = true;
     }
     public void QuitGame()
     {
@@ -55,6 +190,7 @@ public class GameController: MonoBehaviour
         {
             yield return null;
         }
+        currentScene = number;
         Debug.Log("loaded scene " + number);
     }
     public IEnumerator UnloadScene(int number)
@@ -65,8 +201,13 @@ public class GameController: MonoBehaviour
         {
             yield return null;
         }
+        if(currentScene== number)
+        {
+            currentScene = -1;
+        }
         Debug.Log("unloaded scene " + number);
     }
+
     public IEnumerator WaitForRooms()
     {
         bool notReady = true;
@@ -125,12 +266,27 @@ public class GameController: MonoBehaviour
             {
                 room.gameObject.SetActive(true);
                 currentRoom = room;
+                mapGenerator.MarkCurrentRoom(room.indexes);
             }
             else
             {
                 room.gameObject.SetActive(false);
             }
         }
+    }
+    public void GoToMainMenu()
+    {
+        mainMenu.enabled = true;
+        eventSystem.SetSelectedGameObject(newGameButton, new BaseEventData(eventSystem));
+        pausedMenu.enabled = false;
+        StartCoroutine(UnloadScene(currentScene));
+        SaveSystem.SavePlayer(player);
+    }
+    private IEnumerator WinRoutine()
+    {
+        yield return new WaitForSeconds(3);
+        PrepareToGoToRealWorld();
+        GoToRealWorld(true);
     }
     public void PrepareToGoToRealWorld()
     {
@@ -139,13 +295,23 @@ public class GameController: MonoBehaviour
         StartCoroutine(UnloadScene(mapGeneratorScene));
         SaveSystem.SavePlayer(player);
     }
-    public void GoToRealWorld()
+    public void GoToRealWorld(bool win)
     {
-        directionalLight.SetActive(false);
+        inDreamWorld = false;
+        directionalLight.SetActive(win);
         playerObj.SetActive(false);
         StartCoroutine(LoadScene(irlRoomScene));
         player.cam.enabled = false;
         player.isometricCam.SetActive(false);
+        var button = healthUpgradeButton.GetComponent<Button>();
+        button.interactable = true;
+        button = attackUpgradeButton.GetComponent<Button>();
+        button.interactable = true;
+        button = speedUpgradeButton.GetComponent<Button>();
+        button.interactable = true;
+        healthUpgradeButton.SetActive(true);
+        attackUpgradeButton.SetActive(true);
+        speedUpgradeButton.SetActive(true);
         //eyes.OpenEyes();
         //StartCoroutine(DeleteRooms());
     }
@@ -168,6 +334,9 @@ public class GameController: MonoBehaviour
     public void GoToDreamWorld()
     {
         //Time.timeScale = 0;
+        bossBeaten = false;
+        readyForBoss= false;
+        inDreamWorld = true;
         StartCoroutine(UnloadScene(irlRoomScene));
         playerObj.SetActive(true);
         player.cam.enabled = true;
@@ -177,5 +346,20 @@ public class GameController: MonoBehaviour
         StartCoroutine(LoadScene(mapGeneratorScene));
         StartCoroutine(WaitForRooms());
         //eyes.OpenEyes();
+    }
+    public void LoadGame()
+    {
+        try
+        {
+            var playerData = SaveSystem.LoadPlayer();
+            playerData.SetUpPlayer(player);
+        }
+        catch
+        {
+            Debug.Log("No save file");
+            return;
+        }
+        mainMenu.enabled = false;
+        GoToRealWorld(false);
     }
 }

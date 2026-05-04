@@ -100,7 +100,7 @@ public class Item : MonoBehaviour
     }
     private void Heal()
     {
-        playerHealthSystem.Heal(Mathf.CeilToInt(playerHealthSystem.health * 30 / 100));
+        playerHealthSystem.Heal(Mathf.CeilToInt(playerHealthSystem.maxHealth * 30 / 100));
     }
     private void DamageCooldown()
     {

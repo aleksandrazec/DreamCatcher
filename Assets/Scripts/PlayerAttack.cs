@@ -22,9 +22,9 @@ public class PlayerAttack : MonoBehaviour
     {
         objectsCollided.Clear();
     }
-    public void SetUpAttack(float hitDamage)
+    public void SetUpAttack(float hitDamage, int attackUpgrades)
     {
-        this.hitDamage = hitDamage;
+        this.hitDamage = hitDamage*(1+0.1f*attackUpgrades);
         objectsCollided.Clear();
     }
 }
