@@ -94,6 +94,10 @@ public class EnemyAI : MonoBehaviour
     }
     private void UpdateBehaviorState()
     {
+        if (agent.enabled && !agent.isOnNavMesh)
+        {
+            Die();
+        }
         if (isDead)
         {
             if (setInvisible)

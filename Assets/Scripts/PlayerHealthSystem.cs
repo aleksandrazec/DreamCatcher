@@ -49,7 +49,7 @@ public class PlayerHealthSystem : MonoBehaviour
         healthBar.SetHealth(health);
         canBeDamaged = true;
         isDead = false;
-        text.text = health + "/" + maxHealth;
+        text.text = health + "/" + this.maxHealth;
     }
     public void Heal(float amount)
     {
