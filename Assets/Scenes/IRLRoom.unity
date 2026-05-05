@@ -1834,6 +1834,7 @@ MonoBehaviour:
   item: {fileID: 0}
   chest: {fileID: 0}
   gameController: {fileID: 0}
+  blink: {fileID: 0}
 --- !u!1001 &252597194
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4293,6 +4294,7 @@ MonoBehaviour:
   item: {fileID: 0}
   chest: {fileID: 0}
   gameController: {fileID: 0}
+  blink: {fileID: 0}
 --- !u!1 &642653580
 GameObject:
   m_ObjectHideFlags: 0
@@ -8054,6 +8056,7 @@ MonoBehaviour:
   item: {fileID: 0}
   chest: {fileID: 0}
   gameController: {fileID: 0}
+  blink: {fileID: 0}
 --- !u!1 &1228469336
 GameObject:
   m_ObjectHideFlags: 0
@@ -11976,6 +11979,7 @@ MonoBehaviour:
   item: {fileID: 0}
   chest: {fileID: 0}
   gameController: {fileID: 0}
+  blink: {fileID: 0}
 --- !u!1001 &1842281751
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14188,10 +14192,10 @@ SceneRoots:
   - {fileID: 922870133}
   - {fileID: 1473952074}
   - {fileID: 879336971838969636}
+  - {fileID: 299799073}
   - {fileID: 728676856}
   - {fileID: 1321569351}
   - {fileID: 1048205166}
-  - {fileID: 299799073}
   - {fileID: 800971728}
   - {fileID: 1449843553}
   - {fileID: 2132328129}

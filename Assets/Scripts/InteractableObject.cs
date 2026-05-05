@@ -9,6 +9,7 @@ public class InteractableObject : MonoBehaviour
     [SerializeField] public Item item;
     [SerializeField] public Chest chest;
     public GameController gameController;
+    public Blink blink;
     public enum InteractableObjectType
     {
         door,
@@ -34,7 +35,8 @@ public class InteractableObject : MonoBehaviour
         {
             case InteractableObjectType.door:
                 break;
-            case InteractableObjectType.window: 
+            case InteractableObjectType.window:
+                LookAtTheSky();
                 break;
             case InteractableObjectType.bed:
                 GoToDreamWorld();
@@ -51,6 +53,15 @@ public class InteractableObject : MonoBehaviour
             default:
                 break;
         }
+    }
+    private void LookAtTheSky()
+    {
+        if (gameController == null)
+        {
+            GameObject[] gameControllerObj = GameObject.FindGameObjectsWithTag("GameController");
+            gameController = gameControllerObj[0].GetComponent<GameController>();
+        }
+        gameController.LookAtTheSky();
     }
     private void OpenDiary()
     {
@@ -72,8 +83,18 @@ public class InteractableObject : MonoBehaviour
     }
     private IEnumerator DreamWorldRoutine()
     {
+        if (blink == null)
+        {
+            GameObject[] blinkObj = GameObject.FindGameObjectsWithTag("Blink");
+            blink = blinkObj[0].GetComponent<Blink>();
+        }
+        blink.CloseEyes();
+        while (!blink.closed)
+        {
+            yield return null;
+        }
         gameController.PrepareToGoToDreamWorld();
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1);
         gameController.GoToDreamWorld();
     }
 }

@@ -14,8 +14,11 @@ public class GameController: MonoBehaviour
     [SerializeField] private UnityEngine.Canvas mainMenu;
     [SerializeField] private UnityEngine.Canvas pausedMenu;
     [SerializeField] private UnityEngine.Canvas diaryMenu;
+    [SerializeField] private UnityEngine.Canvas sky;
+    [SerializeField] private SkyCanvas skyCanvas;
     [SerializeField] private Blink eyes;
     [SerializeField] public Camera cam;
+    [SerializeField] public Camera cam2;
     [SerializeField] public GameObject directionalLight;
     [SerializeField] public GameObject newGameButton;
     [SerializeField] public GameObject helpButton;
@@ -64,10 +67,15 @@ public class GameController: MonoBehaviour
     private void Cancel(InputAction.CallbackContext obj)
     {
         if (mainMenu.enabled) { return; }
+        if (sky.enabled)
+        {
+            sky.enabled = false;
+            return;
+        }
         if (pausedMenu.enabled) {
             pausedMenu.enabled = false;
             Time.timeScale = 1;
-        }
+        } 
         else
         {
             Time.timeScale = 0;
@@ -80,7 +88,6 @@ public class GameController: MonoBehaviour
             {
                 eventSystem.SetSelectedGameObject(backButton, new BaseEventData(eventSystem));
             }
-
         }
     }
     public void SetBackButton()
@@ -91,10 +98,14 @@ public class GameController: MonoBehaviour
     {
         eventSystem.SetSelectedGameObject(helpButton, new BaseEventData(eventSystem));
     }
+    public void LookAtTheSky()
+    {
+        skyCanvas.SetSkyToStart();
+        sky.enabled= true;
+        skyCanvas.AnimateSky();
+    }
     public void OpenDiary()
     {
-        if (mainMenu.enabled) { return; }
-        if (pausedMenu.enabled) { return; }
         diaryMenu.enabled = true;
         eventSystem.SetSelectedGameObject(backUpgradeButton, new BaseEventData(eventSystem));
     }
@@ -290,7 +301,6 @@ public class GameController: MonoBehaviour
     }
     public void PrepareToGoToRealWorld()
     {
-        //eyes.CloseEyes();
         //StartCoroutine(DeleteRooms());
         StartCoroutine(UnloadScene(mapGeneratorScene));
         SaveSystem.SavePlayer(player);
@@ -299,10 +309,7 @@ public class GameController: MonoBehaviour
     {
         inDreamWorld = false;
         directionalLight.SetActive(win);
-        playerObj.SetActive(false);
         StartCoroutine(LoadScene(irlRoomScene));
-        player.cam.enabled = false;
-        player.isometricCam.SetActive(false);
         var button = healthUpgradeButton.GetComponent<Button>();
         button.interactable = true;
         button = attackUpgradeButton.GetComponent<Button>();
@@ -312,8 +319,30 @@ public class GameController: MonoBehaviour
         healthUpgradeButton.SetActive(true);
         attackUpgradeButton.SetActive(true);
         speedUpgradeButton.SetActive(true);
-        //eyes.OpenEyes();
+        StartCoroutine(AwaitCamera());
+        player.cam.enabled = false;
+        playerObj.SetActive(false);
+        player.isometricCam.SetActive(false);
         //StartCoroutine(DeleteRooms());
+        StartCoroutine(WaitAndOpenEyes());
+    }
+    public IEnumerator AwaitCamera()
+    {
+        GameObject[] cameraObj = GameObject.FindGameObjectsWithTag("MainCamera");
+        while(cameraObj.Length != 2)
+        {
+            yield return new WaitForSeconds(0.5f);
+            cameraObj = GameObject.FindGameObjectsWithTag("MainCamera");
+        }
+    }
+    public IEnumerator WaitForSec()
+    {
+        yield return new WaitForSeconds(1);
+    }
+    public IEnumerator WaitAndOpenEyes()
+    {
+        yield return new WaitForSeconds(1);
+        eyes.OpenEyes();
     }
     public IEnumerator DeleteRooms()
     {
@@ -327,13 +356,11 @@ public class GameController: MonoBehaviour
     }
     public void PrepareToGoToDreamWorld()
     {
-        //eyes.CloseEyes();
         var playerData = SaveSystem.LoadPlayer();
         playerData.SetUpPlayer(player);
     }
     public void GoToDreamWorld()
     {
-        //Time.timeScale = 0;
         bossBeaten = false;
         readyForBoss= false;
         inDreamWorld = true;
@@ -345,7 +372,7 @@ public class GameController: MonoBehaviour
         Debug.Log("before loading mapgenscene");
         StartCoroutine(LoadScene(mapGeneratorScene));
         StartCoroutine(WaitForRooms());
-        //eyes.OpenEyes();
+        StartCoroutine(WaitAndOpenEyes());
     }
     public void LoadGame()
     {

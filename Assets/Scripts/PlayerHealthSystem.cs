@@ -8,7 +8,7 @@ public class PlayerHealthSystem : MonoBehaviour
     [SerializeField] private PlayerController controller;
     [SerializeField] private float damageCooldown=0f;
     [SerializeField] private HealthBar healthBar;
-
+    public Blink blink;
     public TMP_Text text;
 
     public GameController gameController;
@@ -38,6 +38,7 @@ public class PlayerHealthSystem : MonoBehaviour
         healthBar.SetMaxHealth(maxHealth);
         healthBar.SetHealth(health);
         runMaxHealth += amount;
+        text.text = health + "/" + maxHealth;
     }
     public void AwakeHealth(float maxHealth, int healthUpgrades)
     {
@@ -87,7 +88,18 @@ public class PlayerHealthSystem : MonoBehaviour
     }
     private IEnumerator DeadRoutine()
     {
+        if (blink == null)
+        {
+            GameObject[] blinkObj = GameObject.FindGameObjectsWithTag("Blink");
+            blink = blinkObj[0].GetComponent<Blink>();
+        }
         yield return new WaitForSeconds(3);
+        blink.CloseEyes();
+        while (!blink.closed)
+        {
+            yield return null;
+        }
+        yield return new WaitForSeconds(1);
         gameController.PrepareToGoToRealWorld();   
         gameController.GoToRealWorld(false);
     }
