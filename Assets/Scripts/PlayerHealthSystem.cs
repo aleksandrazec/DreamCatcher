@@ -44,7 +44,7 @@ public class PlayerHealthSystem : MonoBehaviour
     {
         runMaxHealth = 0;
         this.maxHealth = maxHealth*(1+0.1f*healthUpgrades);
-        health = maxHealth;
+        health = this.maxHealth;
         healthBar.SetMaxHealth(maxHealth);
         healthBar.SetHealth(health);
         canBeDamaged = true;
