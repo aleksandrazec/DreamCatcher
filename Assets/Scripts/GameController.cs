@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-public class GameController: MonoBehaviour
+public class GameController : MonoBehaviour
 {
     [SerializeField] private Player player;
     [SerializeField] private GameObject playerObj;
@@ -31,16 +31,16 @@ public class GameController: MonoBehaviour
     private List<Room> rooms = new List<Room>();
     private int[,] floorPlan;
     private (int, int) playerPosition;
-    private Room currentRoom=null;
+    private Room currentRoom = null;
     private bool readyForBoss = false;
-    private bool bossBeaten=false;
+    private bool bossBeaten = false;
     private bool inDreamWorld = true;
 
     private MapGenerator mapGenerator;
     private RoomManager roomManager;
 
-    public int mapGeneratorScene=1;
-    public int irlRoomScene=2;
+    public int mapGeneratorScene = 1;
+    public int irlRoomScene = 2;
     public int currentScene = -1;
 
     private InputSystem_Actions _uiInputActions;
@@ -48,9 +48,9 @@ public class GameController: MonoBehaviour
     private void Awake()
     {
         playerHealthSystem = player.healthSystem;
-        playerMoneySystem=player.moneySystem;
-        playerObj= player.gameObject;
-        Cursor.lockState=CursorLockMode.Locked;
+        playerMoneySystem = player.moneySystem;
+        playerObj = player.gameObject;
+        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         _uiInputActions = new InputSystem_Actions();
     }
@@ -72,10 +72,11 @@ public class GameController: MonoBehaviour
             sky.enabled = false;
             return;
         }
-        if (pausedMenu.enabled) {
+        if (pausedMenu.enabled)
+        {
             pausedMenu.enabled = false;
             Time.timeScale = 1;
-        } 
+        }
         else
         {
             Time.timeScale = 0;
@@ -101,7 +102,7 @@ public class GameController: MonoBehaviour
     public void LookAtTheSky()
     {
         skyCanvas.SetSkyToStart();
-        sky.enabled= true;
+        sky.enabled = true;
         skyCanvas.AnimateSky();
     }
     public void OpenDiary()
@@ -109,7 +110,8 @@ public class GameController: MonoBehaviour
         diaryMenu.enabled = true;
         eventSystem.SetSelectedGameObject(backUpgradeButton, new BaseEventData(eventSystem));
     }
-    public void SpeedUpgrade() {
+    public void SpeedUpgrade()
+    {
         var button = speedUpgradeButton.GetComponent<Button>();
         button.interactable = false;
         player.speedUpgrades++;
@@ -135,9 +137,10 @@ public class GameController: MonoBehaviour
 
     private void Update()
     {
-        if (bossBeaten) {
+        if (bossBeaten)
+        {
             bossBeaten = false;
-            StartCoroutine(WinRoutine()); 
+            StartCoroutine(WinRoutine());
         }
         if (inDreamWorld)
         {
@@ -159,7 +162,7 @@ public class GameController: MonoBehaviour
             }
         }
     }
-    
+
     public void CheckIfAllRoomsAreDone()
     {
         var numOfRooms = rooms.Count;
@@ -173,7 +176,8 @@ public class GameController: MonoBehaviour
         if (numOfRooms == 1)
         {
             readyForBoss = true;
-        }else if (numOfRooms == 0)
+        }
+        else if (numOfRooms == 0)
         {
             bossBeaten = true;
         }
@@ -196,7 +200,7 @@ public class GameController: MonoBehaviour
     public IEnumerator LoadScene(int number)
     {
         Debug.Log("loading scene " + number);
-        AsyncOperation loadOperation = SceneManager.LoadSceneAsync(number,LoadSceneMode.Additive);
+        AsyncOperation loadOperation = SceneManager.LoadSceneAsync(number, LoadSceneMode.Additive);
         while (!loadOperation.isDone)
         {
             yield return null;
@@ -212,7 +216,7 @@ public class GameController: MonoBehaviour
         {
             yield return null;
         }
-        if(currentScene== number)
+        if (currentScene == number)
         {
             currentScene = -1;
         }
@@ -264,7 +268,7 @@ public class GameController: MonoBehaviour
         mainMenu.enabled = false;
         Time.timeScale = 1;
     }
-    public void ChangePlayerPosition((int,int) newPosition)
+    public void ChangePlayerPosition((int, int) newPosition)
     {
         playerPosition = newPosition;
         UpdateActiveRooms();
@@ -287,6 +291,7 @@ public class GameController: MonoBehaviour
     }
     public void GoToMainMenu()
     {
+        cam.enabled = true;
         mainMenu.enabled = true;
         eventSystem.SetSelectedGameObject(newGameButton, new BaseEventData(eventSystem));
         pausedMenu.enabled = false;
@@ -320,7 +325,7 @@ public class GameController: MonoBehaviour
         attackUpgradeButton.SetActive(true);
         speedUpgradeButton.SetActive(true);
         StartCoroutine(AwaitCamera());
-        player.cam.enabled = false;
+        //player.cam.enabled = false;
         playerObj.SetActive(false);
         player.isometricCam.SetActive(false);
         //StartCoroutine(DeleteRooms());
@@ -328,12 +333,19 @@ public class GameController: MonoBehaviour
     }
     public IEnumerator AwaitCamera()
     {
-        GameObject[] cameraObj = GameObject.FindGameObjectsWithTag("MainCamera");
-        while(cameraObj.Length != 2)
+        if (cam2 == null)
         {
-            yield return new WaitForSeconds(0.5f);
-            cameraObj = GameObject.FindGameObjectsWithTag("MainCamera");
+            GameObject[] cameraObj = GameObject.FindGameObjectsWithTag("MainCamera");
+            while (cameraObj.Length != 2)
+            {
+                yield return new WaitForSeconds(0.5f);
+                cameraObj = GameObject.FindGameObjectsWithTag("MainCamera");
+            }
+            var camObj2 = cameraObj[1];
+            cam2 = camObj2.GetComponent<Camera>();
         }
+        cam2.enabled = true;
+        cam.enabled = false;
     }
     public IEnumerator WaitForSec()
     {
@@ -362,7 +374,7 @@ public class GameController: MonoBehaviour
     public void GoToDreamWorld()
     {
         bossBeaten = false;
-        readyForBoss= false;
+        readyForBoss = false;
         inDreamWorld = true;
         StartCoroutine(UnloadScene(irlRoomScene));
         playerObj.SetActive(true);
