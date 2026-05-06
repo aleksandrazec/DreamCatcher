@@ -342,6 +342,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Screenshot"",
+                    ""type"": ""Button"",
+                    ""id"": ""7300733d-c869-44bf-b3ef-2ac478b1ef3a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -773,6 +782,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""GenerateMap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d7860693-6158-443b-8a26-fdda6ecf22d9"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Screenshot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -860,6 +880,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         m_UI_GenerateMap = m_UI.FindAction("GenerateMap", throwIfNotFound: true);
+        m_UI_Screenshot = m_UI.FindAction("Screenshot", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -1092,6 +1113,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_TrackedDevicePosition;
     private readonly InputAction m_UI_TrackedDeviceOrientation;
     private readonly InputAction m_UI_GenerateMap;
+    private readonly InputAction m_UI_Screenshot;
     /// <summary>
     /// Provides access to input actions defined in input action map "UI".
     /// </summary>
@@ -1147,6 +1169,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "UI/GenerateMap".
         /// </summary>
         public InputAction @GenerateMap => m_Wrapper.m_UI_GenerateMap;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/Screenshot".
+        /// </summary>
+        public InputAction @Screenshot => m_Wrapper.m_UI_Screenshot;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1206,6 +1232,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @GenerateMap.started += instance.OnGenerateMap;
             @GenerateMap.performed += instance.OnGenerateMap;
             @GenerateMap.canceled += instance.OnGenerateMap;
+            @Screenshot.started += instance.OnScreenshot;
+            @Screenshot.performed += instance.OnScreenshot;
+            @Screenshot.canceled += instance.OnScreenshot;
         }
 
         /// <summary>
@@ -1250,6 +1279,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @GenerateMap.started -= instance.OnGenerateMap;
             @GenerateMap.performed -= instance.OnGenerateMap;
             @GenerateMap.canceled -= instance.OnGenerateMap;
+            @Screenshot.started -= instance.OnScreenshot;
+            @Screenshot.performed -= instance.OnScreenshot;
+            @Screenshot.canceled -= instance.OnScreenshot;
         }
 
         /// <summary>
@@ -1475,5 +1507,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnGenerateMap(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Screenshot" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnScreenshot(InputAction.CallbackContext context);
     }
 }

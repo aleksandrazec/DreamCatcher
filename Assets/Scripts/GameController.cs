@@ -42,6 +42,7 @@ public class GameController : MonoBehaviour
     public int mapGeneratorScene = 1;
     public int irlRoomScene = 2;
     public int currentScene = -1;
+    public int screenshotIndex = 0;
 
     private InputSystem_Actions _uiInputActions;
 
@@ -54,15 +55,23 @@ public class GameController : MonoBehaviour
         Cursor.visible = false;
         _uiInputActions = new InputSystem_Actions();
     }
+    private void Screenshot(InputAction.CallbackContext obj)
+    {
+        string path = Application.persistentDataPath + "/screenshots/"+screenshotIndex+".png";
+        ScreenCapture.CaptureScreenshot(path);
+        screenshotIndex++;
+    }
     private void OnEnable()
     {
         _uiInputActions.UI.Enable();
         _uiInputActions.UI.Cancel.started += Cancel;
+        _uiInputActions.UI.Screenshot.started += Screenshot;
     }
     private void OnDisable()
     {
         _uiInputActions.UI.Disable();
         _uiInputActions.UI.Cancel.started -= Cancel;
+        _uiInputActions.UI.Screenshot.started += Screenshot;
     }
     private void Cancel(InputAction.CallbackContext obj)
     {
