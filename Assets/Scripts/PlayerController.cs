@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
     public void AwakePlayer(float walkingSpeed, int speedUpgrades)
     {
         inDreamWorld = true;
-        this.walkingSpeed = walkingSpeed*(1+0.1f*speedUpgrades);
+        this.walkingSpeed = walkingSpeed+10*speedUpgrades;
         maxSpeed = walkingSpeed;
         _canDash = true;
         _invincibleDash = false;

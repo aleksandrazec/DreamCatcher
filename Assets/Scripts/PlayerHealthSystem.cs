@@ -43,7 +43,7 @@ public class PlayerHealthSystem : MonoBehaviour
     public void AwakeHealth(float maxHealth, int healthUpgrades)
     {
         runMaxHealth = 0;
-        this.maxHealth = maxHealth*(1+0.1f*healthUpgrades);
+        this.maxHealth = maxHealth+10*healthUpgrades;
         health = this.maxHealth;
         healthBar.SetMaxHealth(maxHealth);
         healthBar.SetHealth(health);

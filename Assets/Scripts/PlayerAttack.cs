@@ -24,7 +24,7 @@ public class PlayerAttack : MonoBehaviour
     }
     public void SetUpAttack(float hitDamage, int attackUpgrades)
     {
-        this.hitDamage = hitDamage*(1+0.1f*attackUpgrades);
+        this.hitDamage = hitDamage+10*attackUpgrades;
         objectsCollided.Clear();
     }
 }

@@ -176,7 +176,8 @@ public class Room : MonoBehaviour
     private void SetUpBoss()
     {
         EnemyAI.EnemyType randomEnemy = (EnemyAI.EnemyType)enemyTypesArray.GetValue(random.Next(enemyTypesArray.Length));
-        var enemy = Instantiate(GetEnemyPrefab(randomEnemy), this.transform);;
+        var enemy = Instantiate(GetEnemyPrefab(randomEnemy), this.transform);
+        enemy.enemyAI.gameController = gameController;
         enemy.enemyAI.room = this;
         enemy.MakeBoss(30, 300, new Vector3(2f,2f,2f), 2);
         spawnedEnemies.Add(enemy);

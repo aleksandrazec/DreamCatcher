@@ -15,10 +15,10 @@ public class PlayerData
     public PlayerData(Player player)
     {
         level = player.level;
-        walkingSpeed = player.controller.walkingSpeed;
-        hitDamage = player.attackSystem.hitDamage;
-        shootDamage = player.shootSystem.bulletDamage;
-        maxHealth = player.healthSystem.maxHealth- player.healthSystem.runMaxHealth;
+        walkingSpeed = player.controller.walkingSpeed-10*(player.speedUpgrades-1);
+        hitDamage = player.attackSystem.hitDamage-10*(player.attackUpgrades-1);
+        shootDamage = player.shootSystem.bulletDamage-10* (player.attackUpgrades - 1);
+        maxHealth = player.healthSystem.maxHealth- player.healthSystem.runMaxHealth-10*(player.healthUpgrades - 1);
         speedUpgrades = player.speedUpgrades;
         attackUpgrades = player.attackUpgrades;
         healthUpgrades = player.healthUpgrades;

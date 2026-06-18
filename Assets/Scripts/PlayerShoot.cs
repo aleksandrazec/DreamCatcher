@@ -17,6 +17,6 @@ public class PlayerShoot : MonoBehaviour
     }
     public void SetUpShoot(float bulletDamage,int attackUpgrades)
     {
-        this.bulletDamage = bulletDamage*(1+0.1f*attackUpgrades);
+        this.bulletDamage = bulletDamage + 10 * attackUpgrades;
     }
 }

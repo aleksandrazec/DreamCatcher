@@ -867,6 +867,7 @@ MonoBehaviour:
   agent: {fileID: 2414898700540412777}
   playerTransform: {fileID: 0}
   playerHealthSystem: {fileID: 0}
+  playerMoneySystem: {fileID: 0}
   patrolRadius: 100
   attackCooldown: 1.5
   visionRange: 60
@@ -877,6 +878,12 @@ MonoBehaviour:
   blackSkin: {fileID: 2100000, guid: d68097d5157157c4cb34aefe33708ba2, type: 2}
   rigidBody: {fileID: 5760796527507495298}
   enemyType: 2
+  enemy: {fileID: 0}
+  coinPrefab: {fileID: 0}
+  healPrefab: {fileID: 0}
+  room: {fileID: 0}
+  boss: 0
+  gameController: {fileID: 0}
 --- !u!114 &4314290690639393887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -890,9 +897,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   bulletSpawnPoint: {fileID: 3923785582298527355}
-  bulletPrefab: {fileID: 6017444772018667423, guid: b7c0a4491c31d594bbe5c2a8a008b374, type: 3}
+  bulletPrefab: {fileID: 922146004293676543, guid: b7c0a4491c31d594bbe5c2a8a008b374, type: 3}
   bulletSpeed: 60
+  bulletDamage: 0
   animator: {fileID: 1700640274600964900}
+  player: {fileID: 0}
 --- !u!95 &1700640274600964900
 Animator:
   serializedVersion: 7

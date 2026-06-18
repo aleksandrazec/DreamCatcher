@@ -33,7 +33,7 @@ public class GameController : MonoBehaviour
     private (int, int) playerPosition;
     private Room currentRoom = null;
     private bool readyForBoss = false;
-    private bool bossBeaten = false;
+    //private bool bossBeaten = false;
     private bool inDreamWorld = true;
 
     private MapGenerator mapGenerator;
@@ -146,11 +146,11 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        if (bossBeaten)
-        {
-            bossBeaten = false;
-            StartCoroutine(WinRoutine());
-        }
+        //if (bossBeaten)
+        //{
+        //    bossBeaten = false;
+            //StartCoroutine(WinRoutine());
+        //}
         if (inDreamWorld)
         {
             if (currentRoom != null)
@@ -186,10 +186,10 @@ public class GameController : MonoBehaviour
         {
             readyForBoss = true;
         }
-        else if (numOfRooms == 0)
-        {
-            bossBeaten = true;
-        }
+        //else if (numOfRooms == 0)
+        //{
+        //    bossBeaten = true;
+        //}
     }
 
     public void StartNewGame()
@@ -202,6 +202,7 @@ public class GameController : MonoBehaviour
         StartCoroutine(WaitForRooms());
         button.interactable = true;
     }
+    
     public void QuitGame()
     {
         Application.Quit();
@@ -307,9 +308,20 @@ public class GameController : MonoBehaviour
         StartCoroutine(UnloadScene(currentScene));
         SaveSystem.SavePlayer(player);
     }
+    public void Win()
+    {
+        StartCoroutine(WinRoutine());
+    }
     private IEnumerator WinRoutine()
     {
         yield return new WaitForSeconds(3);
+        eyes.CloseEyes();
+        while (!eyes.closed)
+        {
+            yield return null;
+        }
+        yield return new WaitForSeconds(1);
+        //yield return new WaitForSeconds(3);
         PrepareToGoToRealWorld();
         GoToRealWorld(true);
     }
@@ -382,7 +394,7 @@ public class GameController : MonoBehaviour
     }
     public void GoToDreamWorld()
     {
-        bossBeaten = false;
+        //bossBeaten = false;
         readyForBoss = false;
         inDreamWorld = true;
         StartCoroutine(UnloadScene(irlRoomScene));
@@ -407,6 +419,18 @@ public class GameController : MonoBehaviour
             Debug.Log("No save file");
             return;
         }
+        StartCoroutine(Load());
+
+    }
+    private IEnumerator Load()
+    {
+        eyes.CloseEyes();
+        while (!eyes.closed)
+        {
+            yield return null;
+        }
+        yield return new WaitForSeconds(1);
+        //yield return new WaitForSeconds(3);
         mainMenu.enabled = false;
         GoToRealWorld(false);
     }

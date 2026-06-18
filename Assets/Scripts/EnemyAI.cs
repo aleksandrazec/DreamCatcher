@@ -49,6 +49,8 @@ public class EnemyAI : MonoBehaviour
 
     public Room room;
     public bool boss = false;
+
+    public GameController gameController;
     public enum EnemyType
     {
         ghost,
@@ -176,6 +178,10 @@ public class EnemyAI : MonoBehaviour
             yield return null;
         }
         setInvisible = true;
+        if (boss)
+        {
+            gameController.Win();
+        }
     }
     public void TakeDamage(Vector3 knockbackDirection)
     {
